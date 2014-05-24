@@ -1,0 +1,32 @@
+<div class="container" data-ng-controller="RegisterCtrl">
+
+<form class="form-signin" ng-submit="register()">
+    <h2 class="form-signin-heading">registration now</h2>
+    <div ng-repeat="error in registerError">
+        <div class="alert alert-danger animated fadeIn">{{error.msg}}</div>
+    </div>
+    <div class="login-wrap">
+        <p>Enter your personal details below</p>
+        <input required ng-model="user.name" type="text" class="form-control" name="fullname" placeholder="Full Name" autofocus>
+        <input required ng-model="user.email" type="email" class="form-control" name="email" placeholder="Email" autofocus>
+
+        <p> Enter your account details below</p>
+        <input required ng-model="user.username" type="text" class="form-control" name="username" placeholder="User Name" autofocus>
+        <input required ng-model="user.password"  type="password" class="form-control" name="password" placeholder="Password">
+        <input required ng-model="user.repassword" type="password" class="form-control" name="repassword" placeholder="Re-type Password">
+        <label class="checkbox">
+            <input required type="checkbox" value="agree this condition"> I agree to the Terms of Service and Privacy Policy
+        </label>
+        <button class="btn btn-lg btn-login btn-block" type="submit">Submit</button>
+
+        <div class="registration">
+            Already Registered.
+            <a class="" href="#!/login">
+                Login
+            </a>
+        </div>
+
+    </div>
+
+  </form>
+  </div>

@@ -1,0 +1,59 @@
+{
+  "name": "datetimepicker",
+  "version": "2.2.8",
+  "main": [
+    "jquery.datetimepicker.js",
+    "jquery.datetimepicker.css"
+  ],
+  "ignore": [
+    "**/screen",
+    "**/datetimepicker.jquery.json",
+    "**/*.png",
+    "**/*.txt",
+    "**/*.md",
+    "**/*.html",
+    "**/*.tpl"
+  ],
+  "keywords": [
+    "calendar",
+    "date",
+    "time",
+    "form",
+    "datetime",
+    "datepicker",
+    "timepicker",
+    "datetimepicker",
+    "validation",
+    "ui",
+    "scroller",
+    "picker",
+    "i18n",
+    "input",
+    "jquery",
+    "touch"
+  ],
+  "dependencies": {
+    "jquery": ">= 1.7.2"
+  },
+  "authors": [
+    {
+      "name": "Chupurnov Valeriy",
+      "email": "chupurnov@gmail.com",
+      "homepage": "http://xdsoft.net/contacts.html"
+    }
+  ],
+  "homepage": "http://xdsoft.net/jqplugins/datetimepicker/",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com:xdan/datetimepicker.git"
+  },
+  "_release": "2.2.8",
+  "_resolution": {
+    "type": "version",
+    "tag": "2.2.8",
+    "commit": "13c66d78214bffa3f17cbfe28c0a85f8967bb0a4"
+  },
+  "_source": "git://github.com/xdan/datetimepicker.git",
+  "_target": "*",
+  "_originalSource": "datetimepicker"
+}

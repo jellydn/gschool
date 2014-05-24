@@ -1,0 +1,56 @@
+{
+    "css": {
+        "public/build/css/dist.min.css": [
+            "public/lib/bs3/css/bootstrap.min.css",
+            "public/lib/css/bootstrap-reset.css",
+            "public/lib/assets/font-awesome/css/font-awesome.css",
+            "public/lib/css/style.css",
+            "public/lib/css/style-responsive.css",
+            "public/system/lib/datetimepicker/jquery.datetimepicker.css",
+            "public/system/lib/bootstrap-tokenfield/dist/css/bootstrap-tokenfield.css",
+            "public/system/lib/bootstrap-tokenfield/dist/css/tokenfield-typeahead.css",
+            "public/lib/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.css",
+            "public/lib/assets/jquery-tags-input/jquery.tagsinput.css",
+            "public/**/assets/css/*.css"
+        ]
+    },
+    "js": {
+        "public/build/js/dist.min.js": [
+            "public/system/lib/ng-file-upload/angular-file-upload-shim.min.js",
+            "public/system/lib/angular/angular.js",
+            "public/system/lib/angular-sanitize/angular-sanitize.min.js",
+            "public/system/lib/ng-file-upload/angular-file-upload.min.js",
+            "public/system/lib/angular-cookies/angular-cookies.js",
+            "public/system/lib/angular-resource/angular-resource.js",
+            "public/system/lib/angular-ui-router/release/angular-ui-router.js",
+            "public/system/lib/jquery/dist/jquery.min.js",            
+            "public/system/lib/angular-bootstrap/ui-bootstrap.js",
+            "public/system/lib/angular-bootstrap/ui-bootstrap-tpls.js",
+            "public/lib/bs3/js/bootstrap.min.js",
+            "public/lib/js/accordion-menu/jquery.dcjqaccordion.2.7.js",
+            "public/lib/js/scrollTo/jquery.scrollTo.min.js",
+            "public/lib/js/nicescroll/jquery.nicescroll.js",
+            "public/lib/assets/easypiechart/jquery.easypiechart.js",
+            "public/lib/assets/sparkline/jquery.sparkline.js",
+            "public/lib/assets/flot-chart/jquery.flot.js",
+            "public/lib/assets/flot-chart/jquery.flot.tooltip.min.js",
+            "public/lib/assets/flot-chart/jquery.flot.resize.js",
+            "public/lib/assets/flot-chart/jquery.flot.pie.resize.js",
+            "public/lib/assets/skycons/skycons.js",
+            "public/lib/assets/gause/gause.js",
+            "public/lib/assets/jquery-tags-input/jquery.tagsinput.js",
+            "public/lib/assets/bootstrap-wysihtml5/wysihtml5-0.3.0.js",
+            "public/lib/assets/bootstrap-wysihtml5/bootstrap-wysihtml5.js",
+            "public/system/lib/datetimepicker/jquery.datetimepicker.js",
+            "public/system/lib/bootstrap-tokenfield/dist/bootstrap-tokenfield.js",
+            "public/system/lib/bootstrap-tokenfield/docs-assets/js/scrollspy.js",
+            "public/system/lib/bootstrap-tokenfield/docs-assets/js/affix.js",
+            "public/system/lib/bootstrap-tokenfield/docs-assets/js/typeahead.bundle.min.js",
+            "public/system/lib/bootstrap-tokenfield/docs-assets/js/docs.min.js",
+            "public/init.js",
+            "public/*/*.js",
+            "public/*/*/*.js",
+            "!public/build/**"
+        ]
+    }
+}

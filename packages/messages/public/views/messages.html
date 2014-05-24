@@ -1,0 +1,556 @@
+<section id="container" >
+<!--header start-->
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
+<!--logo start-->
+<my-logo></my-logo>
+<!--logo end-->
+
+<div class="nav notify-row" id="top_menu" >
+    <!--  notification start -->
+    <my-menu global="global"></my-menu>
+    <!--  notification end -->
+</div>
+<div class="top-nav clearfix">
+    <!--search & user info start-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
+</div>
+</header>
+
+<my-left-menu></my-left-menu>
+
+<!--sidebar end-->
+    <!--main content start-->
+     <section id="main-content">
+        <section class="wrapper" data-ng-controller="MessageController" ng-init="$emit('LoadJs')">
+        <!-- page start-->
+        <div class="row">
+  <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade" >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                                        <h4 class="modal-title">Compose Message</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                        <form role="form" data-ng-submit="send()">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">To</label>
+                                                <input required data-ng-model="recipient"  name="recipient" type="text" class="form-control" id="exampleInputEmail3" placeholder="Enter Recipient(s)">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputFile">Attachment</label>
+                                                <input type="file" id="uploadfile" ng-file-select="onFileSelect($files)" >
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Message</label>
+                                                <textarea required data-ng-model="message"  name="message" class="form-control" rows="6"></textarea>
+                                            
+                                              
+                                            </div>
+
+                                            <button type="submit" class="btn btn-default">Submit</button>
+                                            <label for="exampleInputRepeat">Repeat</label>
+                                            <input  type="checkbox" id="repeatcheckbox" ng-model="repeatChecked" ng-init="repeatChecked=false" ng-click="occurChecked=false;$emit('LoadTimePicker');"/>
+                                            <label for="exampleInputRepeat">Occur</label>
+                                            <input  type="checkbox" id="occurcheckbox" ng-model="occurChecked" ng-init="occurChecked=false" ng-click="repeatChecked=false;$emit('LoadDateTimePicker');"/>
+                                            <div class="form-group" ng-if="repeatChecked">
+                                                <table class="ep-rec" role="presentation">
+                                                      <tbody>
+                                                        <tr>
+                                                          <th>
+                                                            Repeat on:
+                                                          </th>
+                                                          <td >
+                                                            <div id="selectWeekly">
+                                                              <span >
+                                                                <input name="0" type="checkbox" aria-label="Repeat on Sunday" title="Sunday">
+                                                                <label for="0" title="Sunday">
+                                                                  Sun
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input name="1" type="checkbox" aria-label="Repeat on Monday" title="Monday">
+                                                                <label for="1" title="Monday">
+                                                                  Mon
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input name="2" type="checkbox" aria-label="Repeat on Tuesday" title="Tuesday">
+                                                                <label for="2" title="Tuesday">
+                                                                  Tue
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input  name="3" type="checkbox" aria-label="Repeat on Wednesday" title="Wednesday">
+                                                                <label for="3" title="Wednesday">
+                                                                  Wed
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input  name="4" type="checkbox" aria-label="Repeat on Thursday" title="Thursday">
+                                                                <label for="4" title="Thursday">
+                                                                  Thu
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input name="5" type="checkbox" aria-label="Repeat on Friday" title="Friday">
+                                                                <label for="5" title="Friday">
+                                                                  Fri
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input name="6" type="checkbox" aria-label="Repeat on Saturday" title="Saturday">
+                                                                <label for="6" title="Saturday">
+                                                                  Sat
+                                                                </label>
+                                                              </span>
+                                                            </div>
+                                                          </td>
+                                                        </tr>
+                                                        <tr> 
+                                                            <th> At time</th>
+                                                            <td> 
+                                                            <div class='input-group date' ng-click="$emit('LoadTimePicker');">
+                                                                    <input id="ontime" name="ontime" type='text' class="form-control" ng-click="showPicker()" />
+                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                                    </span>
+                                                            </div>
+
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                      </tbody>
+                                                  
+                                                    </table>
+                                              
+                                            </div>
+                                            <div class="form-group" ng-if="occurChecked">
+                                                <table class="ep-rec" role="presentation">
+                                                      <tbody>
+                                                        <tr> 
+                                                            <th> On day</th>
+                                                            <td> 
+                                                            <div class='input-group date' ng-click="$emit('LoadDateTimePicker');">
+                                                                    <input  id="ondatetime" name="ondatetime" type='text' class="form-control" ng-click="showPicker()" />
+                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                                    </span>
+                                                            </div>
+
+                                                            </td>
+                                                        </tr>
+                                                      </tbody>
+                                                  
+                                                    </table>
+                                              
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<div aria-hidden="true" aria-labelledby="myModalLabelDetail" role="dialog" tabindex="-2" id="myModalDetail" class="modal fade" >
+                            <div class="modal-dialog">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h4 class="modal-title">From</h4>
+                                    </div>
+                                    <div class="modal-body">
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+            <div class="col-sm-3">
+                <section class="panel">
+                    <div class="panel-body">
+                        <a href="#myModal" data-toggle="modal" class="btn btn-compose">
+                            Compose Mail
+                        </a>
+
+
+                        <ul class="nav nav-pills nav-stacked mail-nav">
+                            <li class="active"><a href="#" ng-click="inbox()"> <i class="fa fa-inbox"></i> Inbox  <span class="label label-danger pull-right inbox-notification">{{ global.unreadInbox }}</span></a></li>
+                            <li><a href="#"> <i class="fa fa-envelope-o"></i> Sent Mail</a></li>
+                            <li><a href="#"> <i class="fa fa-certificate"></i> Important</a></li>
+                            <li><a href="#" ng-click="schedule()"> <i class="fa fa-clock-o"></i> Schedule</a></li>
+                            <li><a href="#"> <i class="fa fa-file-text-o"></i> Drafts <!-- <span class="label label-info pull-right inbox-notification">123</span> --></a></a></li>
+                         <li><a href="#" ng-click="trash()"> <i class="fa fa-trash-o"></i> Trash</a></li>
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="panel">
+                    <div class="panel-body">
+                        <ul class="nav nav-pills nav-stacked labels-info ">
+                            <li> <h4>Buddy online</h4> </li>
+                            <li> <a href="#"> <i class="fa fa-comments-o text-success"></i> Jonathan Smith <p>I do not think</p></a>  </li>
+                            <li> <a href="#"> <i class="fa fa-comments-o text-danger"></i> iRon <p>Busy with coding</p></a> </li>
+                            <li> <a href="#"> <i class="fa fa-comments-o text-muted "></i> Anjelina Joli <p>I out of control</p></a></li>
+                            <li> <a href="#"> <i class="fa fa-comments-o text-muted "></i> Samual Daren <p>I am not here</p></a></li>
+                            <li> <a href="#"> <i class="fa fa-comments-o text-muted "></i> Tis man <p>I do not think</p></a>  </li>
+                        </ul>
+                        <a href="#"> + Add More</a>
+
+                        <div class="inbox-body text-center inbox-action">
+                            <div class="btn-group">
+                                <a class="btn mini btn-default" href="javascript:;">
+                                    <i class="fa fa-power-off"></i>
+                                </a>
+                            </div>
+                            <div class="btn-group">
+                                <a class="btn mini btn-default" href="javascript:;">
+                                    <i class="fa fa-cog"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-sm-9">
+                <section class="panel">
+                    <header class="panel-heading wht-bg">
+                       <h4 class="gen-case">{{heading}} ({{totals}}) <img src="/public/lib/images/ajax-loader.gif" ng-show="showLoading">
+                        <form action="#" class="pull-right src-position">
+                            <div class="input-append">
+                                <input type="text" ng-model="searchText" class="form-control " placeholder="Search Mail">
+                            </div>
+                        </form>
+                       </h4>
+                    </header>
+                    <div class="panel-body minimal">
+                        <div class="mail-option">
+                            <div class="chk-all">
+                                <div class="pull-left mail-checkbox ">
+                                    <input id="checkAll" type="checkbox" class="" ng-click="checkAll()" >
+                                </div>
+
+                                <div class="btn-group">
+                                    <a data-toggle="dropdown" href="#" class="btn mini all">
+                                        All
+                                        <i class="fa fa-angle-down "></i>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a href="#" ng-click="selectNone()"> None</a></li>
+                                        <li><a href="#" ng-click="selectRead()" > Read</a></li>
+                                        <li><a href="#" ng-click="selectUnread()" > Unread</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="btn-group">
+                                <a ng-click="find()" data-original-title="Refresh" data-placement="top" data-toggle="dropdown" href="#" class="btn mini tooltips">
+                                    <i class=" fa fa-refresh"></i>
+                                </a>
+                            </div>
+                            <div class="btn-group hidden-phone">
+                                <a data-toggle="dropdown" href="#" class="btn mini blue">
+                                    More
+                                    <i class="fa fa-angle-down "></i>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li><a href="#" ng-click="massRead()" ng-show="isInbox" ><i class="fa fa-pencil"></i> Mark as Read</a></li>
+                                    <li class="divider" ng-show="isInbox"></li>
+                                    <li><a href="#" ng-click="massDelete()" ><i class="fa fa-trash-o"></i> Delete</a></li>
+                                </ul>
+                            </div>
+
+                            <ul class="unstyled inbox-pagination">
+                                <li><span>{{fromOffset}}-{{toOffset}} of {{totals}}</span></li>
+                                <li>
+                                    <a class="np-btn" href="#" ng-click="previousPage()"><i class="fa fa-angle-left  pagination-left"></i></a>
+                                </li>
+                                <li>
+                                    <a class="np-btn" href="#" ng-click="nextPage()"><i class="fa fa-angle-right pagination-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="table-inbox-wrap ">
+                            <table class="table table-inbox table-hover" data-ng-init="find()" ng-click="predicate = 'name'; reverse=false">
+                        <tbody>
+
+
+                            <tr class="{{message.status}}" data-ng-repeat="message in messages| filter:searchText | orderBy:'-dateSent' ">
+                            
+
+                                 <td class="inbox-small-cells">
+                                <input rel="{{message._id}}" type="checkbox" class="mail-checkbox">
+                            </td>
+                            <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
+                            <td class="view-message  dont-show" ng-click="showModal(message)" > {{message.fromName}} </td>
+                            <td class="view-message " ng-click="showModal(message)"> {{message.message}} </td>
+                            <td class="view-message  inbox-small-cells" ng-click="showModal(message)"><i ng-if="message.file != ''" class="fa fa-paperclip"></i></td>
+                            <td class="view-message  text-right" ng-click="showModal(message)">{{message.dateSent | date:'medium'}}</td>
+
+                            </tr>
+                       
+
+                 
+                        </tbody>
+                        </table>
+
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- page end-->
+        </section>
+    </section>
+    <!--main content end-->
+    <!--main content end-->
+<!--right sidebar start-->
+<div class="right-sidebar">
+<div class="search-row">
+    <input type="text" placeholder="Search" class="form-control">
+</div>
+<ul class="right-side-accordion">
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head red-bg active clearfix">
+        <span class="pull-left">work progress (5)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row side-mini-stat clearfix">
+                <div class="side-graph-info">
+                    <h4>Target sell</h4>
+                    <p>
+                        25%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="target-sell">
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info">
+                    <h4>product delivery</h4>
+                    <p>
+                        55%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="p-delivery">
+                        <div class="sparkline" data-type="bar" data-resize="true" data-height="30" data-width="90%" data-bar-color="#39b7ab" data-bar-width="5" data-data="[200,135,667,333,526,996,564,123,890,564,455]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info payment-info">
+                    <h4>payment collection</h4>
+                    <p>
+                        25%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="p-collection">
+						<span class="pc-epie-chart" data-percent="45">
+						<span class="percent"></span>
+						</span>
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info">
+                    <h4>delivery pending</h4>
+                    <p>
+                        44%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="d-pending">
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="col-md-12">
+                    <h4>total progress</h4>
+                    <p>
+                        50%, Deadline 12 june 13
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div style="width: 50%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
+                            <span class="sr-only">50% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head terques-bg active clearfix">
+        <span class="pull-left">contact online (5)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="public/lib/images/avatar1_small.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Jonathan Smith</a></h4>
+                    <p>
+                        Work for fun
+                    </p>
+                </div>
+                <div class="user-status text-danger">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="images/avatar1.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Anjelina Joe</a></h4>
+                    <p>
+                        Available
+                    </p>
+                </div>
+                <div class="user-status text-success">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="images/chat-avatar2.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Jhone Doe</a></h4>
+                    <p>
+                        Away from Desk
+                    </p>
+                </div>
+                <div class="user-status text-warning">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="images/avatar1_small.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Mark Henry</a></h4>
+                    <p>
+                        working
+                    </p>
+                </div>
+                <div class="user-status text-info">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="public/lib/images/avatar1.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Shila Jones</a></h4>
+                    <p>
+                        Work for fun
+                    </p>
+                </div>
+                <div class="user-status text-danger">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <p class="text-center">
+                <a href="#" class="view-btn">View all Contacts</a>
+            </p>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head purple-bg active">
+        <span class="pull-left"> recent activity (3)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        just now
+                    </p>
+                    <p>
+                        <a href="#">John Sinna </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        2 min ago
+                    </p>
+                    <p>
+                        <a href="#">Sumon </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        1 day ago
+                    </p>
+                    <p>
+                        <a href="#">Mosaddek </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head yellow-bg active">
+        <span class="pull-left"> shipment status</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="col-md-12">
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">40% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                            <span class="sr-only">70% Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+</ul>
+</div>
+<!--right sidebar end-->
+
+</section>

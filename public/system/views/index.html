@@ -1,0 +1,727 @@
+<section id="container" >
+<!--header start-->
+
+
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
+<!--logo start-->
+<my-logo></my-logo>
+<!--logo end-->
+
+<div class="nav notify-row" id="top_menu" >
+    <!--  notification start -->
+    <my-menu global="global"></my-menu>
+    <!--  notification end -->
+</div>
+<div class="top-nav clearfix">
+    <!--search & user info start-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
+</div>
+</header>
+
+<my-left-menu global="global"></my-left-menu>
+
+<!--sidebar end-->
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">
+        <div class="row">
+<div class="col-md-12">
+<section class="panel">
+                    <div class="panel-body profile-information">
+                       <div class="col-md-3">
+                           <div class="profile-pic text-center">
+                               <img src="/public/lib/images/lock_thumb.jpg" alt="">
+                           </div>
+                       </div>
+                       <div class="col-md-6">
+                           <div class="profile-desk">
+                               
+                               <h1> Name</h1>
+                               <span class="text-muted"> Account type</span> <br>
+             
+                           </div>
+                       </div>
+
+                    </div>
+   </section>
+
+</div>
+
+<div class="col-md-12">
+
+<div class="row">
+           <div class="col-md-3">
+            <div class="mini-stat clearfix">
+                <span class="mini-stat-icon pink"><i class="fa fa-circle-o"></i></span>
+                <div class="mini-stat-info">
+                    <span>22</span>
+                        Coins
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="mini-stat clearfix">
+                <span class="mini-stat-icon orange"><i class="fa fa-file-text"></i></span>
+                <div class="mini-stat-info">
+                    <span>25</span>
+                    Notes 
+                </div>
+            </div>
+        </div>
+   
+        <div class="col-md-3">
+            <div class="mini-stat clearfix">
+                <span class="mini-stat-icon tar"><i class="fa fa-group"></i></span>
+                <div class="mini-stat-info">
+                    <span>10</span>
+                    Alerts
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="mini-stat clearfix">
+                <span class="mini-stat-icon green"><i class="fa fa-list"></i></span>
+                <div class="mini-stat-info">
+                    <span>44</span>
+                    Quizzes
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<div class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading tab-bg-dark-navy-blue">
+                        <ul class="nav nav-tabs nav-justified ">
+                            <li class="active">
+                                <a data-toggle="tab" href="#overview">
+                                    Activity
+                                </a>
+                            </li>
+                            <li class="">
+                                <a data-toggle="tab" href="#job-history">
+                                    Classes
+                                </a>
+                            </li>
+                            <li class="">
+                                <a data-toggle="tab" href="#contacts">
+                                    Contacts
+                                </a>
+                            </li>
+                            <li class="">
+                                <a data-toggle="tab" href="#settings">
+                                    Notes
+                                </a>
+                            </li>
+                        </ul>
+                    </header>
+                    <div class="panel-body">
+                        <div class="tab-content tasi-tab">
+                            <div id="overview" class="tab-pane active">
+                            
+                            <div class="col-sm-12">
+                <div class="timeline">
+                    <article class="timeline-item alt">
+                        <div class="text-right">
+                            <div class="time-show first">
+                                <a href="#" class="btn btn-primary">Today</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="timeline-item alt">
+                        <div class="timeline-desk">
+                            <div class="panel">
+                                <div class="panel-body ">
+                                    <span class="arrow-alt"></span>
+
+                                    <span class="timeline-icon red">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                    <span class="timeline-date">08:25 am</span>
+                                    <h1 class="red">Message from Adunola Dina</h1>
+                                    <p>Hey are you available for a 3:00pm meeting with my chemistry group to go over past questions? please respond to Class </p>
+                                     <span class="legacyMessagingTime">1 Hour Ago </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="timeline-item ">
+                        <div class="timeline-desk">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <span class="arrow"></span>
+                                    <span class="timeline-icon green">
+                                        <i class="fa fa-group"></i>
+                                    </span>
+                                    
+                                    
+                        <!--widget start-->
+                        <aside class="profile-nav alt">
+                            <section class="panel">
+                                <div class="user-heading alt gray-bg">
+                                    <a href="#">
+                                        <img alt="" src="public/lib/images/math.jpg">
+                                    </a>
+                                    <h1>Mathematics</h1>
+                                    <p>J.S.S 3</p>
+                                    <p>46 Members</p>
+                                </div>
+
+                            </section>
+                        </aside>
+                        <!--widget end-->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="timeline-item alt">
+                        <div class="timeline-desk">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <span class="arrow-alt"></span>
+                                    <span class="timeline-icon purple">
+                                        <i class="fa fa-circle-o"></i>
+                                    </span>
+                                    <span class="timeline-date">11:35 am</span>
+                                    <h1 class="purple">10 hours ago</h1>
+                                    <p>Congratulations, you just earned 5 coins for </p><h1 class="purple">English Quiz 2</h1> <p></p>
+                            
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                
+                </div>
+            </div>
+
+
+                                    
+
+                            </div>
+                            <div id="job-history" class="tab-pane">
+                                <div class="row">
+                                                                         <div class="col-md-4">
+
+        <!--widget start-->
+                        <aside class="profile-nav alt">
+                            <section class="panel">
+                                <div class="user-heading alt gray-bg">
+                                    <a href="#">
+                                        <img alt="" src="public/lib/images/math.jpg">
+                                    </a>
+                                    <h1>Mathematics</h1>
+                                    <p>J.S.S 3</p>
+                                    <p>46 People</p>
+                                </div>
+                            </section>
+                        </aside>
+                        <!--widget end-->
+
+
+</div>
+
+
+        <div class="col-md-4">
+
+                                <!--widget start-->
+                        <aside class="profile-nav alt">
+                            <section class="panel">
+                                <div class="user-heading alt gray-bg">
+                                    <a href="#">
+                                        <img alt="" src="public/lib/images/physics.jpg">
+                                    </a>
+                                    <h1>Physics</h1>
+                                    <p>J.S.S 3</p>
+                                    <p>20 People</p>
+                                </div>
+
+                       
+
+                            </section>
+                        </aside>
+                        <!--widget end-->
+
+            </div>
+        <!--widget start-->
+
+
+          <div class="col-md-4">
+                        <aside class="profile-nav alt">
+                            <section class="panel">
+                                <div class="user-heading alt gray-bg">
+                                    <a href="#">
+                                        <img alt="" src="public/lib/images/english.jpg">
+                                    </a>
+                                    <h1>English</h1>
+                                    <p>J.S.S 3</p>
+                                    <p>60 People</p>
+                                </div>
+
+                            </section>
+                        </aside>
+                        <!--widget end-->
+
+            </div>
+
+                      <div class="col-md-4">
+                                <!--widget start-->
+                        <aside class="profile-nav alt">
+                            <section class="panel">
+                                <div class="user-heading alt gray-bg">
+                                    <a href="#">
+                                        <img alt="" src="public/lib/images/biology.jpg">
+                                    </a>
+                                    <h1>Biology</h1>
+                                    <p>J.S.S 3</p>
+                                    <p>30 Members</p>
+                                </div>
+
+                            </section>
+                        </aside>
+                        <!--widget end-->
+
+                        </div>
+
+
+                                </div>
+                            </div>
+                            <div id="contacts" class="tab-pane ">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="prf-contacts">
+                                            <h2> <span><i class="fa fa-map-marker"></i></span> location</h2>
+                                            <div class="location-info">
+                                                <p>Postal Address<br>
+                                                    PO Box 16122 Collins Street West<br>
+                                                    Victoria 8007 Australia</p>
+                                                <p>Headquarters<br>
+                                                    121 King Street, Melbourne<br>
+                                                    Victoria 3000 Australia</p>
+                                            </div>
+                                            <h2> <span><i class="fa fa-phone"></i></span> contacts</h2>
+                                            <div class="location-info">
+                                                <p>Phone    : +61 3 8376 6284 <br>
+                                                    Cell        : +61 3 8376 6284</p>
+                                                <p>Email        : david@themebucket.net<br>
+                                                    Skype       : david.rojormillan</p>
+                                                <p>
+                                                    Facebook    : https://www.facebook.com/themebuckets <br>
+                                                    Twitter : https://twitter.com/theme_bucket
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--location goes here-->
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="settings" class="tab-pane ">
+                                <div class="col-sm-12">
+                <div class="timeline">
+                    <article class="timeline-item alt">
+                        <div class="text-right">
+                            <div class="time-show first">
+                                <a href="#" class="btn btn-primary">Today</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="timeline-item alt">
+                        <div class="timeline-desk">
+                            <div class="panel">
+                                <div class="panel-body ">
+                                    <span class="arrow-alt"></span>
+
+                                    <span class="timeline-icon red">
+                                        <i class="fa fa-envelope"></i>
+                                    </span>
+                                    <span class="timeline-date">08:25 am</span>
+                                    <h1 class="red">Message from Adunola Dina</h1>
+                                    <p>Hey are you available for a 3:00pm meeting with my chemistry group to go over past questions? please respond to Class </p>
+                                     <span class="legacyMessagingTime">1 Hour Ago </span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="timeline-item ">
+                        <div class="timeline-desk">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <span class="arrow"></span>
+                                    <span class="timeline-icon green">
+                                        <i class="fa fa-group"></i>
+                                    </span>
+                                    
+                                    
+                        <!--widget start-->
+                        <aside class="profile-nav alt">
+                            <section class="panel">
+                                <div class="user-heading alt gray-bg">
+                                    <a href="#">
+                                        <img alt="" src="public/lib/images/math.jpg">
+                                    </a>
+                                    <h1>Mathematics</h1>
+                                    <p>J.S.S 3</p>
+                                    <p>46 Members</p>
+                                </div>
+
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="javascript:;"> <i class="fa fa-envelope-o"></i> Mail Inbox <span class="badge label-success pull-right r-activity">10</span></a></li>
+                                    <li><a href="javascript:;"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
+                                    <li><a href="javascript:;"> <i class="fa fa-bell-o"></i> Notification <span class="badge label-success pull-right r-activity">11</span></a></li>
+                                    <li><a href="javascript:;"> <i class="fa fa-comments-o"></i> Message <span class="badge label-warning pull-right r-activity">03</span></a></li>
+                                </ul>
+
+                            </section>
+                        </aside>
+                        <!--widget end-->
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="timeline-item alt">
+                        <div class="timeline-desk">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <span class="arrow-alt"></span>
+                                    <span class="timeline-icon purple">
+                                        <i class="fa fa-circle-o"></i>
+                                    </span>
+                                    <span class="timeline-date">11:35 am</span>
+                                    <h1 class="purple">10 hours ago</h1>
+                                    <p>Congratulations, you just earned 5 coins for </p><h1 class="purple">English Quiz 2</h1> <p></p>
+                            
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                
+                </div>
+            </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+</div>
+
+
+ 
+
+  
+
+        </div>
+
+
+
+  
+
+        </div>
+
+
+        <!-- page start-->
+        <div class="col-md-2">
+                          <div class="profile-nav alt">
+                            <section class="panel text-center">
+                                <div class="user-heading alt wdgt-row purple-bg">
+                                    <i class="fa fa-shield"></i>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="wdgt-value">
+                                        <h1 class="count">25</h1>
+                                        <p>New Users</p>
+                                    </div>
+                                </div>
+
+                            </section>
+                        </div>
+                       </div>
+
+                    <div class="col-md-2">
+                        <div class="profile-nav alt">
+                            <section class="panel text-center">
+                                <div class="user-heading alt wdgt-row red-bg">
+                                    <i class="fa fa-tags"></i>
+                                </div>
+
+                                <div class="panel-body">
+                                    <div class="wdgt-value">
+                                        <h1 class="count">295</h1>
+                                        <p>Sales</p>
+                                    </div>
+                                </div>
+
+                            </section>
+                        </div>
+                    </div>
+        
+
+
+
+
+        <!-- page end-->
+        </section>
+    </section>
+    <!--main content end-->
+<!--right sidebar start-->
+<div class="right-sidebar">
+<div class="search-row">
+    <input type="text" placeholder="Search" class="form-control">
+</div>
+<ul class="right-side-accordion">
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head red-bg active clearfix">
+        <span class="pull-left">work progress (5)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row side-mini-stat clearfix">
+                <div class="side-graph-info">
+                    <h4>Target sell</h4>
+                    <p>
+                        25%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="target-sell">
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info">
+                    <h4>product delivery</h4>
+                    <p>
+                        55%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="p-delivery">
+                        <div class="sparkline" data-type="bar" data-resize="true" data-height="30" data-width="90%" data-bar-color="#39b7ab" data-bar-width="5" data-data="[200,135,667,333,526,996,564,123,890,564,455]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info payment-info">
+                    <h4>payment collection</h4>
+                    <p>
+                        25%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="p-collection">
+						<span class="pc-epie-chart" data-percent="45">
+						<span class="percent"></span>
+						</span>
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info">
+                    <h4>delivery pending</h4>
+                    <p>
+                        44%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="d-pending">
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="col-md-12">
+                    <h4>total progress</h4>
+                    <p>
+                        50%, Deadline 12 june 13
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div style="width: 50%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
+                            <span class="sr-only">50% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head terques-bg active clearfix">
+        <span class="pull-left">contact online (5)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="/public/lib/images/avatar1_small.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Jonathan Smith</a></h4>
+                    <p>
+                        Work for fun
+                    </p>
+                </div>
+                <div class="user-status text-danger">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="public/lib/images/avatar1.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Anjelina Joe</a></h4>
+                    <p>
+                        Available
+                    </p>
+                </div>
+                <div class="user-status text-success">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="public/lib/images/chat-avatar2.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Jhone Doe</a></h4>
+                    <p>
+                        Away from Desk
+                    </p>
+                </div>
+                <div class="user-status text-warning">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="public/lib/images/avatar1_small.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Mark Henry</a></h4>
+                    <p>
+                        working
+                    </p>
+                </div>
+                <div class="user-status text-info">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb">
+                    <a href="#"><img src="/public/lib/images/avatar1.jpg" alt=""></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="#">Shila Jones</a></h4>
+                    <p>
+                        Work for fun
+                    </p>
+                </div>
+                <div class="user-status text-danger">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <p class="text-center">
+                <a href="#" class="view-btn">View all Contacts</a>
+            </p>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head purple-bg active">
+        <span class="pull-left"> recent activity (3)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        just now
+                    </p>
+                    <p>
+                        <a href="#">John Sinna </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        2 min ago
+                    </p>
+                    <p>
+                        <a href="#">Sumon </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        1 day ago
+                    </p>
+                    <p>
+                        <a href="#">Mosaddek </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head yellow-bg active">
+        <span class="pull-left"> shipment status</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="col-md-12">
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">40% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                            <span class="sr-only">70% Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+</ul>
+</div>
+<!--right sidebar end-->
+
+</section>
