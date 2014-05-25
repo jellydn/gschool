@@ -4,7 +4,8 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    User = mongoose.model('User');
+    User = mongoose.model('User'),
+    _ = require('lodash');
 
 /**
  * Auth callback
@@ -84,6 +85,80 @@ exports.create = function(req, res, next) {
  */
 exports.me = function(req, res) {
     res.jsonp(req.user || null);
+};
+
+/**
+ * Update User information and avatar
+ */
+exports.update = function(req, res) {
+    var user = req.user;
+    user = _.extend(user, req.body);
+    // Check if upload photo
+    console.log(req.user);
+    if (user.avatar != "") {
+         var fs = require('fs-extra');
+         var path = require('path');
+
+         // move file
+        var new_location = './public/uploads/users/' + user._id + '/';
+        fs.mkdirs(new_location, function(err){
+          if (err) return console.error(err);
+          console.log("create folder!")
+        });
+
+        fs.copy('./public/uploads/tmp/' + user.avatar, new_location + user.avatar, function(err) {  
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("move file success!")
+                // remove tmp file
+                fs.remove('./public/uploads/tmp/' + user.avatar,function(e){
+                    if(e)
+                        return console.error(e);
+                });
+
+                // crop file
+                var easyimg = require('easyimage');
+                // small size
+                easyimg.thumbnail(
+                  {
+                     src: new_location + user.avatar, dst: new_location + 'small_' + user.avatar,
+                     width:30, height:30,
+                     },
+                  function(err, image) {
+                     if (err) throw err;
+                     console.log('Resized : ' + image.width + ' x ' + image.height);
+                  }
+                );
+
+                // medium
+                easyimg.thumbnail(
+                  {
+                     src: new_location + user.avatar, dst: new_location + 'medium_' + user.avatar,
+                     width:160, height:160,
+                     },
+                  function(err, image) {
+                     if (err) throw err;
+                     console.log('Resized : ' + image.width + ' x ' + image.height);
+                  }
+                );
+
+            }
+        });
+    };
+
+    
+
+    user.save(function(err) {
+        if (err) {
+            return res.send('users/signup', {
+                errors: err.errors,
+                user: user
+            });
+        } else {
+            res.jsonp(user);
+        }
+    });
 };
 
 /**

@@ -2,7 +2,14 @@
 
 // User routes use users controller
 var users = require('../controllers/users');
+// Article authorization helpers
+var hasAuthorization = function(req, res, next) {
 
+    if (req.body._id != req.user._id) {
+        return res.send(401, 'User is not authorized');
+    }
+    next();
+};
 module.exports = function(app, passport) {
 
     app.route('/logout')
@@ -13,7 +20,9 @@ module.exports = function(app, passport) {
     // Setting up the users api
     app.route('/register')
         .post(users.create);
-
+    app.route('/users/:userId')
+        .get(users.me)
+        .put(hasAuthorization, users.update);
     // Setting up the userId param
     app.param('userId', users.user);
 

@@ -20,21 +20,16 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
           });
 
           // Load js scripts and dashboard
-          $('#nav-accordion').dcAccordion({
-              eventType: 'click',
-              autoClose: true,
-              saveState: true,
-              disableLink: true,
-              speed: 'slow',
-              showCount: false,
-              autoExpand: true,
-              classExpand: 'dcjq-current-parent'
-          });
-
+          // scripts.js
+          // dashboard.js
+          // load menu
         }
 
         $scope.init();
 
+        $scope.$on('LoadScriptsJs', function() {
+
+        });
     }
 ])
 .directive('myLeftMenu', function() {

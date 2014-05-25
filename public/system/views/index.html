@@ -2,7 +2,7 @@
 <!--header start-->
 
 
-<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController" ng-init="$emit('LoadScriptsJs')"> 
 <!--logo start-->
 <my-logo></my-logo>
 <!--logo end-->
@@ -22,7 +22,7 @@
 
 <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
+    <section id="main-content" data-ng-controller="DashboardController">
         <section class="wrapper">
         <div class="row">
 <div class="col-md-12">
@@ -30,13 +30,13 @@
                     <div class="panel-body profile-information">
                        <div class="col-md-3">
                            <div class="profile-pic text-center">
-                               <img src="/public/lib/images/lock_thumb.jpg" alt="">
+                                <img alt="{{global.user.name}}" src="/public/uploads/users/{{global.user._id}}/medium_{{global.user.avatar}}">
                            </div>
                        </div>
                        <div class="col-md-6">
                            <div class="profile-desk">
                                
-                               <h1> Name</h1>
+                               <h1> {{global.user.name}}</h1>
                                <span class="text-muted"> Account type</span> <br>
              
                            </div>

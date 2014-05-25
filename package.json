@@ -71,6 +71,7 @@
     "view-helpers": "^0.1.4",
     "formidable": "latest",
     "fs-extra": "latest",
+    "easyimage": "latest",
     "time": "latest",
     "node-schedule": "latest"
   },
