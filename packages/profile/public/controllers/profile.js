@@ -7,7 +7,8 @@ angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$
         $scope.me = function(){
             $scope.saveBasic = true;
             $scope.saveEmail = true;
-            $scope.uploadPhoto = true;
+            $scope.uploadPhoto = false;
+            $scope.isSelectFile = false;
         	Users.get({
                 userId: $scope.global.user._id
             }, function(user) {
@@ -58,13 +59,14 @@ angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$
             else {
                 $scope.classUpload = 'alert-warning';
                 $scope.uploadPhoto = false;
+                $scope.isSelectFile = false;
                 $scope.messageUpload = 'Please select a photo to upload!';
             }
             
         }
 
         $scope.onPhotoSelect = function($files) {
-
+            $scope.isSelectFile = true;
             for (var i = 0; i < $files.length; i++) {
               var file = $files[i];
               $scope.upload = $upload.upload({
@@ -76,6 +78,10 @@ angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$
                 // file is uploaded successfully
                 $scope.fileName = data.files.file.name;
                 $scope.uploadPhoto = true;
+                $scope.isSelectFile = false;
+              })
+              .progress(function(evt) {
+                console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
               });
             }
         

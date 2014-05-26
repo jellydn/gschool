@@ -1,136 +1,19 @@
 
 <section id="container" >
 <!--header start-->
-
-
-<header class="header fixed-top clearfix" data-ng-controller="HeaderController">
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
 <!--logo start-->
-<div class="brand">
-
-    <a href="/" class="logo">
-        <img src="/public/lib/images/logo1.png" alt="">
-    </a>
-    <div class="sidebar-toggle-box">
-        <div class="fa fa-bars"></div>
-    </div>
-</div>
+<my-logo></my-logo>
 <!--logo end-->
 
-<div class="nav notify-row" id="top_menu">
+<div class="nav notify-row" id="top_menu" >
     <!--  notification start -->
-    <ul class="nav top-menu">
-        <!-- settings start -->
-        <li class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <i class="fa fa-tasks"></i>
-                <span class="badge bg-success">8</span>
-            </a>
-            <ul class="dropdown-menu extended tasks-bar">
-                <li>
-                    <p class="">You have 8 pending tasks</p>
-                </li>
-                <li>
-                    <a href="#">
-                        <div class="task-info clearfix">
-                            <div class="desc pull-left">
-                                <h5>Target Sell</h5>
-                                <p>25% , Deadline  12 June’13</p>
-                            </div>
-                                    <span class="notification-pie-chart pull-right" data-percent="45">
-                            <span class="percent"></span>
-                            </span>
-                        </div>
-                    </a>
-                </li>
-                
-
-                <li class="external">
-                    <a href="#">See All Tasks</a>
-                </li>
-            </ul>
-        </li>
-        <!-- settings end -->
-        <!-- inbox dropdown start-->
-        <li id="header_inbox_bar" class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <i class="fa fa-envelope-o"></i>
-                <span class="badge bg-important">{{global.unreadInbox}}</span>
-            </a>
-            <ul class="dropdown-menu extended inbox">
-                <li>
-                    <p class="red">You have {{global.unreadInbox}} Mails</p>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="photo"><img alt="avatar" src="/public/lib/images/avatar-mini.jpg"></span>
-                                <span class="subject">
-                                <span class="from">Jonathan Smith</span>
-                                <span class="time">Just now</span>
-                                </span>
-                                <span class="message">
-                                    Hello, this is an example msg.
-                                </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#!/messages">See all messages</a>
-                </li>
-            </ul>
-        </li>
-        <!-- inbox dropdown end -->
-        <!-- notification dropdown start-->
-        <li id="header_notification_bar" class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-
-                <i class="fa fa-bell-o"></i>
-                <span class="badge bg-warning">3</span>
-            </a>
-            <ul class="dropdown-menu extended notification">
-                <li>
-                    <p>Notifications</p>
-                </li>
-                <li>
-                    <div class="alert alert-info clearfix">
-                        <span class="alert-icon"><i class="fa fa-bolt"></i></span>
-                        <div class="noti-info">
-                            <a href="#"> Server #1 overloaded.</a>
-                        </div>
-                    </div>
-                </li>
-               
-            </ul>
-        </li>
-        <!-- notification dropdown end -->
-    </ul>
+    <my-menu global="global"></my-menu>
     <!--  notification end -->
 </div>
 <div class="top-nav clearfix">
     <!--search & user info start-->
-    <ul class="nav pull-right top-menu">
-        <li>
-            <input type="text" class="form-control search" placeholder=" Search">
-        </li>
-        <!-- user login dropdown start-->
-        <li class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img alt="" src="/public/lib/images/avatar1_small.jpg">
-                <span class="username">{{userinfo.name}} </span>
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu extended logout">
-                <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
-                <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                <li><a href="/logout"><i class="fa fa-key"></i> Log Out</a></li>
-            </ul>
-        </li>
-        <!-- user login dropdown end -->
-        <li>
-            <div class="toggle-right-box">
-                <div class="fa fa-bars"></div>
-            </div>
-        </li>
-    </ul>
-    <!--search & user info end-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
 </div>
 </header>
 
@@ -157,7 +40,7 @@
                     <span>Notes</span>
                 </a>
                 <ul class="sub">
-                    <li class="active"><a href="/#!/notes/create">Create</a></li>
+                    <li class="active"><a href="/#!/notes/create">Compose note</a></li>
                     <li><a href="/#!/notes">Your notes</a></li>
                     <li><a href="/#!/notes/shared">Shared notes</a></li>
                 </ul>
@@ -186,82 +69,80 @@
 <section id="main-content">
         <section class="wrapper">
         <div class="row">
-
-
-        <div class="col-md-12" data-ng-controller="NotesController" ng-init="$emit('LoadCreateNoteJs')">
-        <form role="form" data-ng-submit="create()">
-        <div class="row">
-            <div class="col-md-12">
+            <div class="col-sm-12" data-ng-controller="NotesController" ng-init="$emit('LoadCreateNoteJs')">
                 <section class="panel">
                     <header class="panel-heading">
-                        Create a note
+                        COMPOSE NOTE
                         <span class="tools pull-right">
                             <a href="javascript:;" class="fa fa-chevron-down"></a>
                             <a href="javascript:;" class="fa fa-cog"></a>
                             <a href="javascript:;" class="fa fa-times"></a>
                          </span>
                     </header>
+                    
+                    <form role="form" data-ng-submit="create()">
+
+
                     <div class="panel-body">
-                            <div class="form-group">
-                                <label class="col-md-2 control-label">Title</label>
-                                <div class="col-md-10">
-                                    <input type="text" name="title" required data-ng-model="title"/>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class=" col-md-2 control-label">Tags</label>
-                                <div class="col-md-10">
-                                    <input id="tags_1" type="text" class="tags" data-ng-model="tags"  value="" />
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <label class=" col-md-2 control-label">Classes</label>
-                                <div class="col-md-10">
-                                    <input id="tags_2" type="text" name="classes" class="tags" data-ng-model="classes" value="" />
-                                </div>
-                            </div>
+                        <div class="col-sm-12">
+                            <input type="text" required data-ng-model="title" class="form-control" placeholder="Title">
+                        </div>
+
                     </div>
+
+                    <div class="form-group">
+
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <textarea data-ng-model="content" class="wysihtml5 form-control" rows="9" ></textarea>
+                        </div>
+
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                                <input id="tags_1" type="text" class="tags" data-ng-model="tags"/>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                                <input type="text" required data-ng-model="classes" class="form-control" placeholder="Add a class">
+                            </div>
+
+                        </div>
+                    </div>
+
+                     <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                                <input type="text" class="form-control" placeholder="Add a comment" data-ng-model="quickComment" >
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                            <button type="submit" class="btn btn-info">Submit</button>
+                        </div>
+
+                        </div>
+                    </div>
+
+                    </form>
+
+                   
                 </section>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <section class="panel">
-                    <header class="panel-heading">
-                        Content Editor
-                              <span class="tools pull-right">
-                            <a class="fa fa-chevron-down" href="javascript:;"></a>
-                            <a class="fa fa-cog" href="javascript:;"></a>
-                            <a class="fa fa-times" href="javascript:;"></a>
-                         </span>
-                    </header>
-                    <div class="panel-body">
-                            <div class="form-group">
-                                <label class="control-label col-md-2">Content Editor</label>
-                                <div class="col-md-10">
-                                    <textarea  data-ng-model="content" class="wysihtml5 form-control" rows="9"></textarea>
-                                </div>
-                            </div>
-                    </div>
-                </section>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-offset-2 col-md-10">
-                <button type="submit" class="btn btn-info">Submit</button>
-            </div>
-        </div>
-        </form>
-</div>
 
-
-
-  
-
-        </div>
-
-
-    
         </section>
     </section>
     <!--main content end-->

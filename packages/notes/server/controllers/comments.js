@@ -18,7 +18,7 @@ exports.all = function(req, res) {
 
 
     
-    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username').exec(function(err, comments) {
+    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, comments) {
         if (err) {
             console.log(err);
             res.render('error', {
@@ -57,8 +57,25 @@ exports.comment = function(req, res, next, id) {
                 comment: comment
             });
         } else {
-            comment.createBy = { username : req.user.username , name : req.user.name } ;
+            // update comment
             res.jsonp(comment);
+
+            Note.load(comment.onNote , function(err, note) {
+                if (err) return next(err);
+                if (!note) return next(new Error('Failed to load note ' + id));
+                var query = Comment.find( {onNote : comment.onNote } );
+                    query.count(function(err,totals){
+                        if (err) {
+                            console.error(err);
+                        }
+                        else
+                        {
+                            note.totalComments = totals;
+                            note.save(); 
+                        }
+                    });
+            });
+            
         }
     });
 };

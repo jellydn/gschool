@@ -1,139 +1,21 @@
 
 <section id="container" >
 <!--header start-->
-
-
-<header class="header fixed-top clearfix" data-ng-controller="HeaderController">
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
 <!--logo start-->
-<div class="brand">
-
-    <a href="/" class="logo">
-        <img src="/public/lib/images/logo1.png" alt="">
-    </a>
-    <div class="sidebar-toggle-box">
-        <div class="fa fa-bars"></div>
-    </div>
-</div>
+<my-logo></my-logo>
 <!--logo end-->
 
-<div class="nav notify-row" id="top_menu">
+<div class="nav notify-row" id="top_menu" >
     <!--  notification start -->
-    <ul class="nav top-menu">
-        <!-- settings start -->
-        <li class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <i class="fa fa-tasks"></i>
-                <span class="badge bg-success">8</span>
-            </a>
-            <ul class="dropdown-menu extended tasks-bar">
-                <li>
-                    <p class="">You have 8 pending tasks</p>
-                </li>
-                <li>
-                    <a href="#">
-                        <div class="task-info clearfix">
-                            <div class="desc pull-left">
-                                <h5>Target Sell</h5>
-                                <p>25% , Deadline  12 June’13</p>
-                            </div>
-                                    <span class="notification-pie-chart pull-right" data-percent="45">
-                            <span class="percent"></span>
-                            </span>
-                        </div>
-                    </a>
-                </li>
-                
-
-                <li class="external">
-                    <a href="#">See All Tasks</a>
-                </li>
-            </ul>
-        </li>
-        <!-- settings end -->
-        <!-- inbox dropdown start-->
-        <li id="header_inbox_bar" class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <i class="fa fa-envelope-o"></i>
-                <span class="badge bg-important">{{global.unreadInbox}}</span>
-            </a>
-            <ul class="dropdown-menu extended inbox">
-                <li>
-                    <p class="red">You have {{global.unreadInbox}} Mails</p>
-                </li>
-                <li>
-                    <a href="#">
-                        <span class="photo"><img alt="avatar" src="/public/lib/images/avatar-mini.jpg"></span>
-                                <span class="subject">
-                                <span class="from">Jonathan Smith</span>
-                                <span class="time">Just now</span>
-                                </span>
-                                <span class="message">
-                                    Hello, this is an example msg.
-                                </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="#!/messages">See all messages</a>
-                </li>
-            </ul>
-        </li>
-        <!-- inbox dropdown end -->
-        <!-- notification dropdown start-->
-        <li id="header_notification_bar" class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-
-                <i class="fa fa-bell-o"></i>
-                <span class="badge bg-warning">3</span>
-            </a>
-            <ul class="dropdown-menu extended notification">
-                <li>
-                    <p>Notifications</p>
-                </li>
-                <li>
-                    <div class="alert alert-info clearfix">
-                        <span class="alert-icon"><i class="fa fa-bolt"></i></span>
-                        <div class="noti-info">
-                            <a href="#"> Server #1 overloaded.</a>
-                        </div>
-                    </div>
-                </li>
-               
-            </ul>
-        </li>
-        <!-- notification dropdown end -->
-    </ul>
+    <my-menu global="global"></my-menu>
     <!--  notification end -->
 </div>
 <div class="top-nav clearfix">
     <!--search & user info start-->
-    <ul class="nav pull-right top-menu">
-        <li>
-            <input type="text" class="form-control search" placeholder=" Search">
-        </li>
-        <!-- user login dropdown start-->
-        <li class="dropdown">
-            <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img alt="" src="/public/lib/images/avatar1_small.jpg">
-                <span class="username">{{userinfo.name}} </span>
-                <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu extended logout">
-                <li><a href="#"><i class=" fa fa-suitcase"></i>Profile</a></li>
-                <li><a href="#"><i class="fa fa-cog"></i> Settings</a></li>
-                <li><a href="/logout"><i class="fa fa-key"></i> Log Out</a></li>
-            </ul>
-        </li>
-        <!-- user login dropdown end -->
-        <li>
-            <div class="toggle-right-box">
-                <div class="fa fa-bars"></div>
-            </div>
-        </li>
-    </ul>
-    <!--search & user info end-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
 </div>
 </header>
-
 <aside>
     <div id="sidebar" class="nav-collapse" data-ng-controller="NotesController" ng-init="$emit('LoadJs')">
         <!-- sidebar menu start-->
@@ -157,7 +39,7 @@
                     <span>Notes</span>
                 </a>
                 <ul class="sub">
-                    <li><a href="/#!/notes/create">Create</a></li>
+                    <li><a href="/#!/notes/create">Compose note</a></li>
                     <li class="active"><a href="/#!/notes">Your notes</a></li>
                     <li><a href="/#!/notes/shared">Shared notes</a></li>
                 </ul>
@@ -184,40 +66,39 @@
 <!--sidebar end-->
     <!--main content start-->
 <section id="main-content">
-        <section class="wrapper">
-        <div class="row">
+        <section class="wrapper" data-ng-controller="NotesController"  data-ng-init="find()">
+         <div class="row">
+         <div class="col-sm-12">
 
+                     <div class="col-md-4" data-ng-repeat="note in notes| orderBy:'-dateCreate' ">
+                        <!--widget start-->
+                        <aside class="profile-nav alt">
+                            <section class="panel">
+                                <div class="user-heading alt gray-bg">
+                                
+                                    <h1>{{note.title}}</h1>
+                                    <p>{{note.createBy.name}}</p>
+                                </div>
 
-        <div class="col-md-12">
-<section class="panel" data-ng-controller="NotesController">
-    <table class="table  table-hover general-table"  data-ng-init="find()">
-                                  <thead>
-                                  <tr>
-                                      <th>Title</th>
-                                      <th>Tags</th>
-                                  </tr>
-                                  </thead>
-                                  <tbody>
-                                  <tr data-ng-repeat="note in notes| orderBy:'-dateCreate' ">
-                                      <td><a href="/#!/notes/{{note._id}}">{{note.title}}</a></td>
-                                      <td> {{note.tags}} </td>
-                                  </tr>
+                                <ul class="nav nav-pills nav-stacked">
+                                    <li><a href="/#!/notes/{{note._id}}"> <i class="fa fa-comment"></i> Comments <span class="badge label-success pull-right r-activity">{{note.totalComments}}</span></a></li>
+                                    <div data-ng-if="hasAuthorization(note)">
+                                        <a class="btn" href="/#!/notes/{{note._id}}/edit">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                        <a class="btn" data-ng-click="remove(note);">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </div>
+                                </ul>
 
-                                  </tbody>
-                              </table>
+                            </section>
+                        </aside>
+                        <!--widget end-->
 
-   </section>
-
-</div>
-
-
-
-  
-
+                    </div>
         </div>
-
-
-    
+        </div>
         </section>
     </section>
     <!--main content end-->

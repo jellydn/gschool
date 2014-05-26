@@ -64,4 +64,24 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
       },
       templateUrl: 'public/system/views/user.html',
     };
+})
+.directive('myAvatar', function() {
+    return {
+        // required to make it work as an element
+        restrict: 'E',
+        template: '<img/>',
+        replace: true,
+        // observe and manipulate the DOM
+        link: function($scope, element, attrs) {
+
+            attrs.$observe('caption', function(value) {
+                element.find('img').attr('alt', value)
+            })
+
+            // attribute names change to camel case
+            attrs.$observe('photoSrc', function(value) {
+                element.find('img').attr('src', value);
+            })
+        }
+    }
 });

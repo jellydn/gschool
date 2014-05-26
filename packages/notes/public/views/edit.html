@@ -17,134 +17,123 @@
 </div>
 </header>
 
-<my-left-menu></my-left-menu>
+<aside>
+    <div id="sidebar" class="nav-collapse" data-ng-controller="NotesController" ng-init="$emit('LoadJs')">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li>
+                <a href="/">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/classes">
+                    <i class="fa fa-th"></i>
+                    <span>Classes</span>
+                </a>
+                
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/notes" class="active">
+                    <i class="fa fa-book"></i>
+                    <span>Notes</span>
+                </a>
+                <ul class="sub">
+                    <li ><a href="/#!/notes/create">Compose note</a></li>
+                    <li><a href="/#!/notes">Your notes</a></li>
+                    <li><a href="/#!/notes/shared">Shared notes</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="/#!/messages">
+                    <i class="fa fa-envelope"></i>
+                    <span>Messages </span>
+                </a>
+            </li>
+             <li>
+                <a href="/#!/directory">
+                    <i class="fa fa-group"></i>
+                    <span>Directory </span>
+                </a>
+            </li>
+            
+           
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
 
 <!--sidebar end-->
     <!--main content start-->
 <section id="main-content">
         <section class="wrapper">
         <div class="row">
-            <div class="col-lg-12" data-ng-controller="ProfileController" data-ng-init="me()">
-                    <section class="panel">
-                        <header class="panel-heading">
-                            Basic profile information
-                        </header>
-                        <div class="panel-body">
-                                <div class="alert alert-success fade in" data-ng-hide="saveBasic">
-                                    <button data-dismiss="alert" class="close close-sm" type="button">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                    <strong>Well done!</strong> Your information has been updated.
-                                </div>
-                                <form class="form-horizontal" role="form" data-ng-submit="update('basic')">
-                                 <div class="form-group">
-                                    <label class="col-sm-3 control-label col-lg-3">Username</label>
-                                    <div class="col-lg-6">
-                                        <div class="input-group m-bot15">
-                                            <span class="input-group-addon btn-white"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control" disabled value="{{global.user.username}}">
-                                        </div>
-                                    </div>
-                                </div>   
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Name</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" ng-model="profile.name" required class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Address</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" ng-model="profile.address" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">City</label>
-                                    <div class="col-sm-6">
-                                        <input type="text" ng-model="profile.city" class="form-control">
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-3 control-label">Gender</label>
-                                    <div class="col-sm-6">
-                                        <label class="radio-inline">
-                                            <input type="radio" ng-model="profile.gender" value="Male"> Male
-                                        </label>
-                                        <label class="radio-inline">
-                                            <input type="radio" ng-model="profile.gender" value="Female"> Female
-                                        </label>
-                                    </div>
-                                </div>
-                                <div class="col-lg-offset-3 col-lg-6">
-                                    <button type="submit" class="btn btn-info">Save</button>
-                                </div>
+            <div class="col-sm-12" data-ng-controller="NotesController" data-ng-init="findOne();$emit('LoadEditNoteJs')">
+                <section class="panel">
+                    <header class="panel-heading">
+                        COMPOSE NOTE
+                        <span class="tools pull-right">
+                            <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            <a href="javascript:;" class="fa fa-cog"></a>
+                            <a href="javascript:;" class="fa fa-times"></a>
+                         </span>
+                    </header>
+                    
+                    <form role="form" data-ng-submit="update()">
 
-                            </form>
+
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <input type="text" required data-ng-model="note.title" class="form-control" placeholder="Title">
                         </div>
-                    </section>
-                    <section class="panel">
-                        <header class="panel-heading">
-                            Email address
-                        </header>
-                        <div class="panel-body">
-                                <div class="alert alert-success fade in" data-ng-hide="saveEmail">
-                                    <button data-dismiss="alert" class="close close-sm" type="button">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                    <strong>Well done!</strong> Your email has been changed.
-                                </div>
-                                <form class="form-horizontal" role="form" data-ng-submit="update('email')">
-                                <div class="form-group">
-                                    <label  class="col-sm-3 control-label col-lg-3" for="exampleInputEmail1">Email address</label>
-                                    <div class="col-lg-6">
-                                        <div class="input-group m-bot15">
-                                            <span class="input-group-addon btn-white"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" required ng-model="profile.email" class="form-control" placeholder="Email">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-lg-offset-3 col-lg-6">
-                                    <button type="submit" class="btn btn-info">Save</button>
-                                </div>
-                                 </form>
 
+                    </div>
+
+                    <div class="form-group">
+
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <textarea data-ng-model="note.content" class="wysihtml5 form-control" rows="9" ><div ng-bind-html="note.content"></div></textarea>
                         </div>
-                    </section>
-                    <section class="panel">
-                        <header class="panel-heading">
-                            Your avatar photo
-                        </header>
 
-                        <div class="panel-body">
-                            <div class="alert {{classUpload}} fade in" data-ng-hide="uploadPhoto">
-                                    <button data-dismiss="alert" class="close close-sm" type="button">
-                                        <i class="fa fa-times"></i>
-                                    </button>
-                                    {{messageUpload}}
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                                <input id="tags_1" type="text" class="tags" data-ng-model="note.tags" />
                             </div>
 
-                            <form class="form-horizontal" role="form" data-ng-submit="uploadAvatar()">
-                            <div class="form-group">
-                                <label class="col-sm-3 control-label col-lg-3" for="exampleInputFile">Your photo</label>
-                                <div class="col-lg-6">
-                                    <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;" data-ng-if="profile.avatar == ''">
-                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="">
-                                    </div>
-                                    <img src="/public/lib/images/ajax-loader.gif" ng-show="isSelectFile" class="ng-hide">
-                                    <div class="input-group m-bot15">
-                                    <input type="file" id="uploadfile" ng-file-select="onPhotoSelect($files)">
-                                </div>
-                                </div>
-                            </div> 
-                            <div class="col-lg-offset-3 col-lg-6" data-ng-show="uploadPhoto">
-                                <button type="submit" class="btn btn-info">Upload</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                                <input type="text" required data-ng-model="note.classes" class="form-control" placeholder="Add a class">
                             </div>
-                             </form>
 
                         </div>
-                    </section>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                            <button type="submit" class="btn btn-info">Submit</button>
+                        </div>
+
+                        </div>
+                    </div>
+
+                    </form>
+
+                   
+                </section>
             </div>
         </div>
+
         </section>
     </section>
     <!--main content end-->
@@ -196,9 +185,9 @@
                 </div>
                 <div class="side-mini-graph">
                     <div class="p-collection">
-						<span class="pc-epie-chart" data-percent="45">
-						<span class="percent"></span>
-						</span>
+                        <span class="pc-epie-chart" data-percent="45">
+                        <span class="percent"></span>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -399,3 +388,4 @@
 <!--right sidebar end-->
 
 </section>
+

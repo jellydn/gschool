@@ -42,6 +42,13 @@ angular.module('mean').config(['$stateProvider',
                     loggedin: checkLoggedin
                 }
             })
+            .state('edit note', {
+                url: '/notes/:noteId/edit',
+                templateUrl: 'notes/views/edit.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            })
             .state('note by id', {
                 url: '/notes/:noteId',
                 templateUrl: 'notes/views/view.html',

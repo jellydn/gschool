@@ -37,6 +37,10 @@ var NoteSchema = new Schema({
     },
     sendToMembers: {
         type: Array
+    },
+    totalComments : {
+        type: Number,
+        default : 0
     }
 });
 

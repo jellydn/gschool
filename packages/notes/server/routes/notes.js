@@ -1,6 +1,12 @@
 'use strict';
 var notes = require('../controllers/notes');
+var hasNoteAuthorization = function(req, res, next) {
 
+    if (req.note.createBy.id !== req.user.id) {
+        return res.send(401, 'User is not authorized');
+    }
+    next();
+};
 // The Package is past automatically as first parameter
 module.exports = function(Notes, app, auth, database) {
 
@@ -10,9 +16,8 @@ module.exports = function(Notes, app, auth, database) {
 
      app.route('/notes/:noteId')
         .get(notes.show)
-     // app.route('/notes/:noteId')
-     //    .put(auth.requiresLogin, hasAuthorization , messages.update)
-     //    .delete(auth.requiresLogin, hasAuthorization, messages.destroy);
+        .put(auth.requiresLogin, hasNoteAuthorization , notes.update)
+        .delete(auth.requiresLogin, hasNoteAuthorization, notes.destroy);
 
     // Finish with setting up the articleId param
     app.param('noteId', notes.note);

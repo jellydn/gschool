@@ -51,6 +51,12 @@ UserSchema.virtual('password').set(function(password) {
     return this._password;
 });
 
+UserSchema.virtual('avatarUrl').set(function(avatarUrl) {
+    this._avatarUrl = avatarUrl;
+}).get(function() {
+    return this._avatarUrl;
+});
+
 /**
  * Validations
  */
