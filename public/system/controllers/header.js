@@ -19,6 +19,10 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
               $scope.userinfo = user;
           });
 
+          // custom scroll bar
+          $("#sidebar").niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
+          $(".right-sidebar").niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
+
           // Load js scripts and dashboard
           // scripts.js
           // dashboard.js
