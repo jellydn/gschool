@@ -1,26 +1,27 @@
 'use strict';
+var chats = require('../controllers/chats');
+var hasNoteAuthorization = function(req, res, next) {
 
+    if (req.chat.createBy.id !== req.user.id) {
+        return res.send(401, 'User is not authorized');
+    }
+    next();
+};
 // The Package is past automatically as first parameter
 module.exports = function(Chat, app, auth, database) {
 
-    app.get('/chat/example/anyone', function(req, res, next) {
-        res.send('Anyone can access this');
-    });
+     app.route('/chats')
+        .get(chats.all)
+        .post(auth.requiresLogin, chats.create);
 
-    app.get('/chat/example/auth', auth.requiresLogin, function(req, res, next) {
-        res.send('Only authenticated users can access this');
-    });
+    app.route('/chats/online')
+        .get(chats.online);
 
-    app.get('/chat/example/admin', auth.requiresAdmin, function(req, res, next) {
-        res.send('Only users with Admin role can access this');
-    });
+     app.route('/chats/:chatId')
+        .get(chats.show)
+        .put(auth.requiresLogin, hasNoteAuthorization , chats.update)
+        .delete(auth.requiresLogin, hasNoteAuthorization, chats.destroy);
 
-    app.get('/chat/example/render', function(req, res, next) {
-        Chat.render('index', {
-            package: 'chat'
-        }, function(err, html) {
-            //Rendering a view from the Package server/views
-            res.send(html);
-        });
-    });
+    // Finish with setting up the articleId param
+    app.param('chatId', chats.chat);
 };

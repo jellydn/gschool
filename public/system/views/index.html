@@ -556,77 +556,21 @@
         </li>
     </ul>
 </li>
-<li class="widget-collapsible">
+<li class="widget-collapsible" data-ng-controller="DashboardController" data-ng-init="userOnline()">
     <a href="#" class="head widget-head terques-bg active clearfix">
-        <span class="pull-left">contact online (5)</span>
+        <span class="pull-left">contact online ({{onlines.length}})</span>
         <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
     </a>
     <ul class="widget-container">
         <li>
-            <div class="prog-row">
+            <div class="prog-row" data-ng-repeat="user in onlines">
                 <div class="user-thumb">
-                    <a href="#"><img src="/public/lib/images/avatar1_small.jpg" alt=""></a>
+                    <a href="/#!/chats/{{user._id}}"><img src="/public/uploads/users/{{user._id}}/small_{{user.avatar}}" alt="{{user.name}}"></a>
                 </div>
                 <div class="user-details">
-                    <h4><a href="#">Jonathan Smith</a></h4>
+                    <h4><a href="/#!/chats/{{user._id}}">{{user.name}}</a></h4>
                     <p>
-                        Work for fun
-                    </p>
-                </div>
-                <div class="user-status text-danger">
-                    <i class="fa fa-comments-o"></i>
-                </div>
-            </div>
-            <div class="prog-row">
-                <div class="user-thumb">
-                    <a href="#"><img src="public/lib/images/avatar1.jpg" alt=""></a>
-                </div>
-                <div class="user-details">
-                    <h4><a href="#">Anjelina Joe</a></h4>
-                    <p>
-                        Available
-                    </p>
-                </div>
-                <div class="user-status text-success">
-                    <i class="fa fa-comments-o"></i>
-                </div>
-            </div>
-            <div class="prog-row">
-                <div class="user-thumb">
-                    <a href="#"><img src="public/lib/images/chat-avatar2.jpg" alt=""></a>
-                </div>
-                <div class="user-details">
-                    <h4><a href="#">Jhone Doe</a></h4>
-                    <p>
-                        Away from Desk
-                    </p>
-                </div>
-                <div class="user-status text-warning">
-                    <i class="fa fa-comments-o"></i>
-                </div>
-            </div>
-            <div class="prog-row">
-                <div class="user-thumb">
-                    <a href="#"><img src="public/lib/images/avatar1_small.jpg" alt=""></a>
-                </div>
-                <div class="user-details">
-                    <h4><a href="#">Mark Henry</a></h4>
-                    <p>
-                        working
-                    </p>
-                </div>
-                <div class="user-status text-info">
-                    <i class="fa fa-comments-o"></i>
-                </div>
-            </div>
-            <div class="prog-row">
-                <div class="user-thumb">
-                    <a href="#"><img src="/public/lib/images/avatar1.jpg" alt=""></a>
-                </div>
-                <div class="user-details">
-                    <h4><a href="#">Shila Jones</a></h4>
-                    <p>
-                        Work for fun
+                        {{user.status}}
                     </p>
                 </div>
                 <div class="user-status text-danger">
@@ -634,7 +578,7 @@
                 </div>
             </div>
             <p class="text-center">
-                <a href="#" class="view-btn">View all Contacts</a>
+                <a href="/#!/chats/contacts" class="view-btn">View all Contacts</a>
             </p>
         </li>
     </ul>

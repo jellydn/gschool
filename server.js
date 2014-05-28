@@ -24,15 +24,12 @@ var http = require('http')
   , server = http.createServer(app)
   , io = require('socket.io').listen(server);
 
+var realtime = require('./shares/realtime');
+var sharedUsers = require('./shares/users');
+
+
 io.sockets.on('connection', function(socket) {
-	socket.on('createMessage', function(data) {
-		socket.broadcast.emit('onMessageCreated', data);
-	});
-
-	socket.on('createComment', function(comment) {
-		socket.broadcast.emit('onCommentCreated', comment);
-	});
-
+	realtime(socket, sharedUsers.users);
 });
 
 server.listen(config.port, config.hostname);

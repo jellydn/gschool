@@ -1,0 +1,263 @@
+
+<section id="container" >
+<!--header start-->
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
+<!--logo start-->
+<my-logo></my-logo>
+<!--logo end-->
+
+<div class="nav notify-row" id="top_menu" >
+    <!--  notification start -->
+    <my-menu global="global"></my-menu>
+    <!--  notification end -->
+</div>
+<div class="top-nav clearfix">
+    <!--search & user info start-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
+</div>
+</header>
+<my-left-menu></my-left-menu>
+
+<!--sidebar end-->
+    <!--main content start-->
+<section id="main-content">
+        <section class="wrapper" data-ng-controller="ChatController"  data-ng-init="find()">
+          <div class="col-md-12">
+            <!--chat start-->
+            <section class="panel">
+                <header class="panel-heading">
+                    Chat <span class="tools pull-right">
+            <a href="javascript:;" class="fa fa-chevron-down"></a>
+            <a href="javascript:;" class="fa fa-cog"></a>
+            <a href="javascript:;" class="fa fa-times"></a>
+            </span>
+                </header>
+                <div class="panel-body">
+                    <div class="chat-conversation">
+                        <ul class="conversation-list">
+                            <li class="clearfix" data-ng-repeat="chat in chats">
+                                <div class="chat-avatar">
+                                    <img src="images/chat-user-thumb.png" alt="male">
+                                    <i>{{chat.date | date:'hh:mm'}}</i>
+                                </div>
+                                <div class="conversation-text">
+                                    <div class="ctext-wrap">
+                                        <i>{{chat.username}}</i>
+                                        <p>
+                                            Hello!
+                                        </p>
+                                    </div>
+                                </div>
+                            </li>
+                            
+                        </ul>
+                        <div class="row">
+                            <div class="col-xs-9">
+                                <input type="text" class="form-control chat-input" placeholder="Enter your text">
+                            </div>
+                            <div class="col-xs-3 chat-send">
+                                <button type="submit" class="btn btn-default">Send</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <!--chat end-->
+        </section>
+    </section>
+    <!--main content end-->
+<!--right sidebar start-->
+<div class="right-sidebar">
+<div class="search-row">
+    <input type="text" placeholder="Search" class="form-control">
+</div>
+<ul class="right-side-accordion">
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head red-bg active clearfix">
+        <span class="pull-left">work progress (5)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row side-mini-stat clearfix">
+                <div class="side-graph-info">
+                    <h4>Target sell</h4>
+                    <p>
+                        25%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="target-sell">
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info">
+                    <h4>product delivery</h4>
+                    <p>
+                        55%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="p-delivery">
+                        <div class="sparkline" data-type="bar" data-resize="true" data-height="30" data-width="90%" data-bar-color="#39b7ab" data-bar-width="5" data-data="[200,135,667,333,526,996,564,123,890,564,455]">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info payment-info">
+                    <h4>payment collection</h4>
+                    <p>
+                        25%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="p-collection">
+						<span class="pc-epie-chart" data-percent="45">
+						<span class="percent"></span>
+						</span>
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="side-graph-info">
+                    <h4>delivery pending</h4>
+                    <p>
+                        44%, Deadline 12 june 13
+                    </p>
+                </div>
+                <div class="side-mini-graph">
+                    <div class="d-pending">
+                    </div>
+                </div>
+            </div>
+            <div class="prog-row side-mini-stat">
+                <div class="col-md-12">
+                    <h4>total progress</h4>
+                    <p>
+                        50%, Deadline 12 june 13
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div style="width: 50%" aria-valuemax="100" aria-valuemin="0" aria-valuenow="20" role="progressbar" class="progress-bar progress-bar-info">
+                            <span class="sr-only">50% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible" data-ng-controller="DashboardController" data-ng-init="userOnline()">
+    <a href="#" class="head widget-head terques-bg active clearfix">
+        <span class="pull-left">contact online ({{onlines.length}})</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row" data-ng-repeat="user in onlines">
+                <div class="user-thumb">
+                    <a href="/#!/chats/{{user._id}}"><img src="/public/uploads/users/{{user._id}}/small_{{user.avatar}}" alt="{{user.name}}"></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="/#!/chats/{{user._id}}">{{user.name}}</a></h4>
+                    <p>
+                        {{user.status}}
+                    </p>
+                </div>
+                <div class="user-status text-danger">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <p class="text-center">
+                <a href="/#!/chats/contacts" class="view-btn">View all Contacts</a>
+            </p>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head purple-bg active">
+        <span class="pull-left"> recent activity (3)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        just now
+                    </p>
+                    <p>
+                        <a href="#">John Sinna </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        2 min ago
+                    </p>
+                    <p>
+                        <a href="#">Sumon </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        1 day ago
+                    </p>
+                    <p>
+                        <a href="#">Mosaddek </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head yellow-bg active">
+        <span class="pull-left"> shipment status</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="col-md-12">
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">40% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                            <span class="sr-only">70% Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+</ul>
+</div>
+<!--right sidebar end-->
+
+</section>
