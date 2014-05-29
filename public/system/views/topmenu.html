@@ -35,9 +35,9 @@
         <li id="header_inbox_bar" class="dropdown">
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                 <i class="fa fa-envelope-o"></i>
-                <span class="badge bg-important">{{global.unreadInbox}}</span>
+                <span class="badge bg-important" data-ng-if="global.unreadInbox > 0">{{global.unreadInbox}}</span>
             </a>
-            <ul class="dropdown-menu extended inbox">
+            <ul class="dropdown-menu extended inbox" data-ng-if="global.unreadInbox > 0">
                 <li>
                     <p class="red">You have {{global.unreadInbox}} Mails</p>
                 </li>

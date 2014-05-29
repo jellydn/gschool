@@ -1,3 +1,6 @@
+/* set placeholder color */
+.form-control::-webkit-input-placeholder { color: grey; }
+.form-control { color: black;}
 /* Legacy styles */
 
 .legacyMessagingTime {
