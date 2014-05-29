@@ -22,11 +22,6 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
           // custom scroll bar
           $("#sidebar").niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
           $(".right-sidebar").niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
-
-          // Load js scripts and dashboard
-          // scripts.js
-          // dashboard.js
-          // load menu
         }
 
         $scope.init();
@@ -67,6 +62,16 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         userinfo: '='
       },
       templateUrl: 'public/system/views/user.html',
+    };
+})
+.directive('myOnlineList', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        global: '=',
+        onlines: '='
+      },
+      templateUrl: 'public/system/views/onlinelist.html',
     };
 })
 .directive('myAvatar', function() {

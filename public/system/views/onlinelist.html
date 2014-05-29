@@ -1,0 +1,27 @@
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head terques-bg active clearfix">
+        <span class="pull-left">contact online ({{onlines.length}})</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row" data-ng-repeat="user in onlines">
+                <div class="user-thumb">
+                    <a href="/#!/chats/{{user._id}}"><img src="/public/uploads/users/{{user._id}}/small_{{user.avatar}}" alt="{{user.name}}"></a>
+                </div>
+                <div class="user-details">
+                    <h4><a href="/#!/chats/{{user._id}}">{{user.name}}</a></h4>
+                    <p>
+                        {{user.status}}
+                    </p>
+                </div>
+                <div class="user-status text-danger">
+                    <i class="fa fa-comments-o"></i>
+                </div>
+            </div>
+            <p class="text-center">
+                <a href="/#!/chats/contacts" class="view-btn">View all Contacts</a>
+            </p>
+        </li>
+    </ul>
+</li>

@@ -8,7 +8,7 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
 	  Socket.on('listOnlineUser', function (users) {
 	  	var onlinesArr = [];	
 	  	for(var username in users){
-	  		if (username != $rootScope.user.username) {
+	  		if (username != $scope.global.user.username) {
 	  			onlinesArr.push(users[username]);
 	  		};
 	  	}
