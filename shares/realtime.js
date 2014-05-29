@@ -39,7 +39,7 @@ module.exports = function (socket, users) {
     // Chat 1 -1 message
 
     socket.on('sendChat',function(msg){
-
+         socket.broadcast.emit("onChatCreated", msg);
     });
 
     // user logout or disconnect

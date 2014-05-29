@@ -30,6 +30,7 @@ angular.module('mean').controller('ChatController',['$scope', '$stateParams','$h
                 message: this.message
             });
             chat.$save(function(msg) {
+                Socket.emit('sendChat',msg);
                 $scope.find();
             });
 
