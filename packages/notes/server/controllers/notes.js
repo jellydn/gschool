@@ -65,7 +65,7 @@ exports.note = function(req, res, next, id) {
         } else {
             res.jsonp(note);
             // send quick comment
-            if ( req.body.quickComment != 'undefined' && req.body.quickComment.length) {
+            if ( (typeof req.body.quickComment != 'undefined') && req.body.quickComment != '' && req.body.quickComment.length) {
                 var comment = new Comment({ content : req.body.quickComment , onNote: note._id});
                 comment.createBy = req.user;
                 // todo: send to class and member
