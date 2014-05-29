@@ -14,9 +14,9 @@ var mongoose = require('mongoose'),
  */
 exports.all = function(req, res) {
 
-    var q = Chat.find({ createBy : req.query.from ,to : req.user._id});
+    var q = Chat.find({ $or : [  { token : req.user._id + ':' + req.query.to }  ,  { token : req.query.to + ':' + req.user._id }] });
     
-    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, chats) {
+    q.sort({ dateCreate : 'asc' }).populate('to', 'name username avatar').populate('createBy', 'name username avatar').exec(function(err, chats) {
         if (err) {
             console.log(err);
             res.render('error', {
@@ -45,7 +45,17 @@ exports.chat = function(req, res, next, id) {
 
  exports.create = function(req, res) {
     var chat = new Chat(req.body);
-    chat.createBy = req.user;
+    chat.createBy = req.body.from;
+
+
+    if (req.body.to.localeCompare(req.user._id)) {
+        chat.token = req.body.to + ':' + req.user._id;
+    }
+    else
+    {
+        chat.token = req.user._id + ':' + req.body.to;
+    };
+
     // todo: send to class and member
     chat.save(function(err) {
         if (err) {

@@ -2,15 +2,14 @@
 
 angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http', '$location','Global','Socket', function ($scope,$rootScope, $http, $location, Global, Socket) {
     $scope.global = Global;
-    // check useronline
+      // check useronline
 
       // new user has been login
 	  Socket.on('listOnlineUser', function (users) {
-	  	var onlinesArr = [];
-	  	
+	  	var onlinesArr = [];	
+	  	console.log(users);  	
 	  	for(var username in users){
-	  		console.log(username);
-	  		if (username != $scope.global.user.username) {
+	  		if (username != $rootScope.user.username) {
 	  			onlinesArr.push(users[username]);
 	  		};
 	  	}
@@ -20,7 +19,6 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
 
 	  // another user login
 	  Socket.on('onUserJoin',function(user){
-	  		console.log(user);
 	  		$scope.onlines.push(user);
 	  });
 

@@ -43,7 +43,7 @@ var ChatSchema = new Schema({
 ChatSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('createBy', 'name username avatar').exec(cb);
+    }).populate('createBy', 'name username avatar').populate('to', 'name username avatar').exec(cb);
 };
 
 mongoose.model('Chat', ChatSchema);

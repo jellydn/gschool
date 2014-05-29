@@ -47,6 +47,6 @@ module.exports = function (socket, users) {
     socket.on('disconnect',function(){
         console.log('user logout or disconnect');
         users.removeUser(userName);
-        socket.broadcast.emit("onUserJoin", users.get());
+        socket.broadcast.emit("listOnlineUser", users.get());
     });
 };
