@@ -7,7 +7,6 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
       // new user has been login
 	  Socket.on('listOnlineUser', function (users) {
 	  	var onlinesArr = [];	
-	  	console.log(users);  	
 	  	for(var username in users){
 	  		if (username != $rootScope.user.username) {
 	  			onlinesArr.push(users[username]);

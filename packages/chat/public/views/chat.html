@@ -22,7 +22,18 @@
     <!--main content start-->
 <section id="main-content">
         <section class="wrapper" data-ng-controller="ChatController"  data-ng-init="find()">
-          <div class="col-md-12">
+        <div class="col-sm-3">
+            <section class="panel">
+                <div class="panel-body">
+                    Chatbox
+
+                    <ul class="nav nav-pills nav-stacked mail-nav">
+                        <li><a href="#" ng-click="schedule()"> <i class="fa fa-clock-o"></i> Schedule</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+          <div class="col-md-9">
             <!--chat start-->
             <section class="panel">
                 <header class="panel-heading">

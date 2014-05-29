@@ -11,6 +11,10 @@ angular.module('mean').controller('ChatController',['$scope', '$stateParams','$h
         });
 
         $scope.find = function(){
+            // fix max height
+            // embed nicesroll
+            $('ul.conversation-list').height(410);
+            $('ul.conversation-list').niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#fff', spacebarenabled:false, cursorborder: ''});
         	 Chats.query({ to : $stateParams.userId },function(chats) {
                 for (var i = 0; i < chats.length; i++) {
                     if(chats[i].createBy._id != $stateParams.userId) {
@@ -21,6 +25,8 @@ angular.module('mean').controller('ChatController',['$scope', '$stateParams','$h
                 };
                 $scope.chats = chats;
             });
+
+
         }
 
         $scope.create = function() {
@@ -30,6 +36,8 @@ angular.module('mean').controller('ChatController',['$scope', '$stateParams','$h
                 message: this.message
             });
             chat.$save(function(msg) {
+                $("ul.conversation-list").animate({ scrollTop: $('ul.conversation-list')[0].scrollHeight }, "slow");
+
                 Socket.emit('sendChat',msg);
                 $scope.find();
             });

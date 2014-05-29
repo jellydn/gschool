@@ -173,7 +173,7 @@
 
 
                         <ul class="nav nav-pills nav-stacked mail-nav">
-                            <li class="active"><a href="#" ng-click="inbox()"> <i class="fa fa-inbox"></i> Inbox  <span class="label label-danger pull-right inbox-notification">{{ global.unreadInbox }}</span></a></li>
+                            <li class="active"><a href="#" ng-click="inbox()"> <i class="fa fa-inbox"></i> Inbox  <span class="label label-danger pull-right inbox-notification" data-ng-if="global.unreadInbox > 0">{{ global.unreadInbox }}</span></a></li>
                             <li><a href="#"> <i class="fa fa-envelope-o"></i> Sent Mail</a></li>
                             <li><a href="#"> <i class="fa fa-certificate"></i> Important</a></li>
                             <li><a href="#" ng-click="schedule()"> <i class="fa fa-clock-o"></i> Schedule</a></li>
