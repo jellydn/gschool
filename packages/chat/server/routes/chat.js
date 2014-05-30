@@ -1,6 +1,6 @@
 'use strict';
 var chats = require('../controllers/chats');
-var hasNoteAuthorization = function(req, res, next) {
+var hasChatAuthorization = function(req, res, next) {
 
     if (req.chat.createBy.id !== req.user.id) {
         return res.send(401, 'User is not authorized');
@@ -19,8 +19,7 @@ module.exports = function(Chat, app, auth, database) {
 
      app.route('/chats/:chatId')
         .get(chats.show)
-        .put(auth.requiresLogin, hasNoteAuthorization , chats.update)
-        .delete(auth.requiresLogin, hasNoteAuthorization, chats.destroy);
+        .delete(auth.requiresLogin, hasChatAuthorization, chats.destroy);
 
     app.route('/upload/files').post(auth.requiresLogin,chats.upload);
 

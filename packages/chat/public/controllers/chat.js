@@ -3,10 +3,20 @@
 angular.module('mean').controller('ChatController',['$scope','$rootScope','$upload', '$stateParams','$http', '$location', 'Global', 'Chats', 'Users','Socket',
     function($scope,$rootScope, $upload, $stateParams, $http, $location, Global, Chats, Users,Socket) {
         $scope.global = Global;
-        $scope.fileName = "";                
+        $scope.fileName = "";        
         Socket.on('onChatCreated', function(data) {
             if (data.to  == $stateParams.userId || data.createBy == $stateParams.userId) {
-                $scope.find();
+                data.class = "clearfix odd";
+                data.createBy = $scope.toUser;
+                if (!data.file.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
+                    data.isImageFile = false;
+                }
+                else
+                {
+                    data.isImageFile = true;
+                };
+                $scope.chats.unshift(data);
+                $('ul.conversation-list').animate( {scrollTop : $('.header').offset().top },"slow");
             };
         });
 
@@ -39,13 +49,23 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 for (var i = 0; i < chats.length; i++) {
                     if(chats[i].createBy._id != $stateParams.userId) {
                         chats[i].class = 'clearfix';
+                        $scope.toUser = chats[i].to;
+                    }
+                    else {
+                        chats[i].class = 'clearfix odd';
+                    }
+
+                    if (!chats[i].file.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
+                        chats[i].isImageFile = false;
                     }
                     else
-                        chats[i].class = 'clearfix odd';
+                    {
+                        chats[i].isImageFile = true;
+                    };
+                        
                 };
                 $scope.chats = chats;
             });
-
 
         }
 
@@ -57,10 +77,14 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 file : $scope.fileName
             });
             chat.$save(function(msg) {
-                $("ul.conversation-list").animate({ scrollTop: $('ul.conversation-list')[0].scrollHeight }, "slow");
-
+                // select file again
+                $('#uploadfile').val('');
+                $scope.fileName = '';
                 Socket.emit('sendChat',msg);
-                $scope.find();
+                msg.class = "clearfix";
+                msg.createBy = $scope.global.user;
+                $scope.chats.unshift(msg);
+                $('ul.conversation-list').animate( {scrollTop : $('.header').offset().top },"slow");
             });
 
             this.message = '';

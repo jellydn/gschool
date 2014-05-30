@@ -54,7 +54,7 @@ exports.all = function(req, res) {
 
     var q = Chat.find({ $or : [  { token : req.user._id + ':' + req.query.to }  ,  { token : req.query.to + ':' + req.user._id }] });
     
-    q.sort({ dateCreate : 'asc' }).populate('to', 'name username avatar').populate('createBy', 'name username avatar').exec(function(err, chats) {
+    q.sort({ dateCreate : 'desc' }).populate('to', 'name username avatar').populate('createBy', 'name username avatar').exec(function(err, chats) {
         if (err) {
             console.log(err);
             res.render('error', {
@@ -115,9 +115,45 @@ exports.chat = function(req, res, next, id) {
                     if(e)
                         return console.error(e);
                 });
+                 // check if is image file
+                if(chat.file.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/))
+                {
 
-            }
+                    // check file file type png, will convert to jpg
+
+                    var new_file_name = chat.file;
+                    var easyimg = require('easyimage');
+
+                    // crop file
+                    // small size
+                    easyimg.thumbnail(
+                      {
+                         src: new_location + new_file_name, dst: new_location + 'small_' + chat.file,
+                         width:30, height:30
+                    },
+                      function(err, image) {
+                         if (err) console.error(err)
+                            else
+                            console.log('Resized : ' + image.width + ' x ' + image.height);
+                      }
+                    );
+
+                    // medium
+                    easyimg.thumbnail(
+                      {
+                         src: new_location + new_file_name, dst: new_location + 'medium_' + chat.file,
+                         width:160, height:160
+                         },
+                      function(err, image) {
+                         if (err) console.error(err)
+                            else
+                            console.log('Resized : ' + image.width + ' x ' + image.height);
+                      }
+                    );
+                }
+            }   
         });
+        
     };
 
     // todo: send to class and member
@@ -153,39 +189,19 @@ exports.online = function(req,res){
 }
 
 /**
- * Update an note
- */
-exports.update = function(req, res) {
-    var note = req.note;
-
-    note = _.extend(note, req.body);
-    note.sendToClass = note.classes.split(',');
-    note.save(function(err) {
-        if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                note: note
-            });
-        } else {
-            res.jsonp(note);
-        }
-    });
-};
-
-/**
- * Delete an note
+ * Delete an chat
  */
 exports.destroy = function(req, res) {
-    var note = req.note;
+    var chat = req.chat;
 
-    note.remove(function(err) {
+    chat.remove(function(err) {
         if (err) {
             return res.send('users/signup', {
                 errors: err.errors,
-                note: note
+                chat: chat
             });
         } else {
-            res.jsonp(note);
+            res.jsonp(chat);
         }
     });
 };

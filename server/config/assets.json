@@ -47,6 +47,7 @@
             "public/system/lib/bootstrap-tokenfield/docs-assets/js/affix.js",
             "public/system/lib/bootstrap-tokenfield/docs-assets/js/typeahead.bundle.min.js",
             "public/system/lib/bootstrap-tokenfield/docs-assets/js/docs.min.js",
+            "public/system/lib/imagesloaded/imagesloaded.pkgd.min.js",
             "public/init.js",
             "public/*/*.js",
             "public/*/*/*.js",
