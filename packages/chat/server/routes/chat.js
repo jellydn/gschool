@@ -22,6 +22,8 @@ module.exports = function(Chat, app, auth, database) {
         .put(auth.requiresLogin, hasNoteAuthorization , chats.update)
         .delete(auth.requiresLogin, hasNoteAuthorization, chats.destroy);
 
+    app.route('/upload/files').post(auth.requiresLogin,chats.upload);
+
     // Finish with setting up the articleId param
     app.param('chatId', chats.chat);
 };

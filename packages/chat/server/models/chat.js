@@ -28,11 +28,13 @@ var ChatSchema = new Schema({
         type : String,
         default : '',
         trim : true
-    }
-    ,
+    },
     dateCreate: {
         type: Date,
         default: Date.now
+    },
+    file : {
+        type: String
     }
 });
 
