@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','Global', 'Menus', 'Messages',
-    function($scope, $rootScope, $http, $location, Global, Menus,Messages) {
+angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','Global', 'Menus', 'Messages','Socket',
+    function($scope, $rootScope, $http, $location, Global, Menus,Messages,Socket) {
         $scope.global = Global;
 
         $scope.isCollapsed = false;
@@ -17,6 +17,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
           $http.get('/users/me').success(function(user){
               $scope.global.user = user;
               $scope.userinfo = user;
+              Socket.emit('online', user);
           });
 
           // custom scroll bar

@@ -22,7 +22,18 @@ module.exports = function (socket, users) {
     })
 
     // get online list
+    socket.on('online',function(user){
+        if (users.claim(user.username)) {
+            users.addUser(user);
+            userName = user.username;
 
+            socket.broadcast.emit("onUserJoin", user);
+        }
+        else {
+            console.log("User already exists");
+        }
+
+    });
     // User login
     socket.on('login',function(user){
         if (users.claim(user.username)) {
