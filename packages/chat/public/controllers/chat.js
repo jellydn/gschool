@@ -8,13 +8,8 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
             if (data.to  == $stateParams.userId || data.createBy == $stateParams.userId) {
                 data.class = "clearfix odd";
                 data.createBy = $scope.toUser;
-                if (!data.file.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
-                    data.isImageFile = false;
-                }
-                else
-                {
-                    data.isImageFile = true;
-                };
+                data.isImageFile = false;
+                data.dateCreate = moment(data.dateCreate).fromNow(); 
                 $scope.chats.unshift(data);
                 $('ul.conversation-list').animate( {scrollTop : $('.header').offset().top },"slow");
             };
@@ -54,7 +49,7 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                     else {
                         chats[i].class = 'clearfix odd';
                     }
-
+                    chats[i].dateCreate = moment(chats[i].dateCreate).fromNow(); 
                     if (!chats[i].file.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
                         chats[i].isImageFile = false;
                     }
@@ -62,7 +57,7 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                     {
                         chats[i].isImageFile = true;
                     };
-                        
+                    
                 };
                 $scope.chats = chats;
             });
@@ -83,6 +78,7 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 Socket.emit('sendChat',msg);
                 msg.class = "clearfix";
                 msg.createBy = $scope.global.user;
+                msg.dateCreate = moment(msg.dateCreate).fromNow(); 
                 $scope.chats.unshift(msg);
                 $('ul.conversation-list').animate( {scrollTop : $('.header').offset().top },"slow");
             });

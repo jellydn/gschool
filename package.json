@@ -73,6 +73,7 @@
     "fs-extra": "latest",
     "easyimage": "latest",
     "time": "latest",
+    "moment": "latest",
     "node-schedule": "latest"
   },
   "devDependencies": {

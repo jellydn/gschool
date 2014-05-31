@@ -16,7 +16,6 @@
     "angular-sanitize" : "latest",
     "bootstrap-tokenfield": "latest",
     "momentjs": "latest",
-    "imagesloaded": "latest",
     "datetimepicker": "latest"
   }
 }
