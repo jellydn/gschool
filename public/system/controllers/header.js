@@ -103,4 +103,28 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
             })
         }
     }
+}).directive('myClassAvatar', function() {
+    return {
+        // required to make it work as an element
+        restrict: 'E',
+        template: '<img/>',
+        scope: {
+          userid: '@'
+        },
+        // replace: true,
+        // observe and manipulate the DOM
+        link: function($scope, element, attrs) {
+
+            // attribute names change to camel case
+            attrs.$observe('file', function(value) {
+         
+                if(!value.length)
+                {
+                    element.find('img').attr('src', '/public/lib/images/no_image_class.png');
+                }
+                else
+                  element.find('img').attr('src', '/public/uploads/classes/' + $scope.userid + '/medium_' + value);
+            })
+        }
+    }
 });

@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module('mean').controller('ClassesController', ['$scope', '$stateParams','$http', '$location', 'Global','Classes','Socket',
-    function($scope, $stateParams, $http, $location, Global,Classes,Socket) {
+angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','Classes','Socket',
+    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,Classes,Socket) {
         $scope.global = Global;
         $scope.global.classActive = "active";
+        $scope.fileName = "";        
 
         // utility function
         $scope.$on('LoadJs', function() {
@@ -35,6 +36,30 @@ angular.module('mean').controller('ClassesController', ['$scope', '$stateParams'
             if (!classModel || !classModel.createBy) return false;
             return $scope.global.isAdmin || classModel.createBy._id === $scope.global.user._id;
         };
+
+         // upload photo 
+        $scope.onFileSelect = function($files) {
+            for (var i = 0; i < $files.length; i++) {
+              var file = $files[i];
+              $scope.upload = $upload.upload({
+                url: '/upload/class', 
+                method: 'POST',
+                withCredentials: true,
+                file: file
+              }).success(function(data, status, headers, config) {
+                // file is uploaded successfully
+                $scope.fileName = data.files.file.name;
+              })
+              .progress(function(evt) {
+                var percent =parseInt(100.0 * evt.loaded / evt.total);
+                $('#progress').html('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="'+percent+'" aria-valuemin="0" aria-valuemax="100" style="width: '+percent+'%;">'+percent+'%</div></div>');
+                if (percent == 100) {
+                    $('#progress').html('');
+                };
+              });
+            }
+        
+      };
 
         // list all
         $scope.find = function() {
@@ -75,7 +100,8 @@ angular.module('mean').controller('ClassesController', ['$scope', '$stateParams'
             var classModel = new Classes({
                 name : this.name,
                 description : this.description,
-                tags : this.tags
+                tags : this.tags,
+                file : $scope.fileName
             });
 
             classModel.$save(function(response) {
@@ -110,6 +136,11 @@ angular.module('mean').controller('ClassesController', ['$scope', '$stateParams'
             if (!classModel.updated) {
                 classModel.updated = [];
             }
+
+            if ($scope.fileName != "") {
+                classModel.file = $scope.fileName;
+            };
+
             classModel.updated.push(new Date().getTime());
 
             classModel.$update(function() {

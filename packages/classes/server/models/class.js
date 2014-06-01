@@ -34,6 +34,9 @@ var ClassSchema = new Schema({
     dateCreate: {
         type: Date,
         default: Date.now
+    },
+    file : {
+        type: String
     }
 });
 
