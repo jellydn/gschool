@@ -20,10 +20,18 @@ var ClassSchema = new Schema({
         default: '',
         trim: true
     },
+    description: {
+        type: String,
+        default: '',
+        trim: true
+    },
     members: {
         type: Array
     },
-    dateCreated: {
+    tags: {
+        type: Array
+    },
+    dateCreate: {
         type: Date,
         default: Date.now
     }
@@ -36,7 +44,7 @@ var ClassSchema = new Schema({
 ClassSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('createBy', 'name username').exec(cb);
+    }).populate('createBy', 'name username avatar').exec(cb);
 };
 
 mongoose.model('Class', ClassSchema);

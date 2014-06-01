@@ -48,6 +48,7 @@
             "public/system/lib/bootstrap-tokenfield/docs-assets/js/typeahead.bundle.min.js",
             "public/system/lib/bootstrap-tokenfield/docs-assets/js/docs.min.js",
             "public/system/lib/momentjs/moment.js",
+            "public/system/lib/livestampjs/livestamp.js",
             "public/init.js",
             "public/*/*.js",
             "public/*/*/*.js",

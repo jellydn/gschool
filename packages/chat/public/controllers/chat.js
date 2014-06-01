@@ -5,13 +5,19 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
         $scope.global = Global;
         $scope.fileName = "";        
         Socket.on('onChatCreated', function(data) {
-            if (data.to  == $stateParams.userId || data.createBy == $stateParams.userId) {
-                data.class = "clearfix odd";
-                data.createBy = $scope.toUser;
+            if (data.to._id  == $stateParams.userId || data.createBy._id == $stateParams.userId) {
+
+                if(data.createBy._id != $stateParams.userId) {
+                    data.class = 'clearfix';
+                    $scope.toUser = data.to._id;
+                }
+                else {
+                    data.class = 'clearfix odd';
+                }
+
                 data.isImageFile = false;
-                data.dateCreate = moment(data.dateCreate).fromNow(); 
+                // data.dateCreate = moment(data.dateCreate).fromNow(); 
                 $scope.chats.unshift(data);
-                $('ul.conversation-list').animate( {scrollTop : $('.header').offset().top },"slow");
             };
         });
 
@@ -44,12 +50,12 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 for (var i = 0; i < chats.length; i++) {
                     if(chats[i].createBy._id != $stateParams.userId) {
                         chats[i].class = 'clearfix';
-                        $scope.toUser = chats[i].to;
+                        $scope.toUser = chats[i].to._id;
                     }
                     else {
                         chats[i].class = 'clearfix odd';
                     }
-                    chats[i].dateCreate = moment(chats[i].dateCreate).fromNow(); 
+                    // chats[i].dateCreate = moment(chats[i].dateCreate).fromNow(); 
                     if (!chats[i].file.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
                         chats[i].isImageFile = false;
                     }
@@ -77,8 +83,7 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 $scope.fileName = '';
                 Socket.emit('sendChat',msg);
                 msg.class = "clearfix";
-                msg.createBy = $scope.global.user;
-                msg.dateCreate = moment(msg.dateCreate).fromNow(); 
+                // msg.dateCreate = moment(msg.dateCreate).fromNow(); 
                 $scope.chats.unshift(msg);
                 $('ul.conversation-list').animate( {scrollTop : $('.header').offset().top },"slow");
             });

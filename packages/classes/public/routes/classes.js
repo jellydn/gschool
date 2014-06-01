@@ -28,6 +28,26 @@ angular.module('mean').config(['$stateProvider',
             resolve: {
                 loggedin: checkLoggedin
             }
-        });
+        }).state('create class', {
+                url: '/classes/create',
+                templateUrl: 'classes/views/create.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            })
+            .state('edit class', {
+                url: '/classes/:classId/edit',
+                templateUrl: 'classes/views/edit.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            })
+            .state('classes by id', {
+                url: '/classes/:classId',
+                templateUrl: 'classes/views/view.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            });
     }
 ]);

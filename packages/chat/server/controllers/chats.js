@@ -164,7 +164,10 @@ exports.chat = function(req, res, next, id) {
                 chat: chat
             });
         } else {
-            res.jsonp(chat);
+            Chat.load(chat._id, function(err, data) {
+                if (err) return next(err);
+                res.jsonp(data);
+            });
         }
     });
 };

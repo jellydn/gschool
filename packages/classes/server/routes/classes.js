@@ -1,26 +1,24 @@
 'use strict';
+var classes = require('../controllers/classes');
+var hasClassAuthorization = function(req, res, next) {
 
+    if (req.class.createBy.id !== req.user.id) {
+        return res.send(401, 'User is not authorized');
+    }
+    next();
+};
 // The Package is past automatically as first parameter
-module.exports = function(Classes, app, auth, database) {
+module.exports = function(Class, app, auth, database) {
 
-    app.get('/classes/example/anyone', function(req, res, next) {
-        res.send('Anyone can access this');
-    });
+     app.route('/classes')
+        .get(classes.all).post(auth.requiresLogin, classes.create);
 
-    app.get('/classes/example/auth', auth.requiresLogin, function(req, res, next) {
-        res.send('Only authenticated users can access this');
-    });
 
-    app.get('/classes/example/admin', auth.requiresAdmin, function(req, res, next) {
-        res.send('Only users with Admin role can access this');
-    });
+     app.route('/classes/:classId')
+        .get(classes.show)
+        .put(auth.requiresLogin, hasClassAuthorization , classes.update)
+        .delete(auth.requiresLogin, hasClassAuthorization, classes.destroy);
 
-    app.get('/classes/example/render', function(req, res, next) {
-        Classes.render('index', {
-            package: 'classes'
-        }, function(err, html) {
-            //Rendering a view from the Package server/views
-            res.send(html);
-        });
-    });
+    // Finish with setting up the articleId param
+    app.param('classId', classes.class);
 };

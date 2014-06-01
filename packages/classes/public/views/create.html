@@ -16,81 +16,112 @@
     <my-user-menu userinfo="userinfo"></my-user-menu>
 </div>
 </header>
-<my-left-menu></my-left-menu>
 
+<aside>
+    <div id="sidebar" class="nav-collapse" data-ng-controller="ClassesController" ng-init="$emit('LoadJs')">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li>
+                <a href="/">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/classes" class="active">
+                    <i class="fa fa-th"></i>
+                    <span>Classes</span>
+                </a>
+                <ul class="sub">
+                    <li class="active"><a href="/#!/classes/create">Create new class</a></li>
+                    <li><a href="/#!/classes">Your classes</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/notes">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="/#!/messages">
+                    <i class="fa fa-envelope"></i>
+                    <span>Messages </span>
+                </a>
+            </li>
+             <li>
+                <a href="/#!/directory">
+                    <i class="fa fa-group"></i>
+                    <span>Directory </span>
+                </a>
+            </li>
+            
+           
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
 <!--sidebar end-->
     <!--main content start-->
 <section id="main-content">
-        <section class="wrapper" data-ng-controller="ChatController"  data-ng-init="find()">
-        <div class="col-sm-3">
-            <section class="panel">
-                <div class="panel-body" data-ng-controller="DashboardController">
-                    Chatbox
-                    <ul class="nav nav-pills nav-stacked mail-nav">
-                        <li data-ng-repeat="user in onlines">
-                            <a href="/#!/chats/{{user._id}}" data-ng-hide="user._id == global.user._id"> <i class="fa fa-envelope-o"></i> {{user.name}}</a></li>
-                    </ul>
-                </div>
-            </section>
-        </div>
-          <div class="col-md-9">
-            <!--chat start-->
-            <section class="panel">
-                <header class="panel-heading">
-                    Chat <span class="tools pull-right">
-            <a href="javascript:;" class="fa fa-chevron-down"></a>
-            <a href="javascript:;" class="fa fa-cog"></a>
-            <a href="javascript:;" class="fa fa-times"></a>
-            </span>
-                </header>
-                <div class="panel-body">
-                    <div class="chat-conversation">
-                        <ul class="conversation-list">
-                            <li class="{{chat.class}}"  data-ng-repeat="chat in chats">
-                                <div class="chat-avatar">
-                                    <img alt="{{chat.createBy.name}}" src="/public/uploads/users/{{chat.createBy._id}}/small_{{chat.createBy.avatar}}">
-                                    <i><span data-livestamp="{{chat.dateCreate}}">{{chat.dateCreate | date: "hh:mm"}}</span></i>
-                                </div>
-                                <div class="conversation-text">
-                                    <div class="ctext-wrap">
-                                        <i>{{chat.createBy.username}}</i>
-                                        <p>
-                                            {{chat.message}}
-                                        </p>
-                                        <p data-ng-show="chat.file.length">
-                                            <a href="/public/uploads/chats/{{chat.createBy._id}}/{{chat.file}}">Attached file {{chat.file}}</a>
-                                            <br/>
-                                            <img class="attach-image" data-ng-show="chat.isImageFile" src="/public/uploads/chats/{{chat.createBy._id}}/medium_{{chat.file}}">
-                                        </p>
-                                    </div>
+        <section class="wrapper">
+        <div class="row">
+            <div class="col-sm-12" data-ng-controller="ClassesController" ng-init="$emit('LoadCreateClassJs')">
+                <section class="panel">
+                    <header class="panel-heading">
+                        CREATE NEW CLASS
+                        <span class="tools pull-right">
+                            <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            <a href="javascript:;" class="fa fa-cog"></a>
+                            <a href="javascript:;" class="fa fa-times"></a>
+                         </span>
+                    </header>
+                    
+                    <form role="form" data-ng-submit="create()">
 
-                                </div>
-                            </li>
-                            
-                        </ul>
-                        <form data-ng-submit="create()">
 
-                            <div class="row">
-                                <div class="col-xs-9">
-                                    <input type="text" required ng-model="message" class="form-control chat-input" placeholder="Enter your text">
-                                </div>
-                                <div class="col-xs-3 chat-send">
-                                    <button type="submit" class="btn btn-default">Send</button>
-                                </div>
-                                
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-12">
-                                    <a href="#" ng-click="schedule()"> <i class="fa fa-upload"></i> Upload file</a>
-                                    &nbsp;                                 
-                                    <input type="file" id="uploadfile" ng-file-select="onPhotoSelect($files)">      
-                                 </div>
-                            </div>
-                        </form>
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <input type="text" required data-ng-model="name" class="form-control" placeholder="Name">
+                        </div>
+
                     </div>
-                </div>
-            </section>
-            <!--chat end-->
+
+                    <div class="form-group">
+
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <textarea placeholder="Description" data-ng-model="description" class="wysihtml5 form-control" rows="9" ></textarea>
+                        </div>
+
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                                <input id="tags_1" type="text" class="tags" data-ng-model="tags"/>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                            <button type="submit" class="btn btn-info">Submit</button>
+                        </div>
+
+                        </div>
+                    </div>
+
+                    </form>
+
+                   
+                </section>
+            </div>
+        </div>
+
         </section>
     </section>
     <!--main content end-->
@@ -188,3 +219,4 @@
 <!--right sidebar end-->
 
 </section>
+

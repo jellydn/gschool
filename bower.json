@@ -16,6 +16,7 @@
     "angular-sanitize" : "latest",
     "bootstrap-tokenfield": "latest",
     "momentjs": "latest",
+    "livestampjs": "latest",
     "datetimepicker": "latest"
   }
 }

@@ -1,0 +1,313 @@
+
+<section id="container" >
+<!--header start-->
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
+<!--logo start-->
+<my-logo></my-logo>
+<!--logo end-->
+
+<div class="nav notify-row" id="top_menu" >
+    <!--  notification start -->
+    <my-menu global="global"></my-menu>
+    <!--  notification end -->
+</div>
+<div class="top-nav clearfix">
+    <!--search & user info start-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
+</div>
+</header>
+<aside>
+    <div id="sidebar" class="nav-collapse" data-ng-controller="ClassesController" ng-init="$emit('LoadJs')">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li>
+                <a href="/">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/classes" class="active">
+                    <i class="fa fa-th"></i>
+                    <span>Classes</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/#!/classes/create">Create new class</a></li>
+                    <li><a href="/#!/classes">Your classes</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/notes">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="/#!/messages">
+                    <i class="fa fa-envelope"></i>
+                    <span>Messages </span>
+                </a>
+            </li>
+             <li>
+                <a href="/#!/directory">
+                    <i class="fa fa-group"></i>
+                    <span>Directory </span>
+                </a>
+            </li>
+            
+           
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
+
+<!--sidebar end-->
+    <!--main content start-->
+<section id="main-content">
+
+        <section class="wrapper" data-ng-controller="ClassesController" data-ng-init="findOne()">
+        <!-- page start-->
+
+         <div class="row">
+
+            <div class="col-md-12">
+                <section class="panel">
+                    <header class="panel-heading tab-bg-dark-navy-blue">
+                        <ul class="nav nav-tabs nav-justified ">
+                            <li class="active">
+                                <a data-toggle="tab" href="#overview">
+                                    Overview
+                                </a>
+                            </li>
+                            <li class="">
+                                <a data-toggle="tab" href="#notes">
+                                    Notes 
+                                </a>
+                            </li>
+                            <li class="">
+                                <a data-toggle="tab" href="#messages">
+                                      Quiz 
+                                </a>
+                            </li>
+                            <li class="">
+                                <a data-toggle="tab" href="#chat">
+                                  Assignment
+                                </a>
+                            </li>
+                        </ul>
+                    </header>
+                    <div class="panel-body">
+                        <div class="tab-content tasi-tab">
+                            <div id="overview" class="tab-pane active">
+                                <div class="row">
+                        <div class="col-md-8">
+                           
+
+                            <header class="classTitle">
+                       <h4> {{class.name}}</h4>
+                      
+                       
+                       <ul class="metaDescription">
+                    
+                        <span><i class="fa fa-book"></i></span>
+                       
+                        <li class="metaDescription">16 Notes </li>
+
+
+                        <span><i class="fa fa-tags"></i></span> 
+                           <li class="metaDescription">{{class.tags}}
+                        </li>
+
+                        </ul>
+                        <br/>
+
+                        <span> 
+
+                        <button type="button" class="btn btn-default btn-lg">Join Class</button>  
+                        <button type="button" class="btn btn-default btn-lg">Message</button>
+                        <button type="button" class="btn btn-default btn-lg">Settings</button>
+                        <br/>
+                        <br/>
+
+                      <div ng-bind-html="class.description"></div>
+
+
+
+                    <span><i class="fa fa-user"></i></span><li class="metaDescription">{{class.createBy.name}}</li>
+                     <p> {{class.createBy.name}} bio (from profile page) </p>
+
+
+                        </div>
+                        
+
+                    </header>
+                                </div>
+                            </div>
+                            <div id="notes" class="tab-pane">
+                                <div class="row">
+                                    <div class="col-md-12">
+                       
+                                    <div class="col-md-10">
+
+                                        <div class="prf-contacts">
+                                            <h2> <span><i class="fa fa-file-text-o"></i></span> Addition and Subtraction</h2>
+                                            <ul class="metaUl">
+                                                <li class="metaDescription">Olumide Adewumi</li>
+                                                <span><i class="fa fa-file-text-o"></i></span>
+                                                <li class="metaDescription">16 Notes </li>
+                                                <span><i class="fa fa-tags"></i></span> 
+                                                <li class="metaDescription">tags, used, to,describe, course, searchable</li>
+
+                                            </ul>
+
+                                            <div class="location-info">
+                                                <p>Adding and subtracting positive and negative whole numbers. Starts with 1+1=2 and covers carrying, borrowing, and word problems.</p>
+
+                                            </div>
+               
+                                        </div>
+
+                                    </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="messages" class="tab-pane">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        
+
+
+
+                                    </div>
+                                    <div class="col-md-6">
+                                        <!--location goes here-->
+                                   
+                                </div>
+                            </div>
+                            <div id="chat" class="tab-pane ">
+                                <div class="position-center">
+                                    <div class="prf-contacts sttng">
+                                       
+                                    </div>
+                                    
+                                    <div class="prf-contacts sttng">
+                                        <h2> </h2>
+                                    </div>
+
+                                
+                                  
+                                    
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+
+
+        </div>
+        <!-- page end-->
+        </section>
+    </section>
+    <!--main content end-->
+<!--right sidebar start-->
+<div class="right-sidebar">
+<div class="search-row">
+    <input type="text" placeholder="Search" class="form-control">
+</div>
+<ul class="right-side-accordion">
+<my-online-list global="global" onlines="onlines" data-ng-controller="DashboardController" data-ng-init="userOnline()"></my-online-list>
+
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head purple-bg active">
+        <span class="pull-left"> recent activity (3)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        just now
+                    </p>
+                    <p>
+                        <a href="#">John Sinna </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        2 min ago
+                    </p>
+                    <p>
+                        <a href="#">Sumon </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        1 day ago
+                    </p>
+                    <p>
+                        <a href="#">Mosaddek </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head yellow-bg active">
+        <span class="pull-left"> shipment status</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="col-md-12">
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">40% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                            <span class="sr-only">70% Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+</ul>
+</div>
+<!--right sidebar end-->
+
+</section>
+
+
+
+

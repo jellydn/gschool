@@ -18,119 +18,95 @@
 </div>
 </header>
 
-<my-left-menu global="global"></my-left-menu>
+<aside>
+    <div id="sidebar" class="nav-collapse" data-ng-controller="ClassesController" ng-init="$emit('LoadJs')">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li>
+                <a href="/">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/classes" class="active">
+                    <i class="fa fa-th"></i>
+                    <span>Classes</span>
+                </a>
+                <ul class="sub">
+                    <li><a href="/#!/classes/create">Create new class</a></li>
+                    <li class="active"><a href="/#!/classes">Your classes</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/notes">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="/#!/messages">
+                    <i class="fa fa-envelope"></i>
+                    <span>Messages </span>
+                </a>
+            </li>
+             <li>
+                <a href="/#!/directory">
+                    <i class="fa fa-group"></i>
+                    <span>Directory </span>
+                </a>
+            </li>
+            
+           
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
+
 
 <!--sidebar end-->
     <!--main content start-->
     <section id="main-content">
-        <section class="wrapper">
+        <section class="wrapper" data-ng-controller="ClassesController" ng-init="find()">
         <div class="row">
 
 
-        <div class="col-md-4">
+        <div class="col-md-4" data-ng-repeat="class in classes">
 
         <!--widget start-->
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/math.jpg">
-                                    </a>
-                                    <h1>Mathematics</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>46 People</p>
-                                </div>
+        <aside class="profile-nav alt">
+            <section class="panel">
+                <div class="user-heading alt gray-bg">
+                    <a href="/#!/classes/{{class._id}}">
+                        <img alt="" src="public/lib/images/math.jpg">
+                    </a>
+                    <h1>{{class.name}}</h1>
+                    <p>J.S.S 3</p>
+                    <p>{{class.members.length}} People</p>
+                </div>
 
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="javascript:;">This Week:  Integration and Applications </a></li>
-                                    <li><a href="javascript:;"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
-                                 
-                                </ul>
+                <ul class="nav nav-pills nav-stacked">
+                    <li><a href="/#!/classes/{{class._id}}">This Week:  Integration and Applications </a></li>
+                    <li><a href="/#!/classes/{{class._id}}"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
+                 
+                </ul>
+                <ul class="nav nav-pills nav-stacked">
+                    <div data-ng-if="hasAuthorization(class)">
+                        <a class="btn" href="/#!/classes/{{class._id}}/edit">
+                            <i class="glyphicon glyphicon-edit"></i>
+                        </a>
+                        <a class="btn" data-ng-click="remove(class);">
+                            <i class="glyphicon glyphicon-trash"></i>
+                        </a>
+                    </div>
+                </ul>
 
-                            </section>
-                        </aside>
+            </section>
+        </aside>
                         <!--widget end-->
+        </div>
 
-
-</div>
-
-
-        <div class="col-md-4">
-
-                                <!--widget start-->
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/physics.jpg">
-                                    </a>
-                                    <h1>Physics</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>20 People</p>
-                                </div>
-
-                             <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="javascript:;">This Week: Introduction to Organic Chemistry</a></li>
-                                    <li><a href="javascript:;"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
-                                 
-                                </ul>
-
-                            </section>
-                        </aside>
-                        <!--widget end-->
-
-            </div>
-        <!--widget start-->
-
-
-          <div class="col-md-4">
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/english.jpg">
-                                    </a>
-                                    <h1>English</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>60 People</p>
-                                </div>
-
-                             <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="javascript:;">This Week: Idioms and Metaphors - Week 7</a></li>
-                                    <li><a href="javascript:;"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
-                                 
-                                </ul>
-
-                            </section>
-                        </aside>
-                        <!--widget end-->
-
-            </div>
-
-                      <div class="col-md-4">
-                                <!--widget start-->
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/biology.jpg">
-                                    </a>
-                                    <h1>Biology</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>30 Members</p>
-                                </div>
-
-                                <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="javascript:;"> </i>This Week: Reproduction </a></li>
-                                    <li><a href="javascript:;"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
-                                    
-                                </ul>
-
-                            </section>
-                        </aside>
-                        <!--widget end-->
-
-                        </div>
+        </div>
 
 
 
