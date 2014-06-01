@@ -14,6 +14,8 @@
         <input required ng-model="user.username" type="text" class="form-control" name="username" placeholder="User Name" autofocus>
         <input required ng-model="user.password"  type="password" class="form-control" name="password" placeholder="Password">
         <input required ng-model="user.repassword" type="password" class="form-control" name="repassword" placeholder="Re-type Password">
+        <input ng-model="user.type" type="radio" value="student"> You are student.
+        <input ng-model="user.type" type="radio" value="teacher"> You are teacher.
         <label class="checkbox">
             <input required type="checkbox" value="agree this condition"> I agree to the Terms of Service and Privacy Policy
         </label>

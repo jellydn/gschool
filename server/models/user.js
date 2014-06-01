@@ -26,6 +26,10 @@ var UserSchema = new Schema({
     avatar : {
         type: String
     },
+    type: {
+        type: String,
+        default: 'student'
+    },
     roles: {
         type: Array,
         default: ['authenticated']

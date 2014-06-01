@@ -37,7 +37,7 @@ angular.module('mean.controllers.login', [])
     ])
     .controller('RegisterCtrl', ['$scope', '$rootScope', '$http', '$location',
         function($scope, $rootScope, $http, $location) {
-            $scope.user = {};
+            $scope.user = { type : 'student' };
 
             $scope.register = function() {
                 $scope.usernameError = null;
@@ -50,7 +50,8 @@ angular.module('mean.controllers.login', [])
                     name: $scope.user.name,
                     address: $scope.user.address,
                     city: $scope.user.city,
-                    gender: $scope.user.gender
+                    gender: $scope.user.gender,
+                    type : $scope.user.type
                 })
                     .success(function() {
                         // authentication OK

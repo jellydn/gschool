@@ -33,7 +33,7 @@
                     <span>Classes</span>
                 </a>
                 <ul class="sub">
-                    <li class="active"><a href="/#!/classes/create">Create new class</a></li>
+                    <li data-ng-show="global.user.type =='teacher'" ><a href="/#!/classes/create">Create new class</a></li>
                     <li><a href="/#!/classes">Your classes</a></li>
                 </ul>
             </li>
