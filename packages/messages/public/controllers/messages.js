@@ -140,9 +140,9 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
         $scope.showModal = function (message) {
             $('#myModalDetail h4').text('From ' + message.fromName);
 
-            $('#myModalDetail .modal-body').text(message.message);
+            $('#myModalDetail .modal-body').html(message.message);
 
-            if (message.file != "") {
+            if ( (typeof message.file != 'undefined') &&  message.file != "") {
                 $('#myModalDetail .modal-body').prepend('<div id="attachment"> Your attachment: <a href="/public/uploads/' + message.file + '">' + message.file + '</a></div></br>');
             }
 

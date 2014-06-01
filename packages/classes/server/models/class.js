@@ -28,6 +28,9 @@ var ClassSchema = new Schema({
     members: {
         type: Array
     },
+    pendingMembers: {
+        type: Array
+    },
     tags: {
         type: Array
     },

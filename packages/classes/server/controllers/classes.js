@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Classes = mongoose.model('Class'),
+    Message = mongoose.model('Message'),
     Note = mongoose.model('Note'),
     Comment = mongoose.model('Comment'),
     User = mongoose.model('User'),
@@ -54,8 +55,12 @@ exports.upload = function(req,res){
  * List of class
  */
 exports.all = function(req, res) {
-    var q = Classes.find({createBy : req.user._id});
-    
+    console.log(req.user);
+    if (req.user.type == 'teacher') 
+        var q = Classes.find({createBy : req.user._id});
+    else
+        var q = Classes.find({members : req.user.username});
+
     q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, notes) {
         if (err) {
             console.log(err);
@@ -88,8 +93,6 @@ exports.class = function(req, res, next, id) {
     classModel.createBy = req.user;
     // todo: send to class and member
     classModel.tags = req.body.tags.split(',');
-    classModel.members = ['dunghd','admin'];
-
 
     if (classModel.file != "") {
          var fs = require('fs-extra');
@@ -170,6 +173,29 @@ exports.show = function(req, res) {
 };
 
 
+exports.join = function(req,res){
+    var classModel = req.class;
+    // join member
+    if ( ( typeof req.query.join != 'undefined') ) {
+        // todo, check usernaem is valid
+        var usernameJoin = req.query.join.trim();
+        if (classModel.members.indexOf(usernameJoin) === -1) {
+           classModel.members.push(usernameJoin);
+        };
+    }
+
+    classModel.save(function(err) {
+        if (err) {
+            return res.send('users/signup', {
+                errors: err.errors,
+                class: classModel
+            });
+        } else {
+            res.jsonp(classModel);
+        }
+    });
+}
+
 /**
  * Update an note
  */
@@ -178,6 +204,36 @@ exports.update = function(req, res) {
     var isUpload = req.body.file != classModel.file ;
 
     classModel = _.extend(classModel, req.body);
+
+    // invite member
+    if ( ( typeof req.query.recipients != 'undefined') ) {
+        var recipientsArr = req.query.recipients.split(',');
+        var sendNotificationArr = [];
+        for (var i = recipientsArr.length - 1; i >= 0; i--) {
+            if (classModel.pendingMembers.indexOf(recipientsArr[i].trim()) === -1 && classModel.members.indexOf(recipientsArr[i].trim()) === -1) {
+                classModel.pendingMembers.push(recipientsArr[i].trim());
+                sendNotificationArr.push(recipientsArr[i].trim());
+            };            
+        };
+
+        // send notification and inbox to msg
+        if (sendNotificationArr.length) {
+             var message = new Message();
+             message.from = req.user._id;
+             message.fromName = req.user.name;
+             message.to = sendNotificationArr;
+             message.message = 'You have recevied invitation to join class <a href="/#!/classes/' + classModel.id + '">' + classModel.name + '</a>' ;
+             message.save(function(err){
+                if (err) {
+                    return res.send('users/signup', {
+                        errors: err.errors,
+                        message: message
+                    });
+                } 
+             });
+        };
+    };
+
     if (isUpload) {
          var fs = require('fs-extra');
          var path = require('path');

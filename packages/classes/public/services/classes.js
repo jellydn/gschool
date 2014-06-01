@@ -6,6 +6,12 @@ angular.module('mean').factory('Classes', ['$resource', function($resource) {
     }, {
         update: {
             method: 'PUT'
+        },
+        invite: {
+            method: 'PUT'
+        },
+        join: {
+            method: 'POST'
         }
     });
 }]);

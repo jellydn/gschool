@@ -18,6 +18,7 @@ module.exports = function(Class, app, auth, database) {
 
      app.route('/classes/:classId')
         .get(classes.show)
+        .post(auth.requiresLogin,classes.join)
         .put(auth.requiresLogin, hasClassAuthorization , classes.update)
         .delete(auth.requiresLogin, hasClassAuthorization, classes.destroy);
 

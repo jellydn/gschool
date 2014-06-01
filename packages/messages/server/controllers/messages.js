@@ -283,7 +283,7 @@ exports.send = function(req, res) {
 
     if (req.body.occurChecked || req.body.repeatChecked) {
         var message = new Schedule(req.body);
-        message
+        
     }
     else
     {

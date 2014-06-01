@@ -8,7 +8,21 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
 
         // utility function
         $scope.$on('LoadJs', function() {
+                var engine = new Bloodhound({
+                  name: 'recipient',
+                  remote: '/api/users?q=%QUERY',
+                  datumTokenizer: function(d) {
+                    return Bloodhound.tokenizers.whitespace(d.val);
+                  },
+                  queryTokenizer: Bloodhound.tokenizers.whitespace
+                });
 
+                engine.initialize();
+
+                $('#exampleInputEmail3').tokenfield({
+                    minLength : 3 ,
+                  typeahead: [null, { source: engine.ttAdapter() }]
+                });
         		// load menu
                 $('#nav-accordion').dcAccordion({
 			        eventType: 'click',
@@ -36,6 +50,30 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
             if (!classModel || !classModel.createBy) return false;
             return $scope.global.isAdmin || classModel.createBy._id === $scope.global.user._id;
         };
+
+        // invite students
+
+        $scope.invite = function(){
+            var recipients = $('#exampleInputEmail3').tokenfield('getTokensList',',');
+            $('#myModal').modal('hide');
+            this.recipient = '';
+            $('#exampleInputEmail3').tokenfield('setTokens', { value: '' });
+            var classModel = $scope.class;
+
+            classModel.$invite({ recipients : recipients },function(response){
+                console.log(response);
+            });
+
+        }
+
+        // join class
+
+        $scope.join = function(){
+            var classModel = $scope.class;
+            classModel.$join({ join : $scope.global.user.username },function(response){
+                console.log(response);
+            });
+        }
 
          // upload photo 
         $scope.onFileSelect = function($files) {
@@ -71,6 +109,10 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
         // find by id
 
         $scope.findOne = function() {
+            $('#myModalDetail').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+
             Classes.get({
                 classId: $stateParams.classId
             }, function(classModel) {

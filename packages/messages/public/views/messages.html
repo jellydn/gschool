@@ -254,8 +254,8 @@
                             </td>
                             <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
                             <td class="view-message  dont-show" ng-click="showModal(message)" > {{message.fromName}} </td>
-                            <td class="view-message " ng-click="showModal(message)"> {{message.message}} </td>
-                            <td class="view-message  inbox-small-cells" ng-click="showModal(message)"><i ng-if="message.file != ''" class="fa fa-paperclip"></i></td>
+                            <td class="view-message " ng-click="showModal(message)"> <div ng-bind-html="message.message"></div> </td>
+                            <td class="view-message  inbox-small-cells" ng-click="showModal(message)"><i ng-if="(typeof message.file != 'undefined') &&  message.file != ''" class="fa fa-paperclip"></i></td>
                             <td class="view-message  text-right" ng-click="showModal(message)">{{message.dateSent | date:'medium'}}</td>
 
                             </tr>
