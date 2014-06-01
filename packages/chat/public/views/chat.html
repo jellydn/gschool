@@ -48,7 +48,7 @@
                         <ul class="conversation-list">
                             <li class="{{chat.class}}"  data-ng-repeat="chat in chats">
                                 <div class="chat-avatar">
-                                    <img alt="{{chat.createBy.name}}" src="/public/uploads/users/{{chat.createBy._id}}/small_{{chat.createBy.avatar}}">
+                                    <my-avatar userid="{{chat.createBy._id}}" type="small" file="{{chat.createBy.avatar}}"></my-avatar>
                                     <i><span data-livestamp="{{chat.dateCreate}}">{{chat.dateCreate | date: "hh:mm"}}</span></i>
                                 </div>
                                 <div class="conversation-text">

@@ -6,7 +6,7 @@
         <!-- user login dropdown start-->
         <li class="dropdown open">
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
-                <img alt="{{userinfo.name}}" src="/public/uploads/users/{{userinfo._id}}/small_{{userinfo.avatar}}">
+            <my-avatar userid="{{userinfo._id}}" type="small" file="{{userinfo.avatar}}"></my-avatar>
                 <span class="username">{{userinfo.name}} </span>
                 <b class="caret"></b>
             </a>

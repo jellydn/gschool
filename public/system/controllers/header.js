@@ -80,17 +80,26 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         // required to make it work as an element
         restrict: 'E',
         template: '<img/>',
-        replace: true,
+        scope: {
+          userid: '@',
+          type: '@'
+        },
+        // replace: true,
         // observe and manipulate the DOM
         link: function($scope, element, attrs) {
 
-            attrs.$observe('caption', function(value) {
-                element.find('img').attr('alt', value)
-            })
-
             // attribute names change to camel case
-            attrs.$observe('photoSrc', function(value) {
-                element.find('img').attr('src', value);
+            attrs.$observe('file', function(value) {
+         
+                if(!value.length || !$scope.userid.length)
+                {
+                  if ($scope.type =='small') 
+                    element.find('img').attr('src', '/public/lib/images/no_avatar_30x30.gif');
+                  else
+                    element.find('img').attr('src', '/public/lib/images/no_avatar.gif');
+                }
+                else
+                  element.find('img').attr('src', '/public/uploads/users/' + $scope.userid + '/'+ $scope.type +'_' + value);
             })
         }
     }

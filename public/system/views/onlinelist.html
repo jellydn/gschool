@@ -7,7 +7,7 @@
         <li>
             <div class="prog-row" data-ng-repeat="user in onlines">
                 <div class="user-thumb">
-                    <a href="/#!/chats/{{user._id}}"><img src="/public/uploads/users/{{user._id}}/small_{{user.avatar}}" alt="{{user.name}}"></a>
+                    <a href="/#!/chats/{{user._id}}"><my-avatar type="small" userid="{{user._id}}" file="{{user.avatar}}" ></my-avatar></a>
                 </div>
                 <div class="user-details">
                     <h4><a href="/#!/chats/{{user._id}}">{{user.name}}</a></h4>
