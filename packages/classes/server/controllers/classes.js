@@ -98,8 +98,15 @@ exports.class = function(req, res, next, id) {
     Classes.load(id, function(err, item) {
         if (err) return next(err);
         if (!item) return next(new Error('Failed to load class ' + id));
-        req.class = item;
-        next();
+        // Load all note belong to this class
+        Note.find({sendToClassIds : id}).populate('createBy', 'name username avatar').exec(function(e,notes){
+            if (e) return next(e);
+            if (!notes) return next(new Error('Failed to load note of class ' + id));
+            item.notes = notes;
+            req.class = item;
+            next();
+        });
+
     });
 };
 

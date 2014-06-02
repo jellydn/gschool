@@ -40,7 +40,8 @@ var ClassSchema = new Schema({
     },
     file : {
         type: String
-    }
+    },
+    notes : {}
 });
 
 
@@ -52,5 +53,14 @@ ClassSchema.statics.load = function(id, cb) {
         _id: id
     }).populate('createBy', 'name username avatar').exec(cb);
 };
+
+/**
+ * Virtuals
+ */
+// ClassSchema.virtual('notes').set(function(notes) {
+//     this._notesOfClass= notes;
+// }).get(function() {
+//     return this._notesOfClass;
+// });
 
 mongoose.model('Class', ClassSchema);

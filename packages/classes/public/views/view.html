@@ -240,19 +240,19 @@
                        
                                     <div class="col-md-10">
 
-                                        <div class="prf-contacts">
-                                            <h2> <span><i class="fa fa-file-text-o"></i></span> Addition and Subtraction</h2>
+                                        <div class="prf-contacts" data-ng-repeat="note in class.notes">
+                                            <h2> <span><i class="fa fa-file-text-o"></i></span> {{note.title}}</h2>
                                             <ul class="metaUl">
-                                                <li class="metaDescription">Olumide Adewumi</li>
+                                                <li class="metaDescription">{{note.createBy.name}}</li>
                                                 <span><i class="fa fa-file-text-o"></i></span>
                                                 <li class="metaDescription">16 Notes </li>
                                                 <span><i class="fa fa-tags"></i></span> 
-                                                <li class="metaDescription">tags, used, to,describe, course, searchable</li>
+                                                <li class="metaDescription">{{note.tags.join(',')}}</li>
 
                                             </ul>
 
                                             <div class="location-info">
-                                                <p>Adding and subtracting positive and negative whole numbers. Starts with 1+1=2 and covers carrying, borrowing, and word problems.</p>
+                                                <p>{{note.content}}</p>
 
                                             </div>
                
