@@ -82,6 +82,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         template: '<img/>',
         scope: {
           userid: '@',
+          file: '@',
           type: '@'
         },
         // replace: true,
@@ -101,6 +102,19 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
                 else
                   element.find('img').attr('src', '/public/uploads/users/' + $scope.userid + '/'+ $scope.type +'_' + value);
             })
+
+            attrs.$observe('userid', function(value) {
+         
+                if(!value.length || !$scope.file.length)
+                {
+                  if ($scope.type =='small') 
+                    element.find('img').attr('src', '/public/lib/images/no_avatar_30x30.gif');
+                  else
+                    element.find('img').attr('src', '/public/lib/images/no_avatar.gif');
+                }
+                else
+                  element.find('img').attr('src', '/public/uploads/users/' + value + '/'+ $scope.type +'_' + $scope.file);
+            })
         }
     }
 }).directive('myClassAvatar', function() {
@@ -109,7 +123,8 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         restrict: 'E',
         template: '<img/>',
         scope: {
-          userid: '@'
+          userid: '@',
+          file: '@'
         },
         // replace: true,
         // observe and manipulate the DOM
@@ -118,12 +133,22 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
             // attribute names change to camel case
             attrs.$observe('file', function(value) {
          
-                if(!value.length)
+                if(!value.length || !$scope.userid.length)
                 {
                     element.find('img').attr('src', '/public/lib/images/no_image_class.png');
                 }
                 else
                   element.find('img').attr('src', '/public/uploads/classes/' + $scope.userid + '/medium_' + value);
+            })
+
+            attrs.$observe('userid', function(value) {
+         
+                if(!value.length || !$scope.file.length)
+                {
+                  element.find('img').attr('src', '/public/lib/images/no_image_class.png');
+                }
+                else
+                  element.find('img').attr('src', '/public/uploads/users/' + value + '/'+ $scope.type +'_' + $scope.file);
             })
         }
     }

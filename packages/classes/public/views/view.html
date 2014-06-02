@@ -69,6 +69,75 @@
         <!-- page start-->
 
          <div class="row">
+            <div aria-hidden="true" aria-labelledby="myModalNoteLabel" role="dialog" tabindex="-1" id="myModalNote" class="modal fade" >
+                <div class="modal-dialog">
+                    <div class="modal-content" data-ng-controller="NotesController" data-ng-init="$emit('LoadJs');$emit('LoadCreateNoteJs');">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                            <h4 class="modal-title">Compose Note</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" data-ng-submit="create()">
+
+
+                            <div class="panel-body">
+                                <div class="col-sm-12">
+                                    <input type="text" required data-ng-model="title" class="form-control" placeholder="Title">
+                                </div>
+
+                            </div>
+
+                            <div class="form-group">
+
+                            <div class="panel-body">
+                                <div class="col-sm-12">
+                                    <textarea placeholder="Content" data-ng-model="content" class="wysihtml5 form-control" rows="9" ></textarea>
+                                </div>
+
+                            </div>
+                            </div>
+
+                            <div class="form-group">
+                                 <div class="panel-body">
+                                    <div class="col-sm-12">
+                                        <input id="tags_1" type="text" class="tags" data-ng-model="tags"/>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                 <div class="panel-body">
+                                    <div class="col-sm-12">
+                                        <input type="hidden" id="selectClasses" style="width:100%"/>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                             <div class="form-group">
+                                 <div class="panel-body">
+                                    <div class="col-sm-12">
+                                        <input type="text" class="form-control" placeholder="Add a comment" data-ng-model="quickComment" >
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                 <div class="panel-body">
+                                    <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-info">Submit</button>
+                                </div>
+
+                                </div>
+                            </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade" >
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -145,7 +214,8 @@
 
                         <button type="button" data-ng-click="join()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) === -1 " class="btn btn-default btn-lg">Join Class</button>  
                         <button type="button" data-ng-if="class.createBy._id == global.user._id" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">Invite Student</button>  
-                        <button type="button" class="btn btn-default btn-lg">Message</button>
+                        <button type="button"  data-toggle="modal" data-target="#myModalNote" data-ng-if="class.createBy._id == global.user._id" class="btn btn-default btn-lg">Write Note</button>
+                        <button type="button" data-ng-click="sendMessage()" class="btn btn-default btn-lg">Message</button>
                         <button type="button" class="btn btn-default btn-lg">Settings</button>
                         <br/>
                         <br/>

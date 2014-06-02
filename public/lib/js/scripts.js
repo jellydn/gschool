@@ -13,6 +13,20 @@ $(function() {
 
 });
 
+function classFormatResult(item) {
+    var markup = "<table class='class-result'><tr>";
+    if (item.file !== undefined && item.file !== '') {
+        markup += "<td class='class-image'><img src='/public/uploads/classes/" + item.owner + "/small_"+ item.file + "'/></td>";
+    }
+    markup += "<td class='class-info'><div class='class-title'>" + item.text + "</div>";
+
+    markup += "</td></tr></table>";
+    return markup;
+}
+
+function classFormatSelection(item) {
+    return item.text;
+}
 
 var Script = function () {
 
@@ -26,8 +40,8 @@ var Script = function () {
         else
             $("#sidebar").scrollTo("+="+Math.abs(diff),500);
     });
-
     // toggle bar
+
 
     $(function() {
         var wd;

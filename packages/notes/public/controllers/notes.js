@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('NotesController', ['$scope', '$stateParams','$http', '$location', 'Global', 'Notes', 'Comments','Socket',
-    function($scope, $stateParams, $http, $location, Global, Notes, Comments,Socket) {
+angular.module('mean').controller('NotesController', ['$scope', '$stateParams','$http', '$location', 'Global', 'Notes', 'Comments', 'Classes','Socket',
+    function($scope, $stateParams, $http, $location, Global, Notes, Comments,Classes,Socket) {
         $scope.global = Global;
         $scope.isEditModel = false;
         // Incoming
@@ -13,7 +13,7 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
 
         // utility function
         $scope.$on('LoadJs', function() {
-
+               
         		// load menu
                 $('#nav-accordion').dcAccordion({
 			        eventType: 'click',
@@ -26,6 +26,36 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
 			        classExpand: 'dcjq-current-parent'
 			    });
 
+
+               $("#selectClasses").select2({
+                    placeholder: "Select a class",
+                    multiple: true,
+                    ajax: { 
+                        url: "/classes/suggest",
+                        dataType: 'jsonp',
+                        data: function (term, page) {
+                            return {
+                                q: term, // search term
+                                page_limit: 10,
+                            };
+                        },
+                        results: function (data, page) {
+                            var classData = [];
+                            for (var i = 0; i < data.length; i++) {
+                                classData[i] = { id : data[i]._id , text : data[i].name , members : data[i].members , owner : data[i].createBy._id, file : data[i].file };
+                            };
+                            return {results: classData};
+                        }
+                    },
+                    initSelection: function(element, callback) {
+                        var id=$(element).val();
+                        alert(element);
+                    },
+                    formatResult: classFormatResult, 
+                    formatSelection: classFormatSelection,  
+                    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
+                });
+
         });
 
         $scope.$on('LoadCreateNoteJs', function() {
@@ -34,7 +64,7 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
         });
 
         $scope.$on('LoadEditNoteJs', function() {
-                $scope.isEditModel = true;
+                $scope.isEditModel = true;                
         });
 
         $scope.hasAuthorization = function(note) {
@@ -81,6 +111,11 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
                                             }
                                             );
                     $('.wysihtml5').wysihtml5();
+                    var tmpData = [];
+                    for (var i = 0; i < note.sendToClass.length; i++) {
+                        tmpData[i] = { 'id' : note.sendToClassIds[i] , 'text' : note.sendToClass[i] } ;
+                    };
+                    $("#selectClasses").select2('data', tmpData);
                     $scope.isEditModel = false;
                 };
             });
@@ -106,14 +141,31 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
         // create note
 
          $scope.create = function() {
-           
+            var classArr = [];
+            var classIdArr = [];
+            var membersArr = [];
+            var classSelection = $('#selectClasses').select2('data');
+            for (var i = 0; i < classSelection.length; i++) {
+                // insert class
+                classArr.push(classSelection[i].text.trim());
+                classIdArr.push(classSelection[i].id.trim());
+
+                // push member
+                for (var j = 0; j < classSelection[i].members.length; j++) {
+                    if (membersArr.indexOf(classSelection[i].members[j]) === -1) {
+                        membersArr.push(classSelection[i].members[j]);
+                    };
+                };
+            };
             this.content = $('.wysihtml5').val();
             this.tags = $('.tags').val();
             var note = new Notes({
                 title : this.title,
                 content : this.content,
                 tags : this.tags,
-                classes : this.classes,
+                classes : classArr,
+                classesIds : classIdArr,
+                members : membersArr,
                 quickComment : this.quickComment
             });
 
@@ -124,6 +176,10 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
             $('#tags_1').importTags('');
             this.content = '';
             this.quickComment = '';
+
+            $('#myModalDetail').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
             
         };
 
@@ -151,6 +207,21 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
                 note.updated = [];
             }
             note.updated.push(new Date().getTime());
+
+            var classArr = [];
+            var classIdArr = [];
+            var membersArr = [];
+            var classSelection = $('#selectClasses').select2('data');
+            for (var i = 0; i < classSelection.length; i++) {
+                // insert class
+                classArr.push(classSelection[i].text.trim());
+                classIdArr.push(classSelection[i].id.trim());
+                // todo : process member or not
+                // push member later
+            };
+
+            note.sendToClass = classArr;
+            note.sendToClassIds = classIdArr;
 
             note.$update(function() {
                 $location.path('notes/' + note._id);

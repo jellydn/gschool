@@ -17,6 +17,7 @@
     "bootstrap-tokenfield": "latest",
     "momentjs": "latest",
     "livestampjs": "latest",
+    "select2": "latest",
     "datetimepicker": "latest"
   }
 }

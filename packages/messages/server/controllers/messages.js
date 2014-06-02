@@ -95,7 +95,6 @@ exports.all = function(req, res) {
 // suggest username
 
 exports.suggest = function(req,res){
-    console.log(req.query);
     User.find( {name: new RegExp('^'+req.query.q, "i") },'username name', function(err, users) {
         if (err) {
             res.render('error', {

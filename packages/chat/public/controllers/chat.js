@@ -16,8 +16,10 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 }
 
                 data.isImageFile = false;
-                // data.dateCreate = moment(data.dateCreate).fromNow(); 
-                $scope.chats.unshift(data);
+                $scope.chats.push(data);
+                $('.conversation-list').scrollTo('100%', '100%', {
+                    easing: 'swing'
+                });
             };
         });
 
@@ -42,10 +44,6 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
       };
 
         $scope.find = function(){
-            // fix max height
-            // embed nicesroll
-            $('ul.conversation-list').height(390);
-            $('ul.conversation-list').niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#fff', spacebarenabled:false, cursorborder: ''});
         	 Chats.query({ to : $stateParams.userId },function(chats) {
                 for (var i = 0; i < chats.length; i++) {
                     if(chats[i].createBy._id != $stateParams.userId) {
@@ -66,6 +64,10 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                     
                 };
                 $scope.chats = chats;
+                $('.conversation-list').slimscroll({
+                    height: '390px',
+                    wheelStep: 35
+                });
             });
 
         }
@@ -84,8 +86,11 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 Socket.emit('sendChat',msg);
                 msg.class = "clearfix";
                 // msg.dateCreate = moment(msg.dateCreate).fromNow(); 
-                $scope.chats.unshift(msg);
-                $('ul.conversation-list').animate( {scrollTop : $('.header').offset().top },"slow");
+                $scope.chats.push(msg);
+                $('.conversation-list').scrollTo('100%', '100%', {
+                    easing: 'swing'
+                });
+
             });
 
             this.message = '';

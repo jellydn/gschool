@@ -106,8 +106,8 @@
                         <ul class="conversation-list">
                             <li class="clearfix" data-ng-repeat="comment in comments| orderBy:'dateCreate' ">
                                 <div class="chat-avatar">
-                                    <img alt="{{comment.createBy.name}}" src="/public/uploads/users/{{comment.createBy._id}}/small_{{comment.createBy.avatar}}">
-                                    <i>{{comment.dateCreate | date : 'hh:mm' }}</i>
+                                    <my-avatar type="small" userid="{{comment.createBy._id}}" file="{{comment.createBy.avatar}}"></my-avatar>
+                                    <i data-livestamp="{{comment.dateCreate}}">{{comment.dateCreate | date : 'hh:mm' }}</i>
                                 </div>
                                 <div class="conversation-text">
                                     <div class="ctext-wrap">

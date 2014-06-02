@@ -44,7 +44,6 @@ exports.session = function(req, res) {
  */
 exports.create = function(req, res, next) {
     var user = new User(req.body);
-    console.log(user);
     user.provider = 'local';
 
     // because we set our user.provider to local our models/user.js validation will always be true
@@ -94,7 +93,6 @@ exports.update = function(req, res) {
     var user = req.user;
     user = _.extend(user, req.body);
     // Check if upload photo
-    console.log(req.user);
     if (user.avatar != "") {
          var fs = require('fs-extra');
          var path = require('path');

@@ -54,7 +54,7 @@ exports.all = function(req, res) {
 
     var q = Chat.find({ $or : [  { token : req.user._id + ':' + req.query.to }  ,  { token : req.query.to + ':' + req.user._id }] });
     
-    q.sort({ dateCreate : 'desc' }).populate('to', 'name username avatar').populate('createBy', 'name username avatar').exec(function(err, chats) {
+    q.sort({ dateCreate : 'asc' }).populate('to', 'name username avatar').populate('createBy', 'name username avatar').exec(function(err, chats) {
         if (err) {
             console.log(err);
             res.render('error', {

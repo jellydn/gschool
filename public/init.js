@@ -17,6 +17,7 @@ for (var index in window.modules) {
 }
 
 // Default modules
+// add 'ui.select2', 'ngSanitize'
 var modules = ['ngSanitize','ngCookies', 'ngResource', 'ui.bootstrap', 'ui.router', 'mean.system', 'mean.auth'];
 modules = modules.concat(packageModules);
 

@@ -35,6 +35,9 @@ var NoteSchema = new Schema({
     sendToClass: {
         type: Array
     },
+    sendToClassIds: {
+        type: Array
+    },
     sendToMembers: {
         type: Array
     },

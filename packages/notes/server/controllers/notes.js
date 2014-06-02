@@ -54,8 +54,9 @@ exports.note = function(req, res, next, id) {
     note.createBy = req.user;
     // todo: send to class and member
     note.tags = req.body.tags.split(',');
-    note.sendToClass = req.body.classes.split(',');
-    note.sendToMembers = ['dunghd','admin'];
+    note.sendToClass = req.body.classes;
+    note.sendToClassIds = req.body.classesIds;
+    note.sendToMembers = req.body.members;
     note.save(function(err) {
         if (err) {
             return res.send('users/signup', {
@@ -106,7 +107,6 @@ exports.update = function(req, res) {
     var note = req.note;
 
     note = _.extend(note, req.body);
-    note.sendToClass = note.classes.split(',');
     note.save(function(err) {
         if (err) {
             return res.send('users/signup', {

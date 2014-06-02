@@ -75,6 +75,14 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
             });
         }
 
+        $scope.writeNote = function(){
+            
+        }
+
+        $scope.sendMessage = function(){
+            
+        }
+
          // upload photo 
         $scope.onFileSelect = function($files) {
             for (var i = 0; i < $files.length; i++) {

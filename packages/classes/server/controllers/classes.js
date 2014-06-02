@@ -51,11 +51,30 @@ exports.upload = function(req,res){
 
 }
 
+exports.suggest = function(req, res) {
+    if (req.user.type == 'teacher') 
+        var q = Classes.find({createBy : req.user._id,name: new RegExp('^'+req.query.q, "i")});
+    else
+        var q = Classes.find({members : req.user.username,name: new RegExp('^'+req.query.q, "i")});
+
+    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, notes) {
+        if (err) {
+            console.log(err);
+            res.render('error', {
+                status: 500
+            });
+        } else {
+            res.jsonp(notes);
+        }
+    });
+
+};
+
+
 /**
  * List of class
  */
 exports.all = function(req, res) {
-    console.log(req.user);
     if (req.user.type == 'teacher') 
         var q = Classes.find({createBy : req.user._id});
     else
@@ -222,6 +241,7 @@ exports.update = function(req, res) {
              message.from = req.user._id;
              message.fromName = req.user.name;
              message.to = sendNotificationArr;
+             message.file = '';
              message.message = 'You have recevied invitation to join class <a href="/#!/classes/' + classModel.id + '">' + classModel.name + '</a>' ;
              message.save(function(err){
                 if (err) {
