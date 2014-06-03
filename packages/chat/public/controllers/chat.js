@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('ChatController',['$scope','$rootScope','$upload', '$stateParams','$http', '$location', 'Global', 'Chats', 'Users','Socket',
-    function($scope,$rootScope, $upload, $stateParams, $http, $location, Global, Chats, Users,Socket) {
+angular.module('mean').controller('ChatController',['$scope','$interval','$rootScope','$upload', '$stateParams','$http', '$location', 'Global', 'Chats', 'Users','Socket',
+    function($scope, $interval, $rootScope, $upload, $stateParams, $http, $location, Global, Chats, Users,Socket) {
         $scope.global = Global;
         $scope.fileName = "";        
         Socket.on('onChatCreated', function(data) {
@@ -17,9 +17,11 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
 
                 data.isImageFile = false;
                 $scope.chats.push(data);
-                $('.conversation-list').scrollTo('max', 'max', {
-                    easing: 'swing'
-                });
+                $interval(function(){
+                    $('.conversation-list').scrollTo('max', 'max', {
+                        easing: 'swing'
+                    })
+                },600,1);
             };
         });
 
@@ -85,12 +87,12 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 $scope.fileName = '';
                 Socket.emit('sendChat',msg);
                 msg.class = "clearfix";
-                // msg.dateCreate = moment(msg.dateCreate).fromNow(); 
                 $scope.chats.push(msg);
-                $('.conversation-list').scrollTo('max', 'max', {
-                    easing: 'swing'
-                });
-
+                $interval(function(){
+                    $('.conversation-list').scrollTo('max', 'max', {
+                        easing: 'swing'
+                    })
+                },600,1);
             });
 
             this.message = '';
