@@ -17,7 +17,7 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
 
                 data.isImageFile = false;
                 $scope.chats.push(data);
-                $('.conversation-list').scrollTo('100%', '100%', {
+                $('.conversation-list').scrollTo('max', 'max', {
                     easing: 'swing'
                 });
             };
@@ -87,7 +87,7 @@ angular.module('mean').controller('ChatController',['$scope','$rootScope','$uplo
                 msg.class = "clearfix";
                 // msg.dateCreate = moment(msg.dateCreate).fromNow(); 
                 $scope.chats.push(msg);
-                $('.conversation-list').scrollTo('100%', '100%', {
+                $('.conversation-list').scrollTo('max', 'max', {
                     easing: 'swing'
                 });
 
