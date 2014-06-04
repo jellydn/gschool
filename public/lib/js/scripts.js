@@ -28,6 +28,21 @@ function classFormatSelection(item) {
     return item.text;
 }
 
+function userFormatResult(item) {
+    var markup = "<table class='class-result'><tr>";
+    if (item.file !== undefined && item.file !== '') {
+        markup += "<td class='class-image'><img src='/public/uploads/users/" + item.owner + "/small_"+ item.file + "'/></td>";
+    }
+    markup += "<td class='class-info'><div class='class-title'>" + item.text + "</div>";
+
+    markup += "</td></tr></table>";
+    return markup;
+}
+
+function userFormatSelection(item) {
+    return item.text;
+}
+
 var Script = function () {
 
     //  menu auto scrolling

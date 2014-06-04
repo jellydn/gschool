@@ -95,17 +95,14 @@ exports.all = function(req, res) {
 // suggest username
 
 exports.suggest = function(req,res){
-    User.find( {name: new RegExp('^'+req.query.q, "i") },'username name', function(err, users) {
+    User.find( {name: new RegExp('^'+req.query.q, "i") },'username name avatar', function(err, users) {
         if (err) {
             res.render('error', {
                 status: 500
             });
         } else {
-            var userArr = [];
-            for (var i = 0; i < users.length; i++) {
-                userArr[i] = { 'label' : users[i].name, 'value' : users[i].username };
-            };
-            res.jsonp(userArr);
+            
+            res.jsonp(users);
         }
     });
 };
@@ -290,9 +287,7 @@ exports.send = function(req, res) {
     }
     
     var fs = require('fs-extra');
-    // message.to = message.to.split(',');
-    req.body.receiver = req.body.receiver.replace(" ","");
-    message.to = req.body.receiver.split(',');
+    message.to = req.body.receiver;
     message.from = req.user;
     message.fromName = req.user.name;
 

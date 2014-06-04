@@ -45,8 +45,8 @@
                 </header>
                 <div class="panel-body">
                     <div class="chat-conversation">
-                        <ul class="conversation-list">
-                            <li class="{{chat.class}}"  data-ng-repeat="chat in chats">
+                        <ul class="conversation-list" div-directive>
+                            <li class="{{chat.class}}" my-repeat-directive data-ng-repeat="chat in chats" scroll-to-me>
                                 <div class="chat-avatar">
                                     <my-avatar userid="{{chat.createBy._id}}" type="small" file="{{chat.createBy.avatar}}"></my-avatar>
                                     <i><span data-livestamp="{{chat.dateCreate}}">{{chat.dateCreate | date: "hh:mm"}}</span></i>

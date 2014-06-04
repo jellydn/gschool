@@ -226,22 +226,49 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
         });
 
         $scope.$on('LoadJs', function() {
-                var engine = new Bloodhound({
-                  name: 'recipient',
-                  remote: '/api/users?q=%QUERY',
-                  datumTokenizer: function(d) {
-                    return Bloodhound.tokenizers.whitespace(d.val);
-                  },
-                  queryTokenizer: Bloodhound.tokenizers.whitespace
+                // var engine = new Bloodhound({
+                //   name: 'recipient',
+                //   remote: '/api/users?q=%QUERY',
+                //   datumTokenizer: function(d) {
+                //     return Bloodhound.tokenizers.whitespace(d.val);
+                //   },
+                //   queryTokenizer: Bloodhound.tokenizers.whitespace
+                // });
+
+                // engine.initialize();
+
+                // $('#exampleInputEmail3').tokenfield({
+                //     minLength : 3 ,
+                //   typeahead: [null, { source: engine.ttAdapter() }]
+                // });
+                $("#selectRecipient").select2({
+                    placeholder: "Search a recipient",
+                    multiple: true,
+                    ajax: { 
+                        url: "/api/users",
+                        dataType: 'jsonp',
+                        data: function (term, page) {
+                            return {
+                                q: term, // search term
+                                page_limit: 10,
+                            };
+                        },
+                        results: function (data, page) {
+                            var classData = [];
+                            for (var i = 0; i < data.length; i++) {
+                                classData[i] = { id : data[i].username , text : data[i].name , owner : data[i]._id, file : data[i].avatar };
+                            };
+                            return {results: classData};
+                        }
+                    },
+                    initSelection: function(element, callback) {
+                        var id=$(element).val();
+                        alert(element);
+                    },
+                    formatResult: userFormatResult, 
+                    formatSelection: userFormatSelection,  
+                    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
                 });
-
-                engine.initialize();
-
-                $('#exampleInputEmail3').tokenfield({
-                    minLength : 3 ,
-                  typeahead: [null, { source: engine.ttAdapter() }]
-                });
-
         });
 
         $scope.selectRead = function () {
@@ -354,8 +381,7 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
 
         // send msg
          $scope.send = function() {
-            this.recipient = $('#exampleInputEmail3').tokenfield('getTokensList',',');
-            
+            this.recipient = $('#selectRecipient').select2('val');
             if ($scope.repeatChecked) {
                // find the select weekly
                var selectWeeklyArr = [];

@@ -4783,6 +4783,7 @@ div.tagsinput span.tag {
     margin-right:12px;
     text-align: right;
     float:right !important;
+    color: #1FB5AD;
 }
 .conversation-list .odd .ctext-wrap {
     background:#eeeef2 !important;

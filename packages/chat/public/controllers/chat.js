@@ -5,7 +5,7 @@ angular.module('mean').controller('ChatController',['$scope','$interval','$rootS
         $scope.global = Global;
         $scope.fileName = "";        
         Socket.on('onChatCreated', function(data) {
-            if (data.to._id  == $stateParams.userId || data.createBy._id == $stateParams.userId) {
+            if (data.createBy._id == $stateParams.userId) {
 
                 if(data.createBy._id != $stateParams.userId) {
                     data.class = 'clearfix';
@@ -45,8 +45,22 @@ angular.module('mean').controller('ChatController',['$scope','$interval','$rootS
         
       };
 
+       $scope.moveToBottom = function(){
+              $interval(function(){
+                    $('.conversation-list').scrollTo('max', 'max', {
+                        easing: 'swing'
+                    })
+                },600,1);
+
+              $('.conversation-list').slimscroll({
+                    height: '390px',
+                    wheelStep: 35,
+                    start : 'bottom'
+                });
+       }
+
         $scope.find = function(){
-        	 Chats.query({ to : $stateParams.userId },function(chats) {
+            Chats.query({ to : $stateParams.userId },function(chats) {
                 for (var i = 0; i < chats.length; i++) {
                     if(chats[i].createBy._id != $stateParams.userId) {
                         chats[i].class = 'clearfix';
@@ -66,10 +80,6 @@ angular.module('mean').controller('ChatController',['$scope','$interval','$rootS
                     
                 };
                 $scope.chats = chats;
-                $('.conversation-list').slimscroll({
-                    height: '390px',
-                    wheelStep: 35
-                });
             });
 
         }
