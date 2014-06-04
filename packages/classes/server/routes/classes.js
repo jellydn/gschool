@@ -16,6 +16,9 @@ module.exports = function(Class, app, auth, database) {
      app.route('/classes/suggest')
         .get(classes.suggest);
 
+    app.route('/api/members/:classId')
+        .get(classes.members);
+
      app.route('/upload/class').post(auth.requiresLogin,classes.upload);
 
 

@@ -148,7 +148,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
                   element.find('img').attr('src', '/public/lib/images/no_image_class.png');
                 }
                 else
-                  element.find('img').attr('src', '/public/uploads/users/' + value + '/'+ $scope.type +'_' + $scope.file);
+                  element.find('img').attr('src', '/public/uploads/classes/' + value + '/medium_' + $scope.file);
             })
         }
     }

@@ -226,26 +226,20 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
         });
 
         $scope.$on('LoadJs', function() {
-                // var engine = new Bloodhound({
-                //   name: 'recipient',
-                //   remote: '/api/users?q=%QUERY',
-                //   datumTokenizer: function(d) {
-                //     return Bloodhound.tokenizers.whitespace(d.val);
-                //   },
-                //   queryTokenizer: Bloodhound.tokenizers.whitespace
-                // });
+                var ajaxUrl = '';
+                if ($stateParams.classId != undefined) {
+                    ajaxUrl = "/api/members/" + $stateParams.classId + '/';
+                }
+                else
+                {
+                    ajaxUrl = "/api/users";
+                }    
 
-                // engine.initialize();
-
-                // $('#exampleInputEmail3').tokenfield({
-                //     minLength : 3 ,
-                //   typeahead: [null, { source: engine.ttAdapter() }]
-                // });
                 $("#selectRecipient").select2({
                     placeholder: "Search a recipient",
                     multiple: true,
                     ajax: { 
-                        url: "/api/users",
+                        url: ajaxUrl,
                         dataType: 'jsonp',
                         data: function (term, page) {
                             return {
@@ -263,7 +257,6 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
                     },
                     initSelection: function(element, callback) {
                         var id=$(element).val();
-                        alert(element);
                     },
                     formatResult: userFormatResult, 
                     formatSelection: userFormatSelection,  
@@ -382,6 +375,12 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
         // send msg
          $scope.send = function() {
             this.recipient = $('#selectRecipient').select2('val');
+
+            if (!this.recipient.length) {
+                    alert('Please select at least on recipient!');
+                    return;
+            } 
+
             if ($scope.repeatChecked) {
                // find the select weekly
                var selectWeeklyArr = [];

@@ -95,6 +95,9 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
         // find by id
 
         $scope.findOne = function() {
+            $('#myModalDetail').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
             Notes.get({
                 noteId: $stateParams.noteId
             }, function(note) {

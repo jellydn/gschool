@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
     Note = mongoose.model('Note'),
     Comment = mongoose.model('Comment'),
+    Message = mongoose.model('Message'),
     User = mongoose.model('User'),
     _ = require('lodash');
 
@@ -65,6 +66,30 @@ exports.note = function(req, res, next, id) {
             });
         } else {
             res.jsonp(note);
+
+            // send to inbox
+            if ( ( typeof req.body.members != 'undefined') ) {
+              
+                // send notification and inbox to msg
+                if (req.body.members.length) {
+                     var message = new Message();
+                     message.from = req.user._id;
+                     message.fromName = req.user.name;
+                     message.to = req.body.members;
+                     message.file = '';
+                     message.message =  req.user.name + ' has shared note <a href="/#!/notes/' + note._id + '">' + note.title + '</a> with you.' ;
+                     message.save(function(err){
+                        if (err) {
+                            return res.send('users/signup', {
+                                errors: err.errors,
+                                message: message
+                            });
+                        } 
+                     });
+                };
+            };
+
+
             // send quick comment
             if ( (typeof req.body.quickComment != 'undefined') && req.body.quickComment != '' && req.body.quickComment.length) {
                 var comment = new Comment({ content : req.body.quickComment , onNote: note._id});

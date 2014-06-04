@@ -138,6 +138,134 @@
                     </div>
                 </div>
             </div>
+            <div aria-hidden="true" aria-labelledby="myModalMessageLabel" role="dialog" tabindex="-1" id="myModalMessage" class="modal fade" data-ng-controller="MessageController" ng-init="$emit('LoadJs')">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button aria-hidden="true" data-dismiss="modal" class="close" type="button">×</button>
+                            <h4 class="modal-title">Compose message</h4>
+                        </div>
+                        <div class="modal-body">
+                            <form role="form" data-ng-submit="send()">
+                                            <div class="form-group">
+                                                <label for="exampleInputEmail1">To</label>
+                                                <input type="hidden" id="selectRecipient" style="width:100%" />
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputFile">Attachment</label>
+                                                <input type="file" id="uploadfile" ng-file-select="onFileSelect($files)" >
+
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="exampleInputPassword1">Message</label>
+                                                <textarea required data-ng-model="message"  name="message" class="form-control" rows="6"></textarea>
+                                            
+                                              
+                                            </div>
+
+                                            <button type="submit" class="btn btn-default">Submit</button>
+                                            <label for="exampleInputRepeat">Repeat</label>
+                                            <input  type="checkbox" id="repeatcheckbox" ng-model="repeatChecked" ng-init="repeatChecked=false" ng-click="occurChecked=false;$emit('LoadTimePicker');"/>
+                                            <label for="exampleInputRepeat">Occur</label>
+                                            <input  type="checkbox" id="occurcheckbox" ng-model="occurChecked" ng-init="occurChecked=false" ng-click="repeatChecked=false;$emit('LoadDateTimePicker');"/>
+                                            <div class="form-group" ng-if="repeatChecked">
+                                                <table class="ep-rec" role="presentation">
+                                                      <tbody>
+                                                        <tr>
+                                                          <th>
+                                                            Repeat on:
+                                                          </th>
+                                                          <td >
+                                                            <div id="selectWeekly">
+                                                              <span >
+                                                                <input name="0" type="checkbox" aria-label="Repeat on Sunday" title="Sunday">
+                                                                <label for="0" title="Sunday">
+                                                                  Sun
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input name="1" type="checkbox" aria-label="Repeat on Monday" title="Monday">
+                                                                <label for="1" title="Monday">
+                                                                  Mon
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input name="2" type="checkbox" aria-label="Repeat on Tuesday" title="Tuesday">
+                                                                <label for="2" title="Tuesday">
+                                                                  Tue
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input  name="3" type="checkbox" aria-label="Repeat on Wednesday" title="Wednesday">
+                                                                <label for="3" title="Wednesday">
+                                                                  Wed
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input  name="4" type="checkbox" aria-label="Repeat on Thursday" title="Thursday">
+                                                                <label for="4" title="Thursday">
+                                                                  Thu
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input name="5" type="checkbox" aria-label="Repeat on Friday" title="Friday">
+                                                                <label for="5" title="Friday">
+                                                                  Fri
+                                                                </label>
+                                                              </span>
+                                                              <span >
+                                                                <input name="6" type="checkbox" aria-label="Repeat on Saturday" title="Saturday">
+                                                                <label for="6" title="Saturday">
+                                                                  Sat
+                                                                </label>
+                                                              </span>
+                                                            </div>
+                                                          </td>
+                                                        </tr>
+                                                        <tr> 
+                                                            <th> At time</th>
+                                                            <td> 
+                                                            <div class='input-group date' ng-click="$emit('LoadTimePicker');">
+                                                                    <input id="ontime" name="ontime" type='text' class="form-control" ng-click="showPicker()" />
+                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                                    </span>
+                                                            </div>
+
+                                                            </td>
+                                                        </tr>
+                                                        
+                                                      </tbody>
+                                                  
+                                                    </table>
+                                              
+                                            </div>
+                                            <div class="form-group" ng-if="occurChecked">
+                                                <table class="ep-rec" role="presentation">
+                                                      <tbody>
+                                                        <tr> 
+                                                            <th> On day</th>
+                                                            <td> 
+                                                            <div class='input-group date' ng-click="$emit('LoadDateTimePicker');">
+                                                                    <input  id="ondatetime" name="ondatetime" type='text' class="form-control" ng-click="showPicker()" />
+                                                                    <span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span>
+                                                                    </span>
+                                                            </div>
+
+                                                            </td>
+                                                        </tr>
+                                                      </tbody>
+                                                  
+                                                    </table>
+                                              
+                                            </div>
+                                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade" >
                 <div class="modal-dialog">
                     <div class="modal-content">
@@ -150,7 +278,7 @@
                             <form role="form" data-ng-submit="invite()">
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">To</label>
-                                    <input required data-ng-model="recipient"  name="recipient" type="text" class="form-control" id="exampleInputEmail3" placeholder="Enter Recipient(s)">
+                                    <input type="hidden" id="selectStudent" style="width:100%" />
                                 </div>
 
                                 <button type="submit" class="btn btn-default">Invite</button>
@@ -200,7 +328,7 @@
                     
                         <span><i class="fa fa-book"></i></span>
                        
-                        <li class="metaDescription">16 Notes </li>
+                        <li class="metaDescription">{{class.notes.length}} Notes </li>
 
 
                         <span><i class="fa fa-tags"></i></span> 
@@ -215,7 +343,7 @@
                         <button type="button" data-ng-click="join()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) === -1 " class="btn btn-default btn-lg">Join Class</button>  
                         <button type="button" data-ng-if="class.createBy._id == global.user._id" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">Invite Student</button>  
                         <button type="button"  data-toggle="modal" data-target="#myModalNote" data-ng-if="class.createBy._id == global.user._id" class="btn btn-default btn-lg">Write Note</button>
-                        <button type="button" data-ng-click="sendMessage()" class="btn btn-default btn-lg">Message</button>
+                        <button type="button" data-toggle="modal" data-target="#myModalMessage" class="btn btn-default btn-lg">Message</button>
                         <button type="button" class="btn btn-default btn-lg">Settings</button>
                         <br/>
                         <br/>
@@ -236,29 +364,35 @@
                             </div>
                             <div id="notes" class="tab-pane">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-sm-12">
                        
-                                    <div class="col-md-10">
+                                    <div class="col-md-4" data-ng-repeat="note in class.notes| orderBy:'-dateCreate' ">
+                                            <!--widget start-->
+                                            <aside class="profile-nav alt">
+                                                <section class="panel">
+                                                    <div class="user-heading alt gray-bg">
+                                                    
+                                                        <h1>{{note.title}}</h1>
+                                                        <p>{{note.createBy.name}}</p>
+                                                    </div>
 
-                                        <div class="prf-contacts" data-ng-repeat="note in class.notes">
-                                            <h2> <span><i class="fa fa-file-text-o"></i></span> {{note.title}}</h2>
-                                            <ul class="metaUl">
-                                                <li class="metaDescription">{{note.createBy.name}}</li>
-                                                <span><i class="fa fa-file-text-o"></i></span>
-                                                <li class="metaDescription">16 Notes </li>
-                                                <span><i class="fa fa-tags"></i></span> 
-                                                <li class="metaDescription">{{note.tags.join(',')}}</li>
+                                                    <ul class="nav nav-pills nav-stacked">
+                                                        <li><a href="/#!/notes/{{note._id}}"> <i class="fa fa-comment"></i> Comments <span class="badge label-success pull-right r-activity">{{note.totalComments}}</span></a></li>
+                                                        <div data-ng-if="hasAuthorization(note)">
+                                                            <a class="btn" href="/#!/notes/{{note._id}}/edit">
+                                                                <i class="glyphicon glyphicon-edit"></i>
+                                                            </a>
+                                                            <a class="btn" data-ng-click="remove(note);">
+                                                                <i class="glyphicon glyphicon-trash"></i>
+                                                            </a>
+                                                        </div>
+                                                    </ul>
 
-                                            </ul>
+                                                </section>
+                                            </aside>
+                                            <!--widget end-->
 
-                                            <div class="location-info">
-                                                <p>{{note.content}}</p>
-
-                                            </div>
-               
                                         </div>
-
-                                    </div>
 
                                     </div>
                                 </div>

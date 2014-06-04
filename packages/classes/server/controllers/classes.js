@@ -70,6 +70,20 @@ exports.suggest = function(req, res) {
 
 };
 
+exports.members = function(req, res) {
+    User.find( {name: new RegExp('^'+req.query.q, "i"), username : req.class.members } ,'username name avatar', function(err, users) {
+        if (err) {
+            res.render('error', {
+                status: 500
+            });
+        } else {
+            
+            res.jsonp(users);
+        }
+    });
+
+};
+
 
 /**
  * List of class
@@ -233,7 +247,7 @@ exports.update = function(req, res) {
 
     // invite member
     if ( ( typeof req.query.recipients != 'undefined') ) {
-        var recipientsArr = req.query.recipients.split(',');
+        var recipientsArr = req.query.recipients;
         var sendNotificationArr = [];
         for (var i = recipientsArr.length - 1; i >= 0; i--) {
             if (classModel.pendingMembers.indexOf(recipientsArr[i].trim()) === -1 && classModel.members.indexOf(recipientsArr[i].trim()) === -1) {

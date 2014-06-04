@@ -8,20 +8,33 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
 
         // utility function
         $scope.$on('LoadJs', function() {
-                var engine = new Bloodhound({
-                  name: 'recipient',
-                  remote: '/api/users?q=%QUERY',
-                  datumTokenizer: function(d) {
-                    return Bloodhound.tokenizers.whitespace(d.val);
-                  },
-                  queryTokenizer: Bloodhound.tokenizers.whitespace
-                });
-
-                engine.initialize();
-
-                $('#exampleInputEmail3').tokenfield({
-                    minLength : 3 ,
-                  typeahead: [null, { source: engine.ttAdapter() }]
+                 $("#selectStudent").select2({
+                    placeholder: "Search a recipient",
+                    multiple: true,
+                    ajax: { 
+                        url: "/api/users",
+                        dataType: 'jsonp',
+                        data: function (term, page) {
+                            return {
+                                q: term, // search term
+                                page_limit: 10,
+                            };
+                        },
+                        results: function (data, page) {
+                            var classData = [];
+                            for (var i = 0; i < data.length; i++) {
+                                classData[i] = { id : data[i].username , text : data[i].name , owner : data[i]._id, file : data[i].avatar };
+                            };
+                            return {results: classData};
+                        }
+                    },
+                    initSelection: function(element, callback) {
+                        var id=$(element).val();
+                        alert(element);
+                    },
+                    formatResult: userFormatResult, 
+                    formatSelection: userFormatSelection,  
+                    escapeMarkup: function (m) { return m; } // we do not want to escape markup since we are displaying html in results
                 });
         		// load menu
                 $('#nav-accordion').dcAccordion({
@@ -54,10 +67,8 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
         // invite students
 
         $scope.invite = function(){
-            var recipients = $('#exampleInputEmail3').tokenfield('getTokensList',',');
+            var recipients = $('#selectStudent').select2('val');
             $('#myModal').modal('hide');
-            this.recipient = '';
-            $('#exampleInputEmail3').tokenfield('setTokens', { value: '' });
             var classModel = $scope.class;
 
             classModel.$invite({ recipients : recipients },function(response){
