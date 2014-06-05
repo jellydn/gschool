@@ -34,6 +34,18 @@ angular.module('mean').config(['$stateProvider',
                 resolve: {
                     loggedin: checkLoggedin
                 }
+            }).state('create quiz', {
+                url: '/classes/:classId/quiz',
+                templateUrl: 'classes/views/quiz.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            }).state('create assignment', {
+                url: '/classes/:classId/assignment',
+                templateUrl: 'classes/views/assignment.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
             })
             .state('edit class', {
                 url: '/classes/:classId/edit',

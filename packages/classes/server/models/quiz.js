@@ -8,60 +8,45 @@ var mongoose = require('mongoose'),
 
 
 /**
- * Class Schema
+ * Quiz Schema
  */
-var ClassSchema = new Schema({
+var QuizSchema = new Schema({
     createBy: {
         type: Schema.ObjectId,
         ref: 'User'
     },
-    name: {
+    ofClass: {
+        type: Schema.ObjectId,
+        ref: 'Class'
+    },
+    question: {
         type: String,
         default: '',
         trim: true
     },
-    description: {
-        type: String,
-        default: '',
-        trim: true
-    },
-    members: {
+    rightAnswer: {
         type: Array
     },
-    pendingMembers: {
+    listAnswer: {
         type: Array
     },
-    tags: {
+    playMembers: {
         type: Array
     },
     dateCreate: {
         type: Date,
         default: Date.now
-    },
-    file : {
-        type: String
-    },
-    notes : {},
-    quizzes : {}
+    }
 });
 
 
 /**
  * Statics
  */
-ClassSchema.statics.load = function(id, cb) {
+QuizSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
     }).populate('createBy', 'name username avatar').exec(cb);
 };
 
-/**
- * Virtuals
- */
-// ClassSchema.virtual('notes').set(function(notes) {
-//     this._notesOfClass= notes;
-// }).get(function() {
-//     return this._notesOfClass;
-// });
-
-mongoose.model('Class', ClassSchema);
+mongoose.model('Quiz', QuizSchema);

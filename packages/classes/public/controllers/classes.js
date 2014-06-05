@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','Classes','Socket',
-    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,Classes,Socket) {
+angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','Classes','Quizzes','Socket',
+    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,Classes,Quizzes,Socket) {
         $scope.global = Global;
         $scope.global.classActive = "active";
         $scope.fileName = "";        
@@ -84,14 +84,6 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
             classModel.$join({ join : $scope.global.user.username },function(response){
                 console.log(response);
             });
-        }
-
-        $scope.writeNote = function(){
-            
-        }
-
-        $scope.sendMessage = function(){
-            
         }
 
          // upload photo 

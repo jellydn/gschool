@@ -1,0 +1,257 @@
+
+<section id="container" >
+<!--header start-->
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
+<!--logo start-->
+<my-logo></my-logo>
+<!--logo end-->
+
+<div class="nav notify-row" id="top_menu" >
+    <!--  notification start -->
+    <my-menu global="global"></my-menu>
+    <!--  notification end -->
+</div>
+<div class="top-nav clearfix">
+    <!--search & user info start-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
+</div>
+</header>
+
+<aside>
+    <div id="sidebar" class="nav-collapse" data-ng-controller="ClassesController" ng-init="$emit('LoadJs')">
+        <!-- sidebar menu start-->
+        <ul class="sidebar-menu" id="nav-accordion">
+            <li>
+                <a href="/">
+                    <i class="fa fa-dashboard"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/classes" class="active">
+                    <i class="fa fa-th"></i>
+                    <span>Classes</span>
+                </a>
+                <ul class="sub">
+                    <li data-ng-show="global.user.type =='teacher'" ><a href="/#!/classes/create">Create new class</a></li>
+                    <li><a href="/#!/classes">Your classes</a></li>
+                </ul>
+            </li>
+            <li class="sub-menu">
+                <a href="/#!/notes">
+                    <i class="fa fa-file-text-o"></i>
+                    <span>Notes</span>
+                </a>
+            </li>
+            <li>
+                <a href="/#!/messages">
+                    <i class="fa fa-envelope"></i>
+                    <span>Messages </span>
+                </a>
+            </li>
+             <li>
+                <a href="/#!/directory">
+                    <i class="fa fa-group"></i>
+                    <span>Directory </span>
+                </a>
+            </li>
+            
+           
+        </ul>
+        <!-- sidebar menu end-->
+    </div>
+</aside>
+<!--sidebar end-->
+    <!--main content start-->
+<section id="main-content">
+        <section class="wrapper">
+        <div class="row">
+            <div class="col-sm-12" data-ng-controller="QuizzesController" ng-init="$emit('LoadCreateQuizJs')">
+                <section class="panel">
+                    <header class="panel-heading">
+                        CREATE QUIZ
+                        <span class="tools pull-right">
+                            <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            <a href="javascript:;" class="fa fa-cog"></a>
+                            <a href="javascript:;" class="fa fa-times"></a>
+                         </span>
+                    </header>
+                    
+                    <form id="form-quiz" name="quizForm" role="form" class="form-horizontal" ng-submit="create()">
+                            <wizard on-finish="finishedWizard()"> 
+                                <wz-step title="Starting">
+                                    <h1>First Step</h1>
+                                    <section>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">Question</label>
+                                            <span class="help-inline" ng-show="quizForm.question.$error.required">*Required</span>
+                                            <div class="col-lg-8">
+                                                <textarea type="text" name="question" required ng-model="question" class="form-control" placeholder="Enter your question here" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">Type</label>
+                                            <div class="col-lg-8">
+                                               <input ng-model="type" name="type" type="radio" value="one"> One selection.
+                                               <input ng-model="type" name="type" type="radio" value="multiple"> Multiple choice.
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-8 col-lg-offset-2">
+                                             <input type="submit" class="btn btn-info" wz-next="validForm(1)" value="Continue" />
+                                             </div>
+                                        </div>
+                                    </section>
+                                    <br/>
+                                </wz-step>
+                                <wz-step title="Continuing">
+                                     <h2>Second Step</h2>
+                                    <section>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label">Answer</label>
+                                                <span class="help-inline" ng-show="quizForm.answer.$error.required">*Required</span>
+
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="answer" required ng-model="answer" class="form-control" placeholder="Enter your answer here. Each answer seperate by comma.">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label">Right answer</label>
+                                                <span class="help-inline" ng-show="quizForm.rightanswer.$error.required">*Required</span>
+
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="rightanswer" required ng-model="rightanswer" class="form-control" placeholder="Enter your right answer here. Each answer seperate by comma.">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                 <div class="form-group">
+                                                    <div class="col-lg-8 col-lg-offset-2">
+                                                     <input type="submit" class="btn btn-info" wz-next="validForm(2)" value="Continue" />
+                                                     </div>
+                                                </div>
+                                            </div>
+                                    </section>
+                                    <br/>                                   
+                                </wz-step>
+                                <wz-step title="Final Step">
+                                    <h2>Final Step</h2>
+                                    <section>
+                                        <p>Congratulations. Preview your quiz below. If everything are Ok, click on finish button.</p>
+                                        <p> Your question: <b>{{quizForm.question.$modelValue}}</b> </p>
+                                        <p> Question type: <b>{{quizForm.type.$modelValue}}</b> choise</p>
+                                        <p> Your right awnser: <b>{{quizForm.rightanswer.$modelValue}}</b> </p>
+                                    </section>
+                                    <div class="form-group">
+                                        <div class="col-lg-8 col-lg-offset-2">
+                                         <input type="submit" class="btn btn-info" wz-next="validForm(3)" value="Finish" />
+                                         </div>
+                                    </div>
+                                    <br/>
+                                </wz-step>
+                            </wizard>
+
+                    </form>
+
+                   
+                </section>
+            </div>
+        </div>
+
+        </section>
+    </section>
+    <!--main content end-->
+<!--right sidebar start-->
+<div class="right-sidebar">
+<div class="search-row">
+    <input type="text" placeholder="Search" class="form-control">
+</div>
+<ul class="right-side-accordion">
+<my-online-list global="global" onlines="onlines" data-ng-controller="DashboardController" data-ng-init="userOnline()"></my-online-list>
+
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head purple-bg active">
+        <span class="pull-left"> recent activity (3)</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        just now
+                    </p>
+                    <p>
+                        <a href="#">John Sinna </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        2 min ago
+                    </p>
+                    <p>
+                        <a href="#">Sumon </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted">
+                        1 day ago
+                    </p>
+                    <p>
+                        <a href="#">Mosaddek </a>Purchased new equipments for zonal office setup
+                    </p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head yellow-bg active">
+        <span class="pull-left"> shipment status</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li>
+            <div class="col-md-12">
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">40% Complete</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="prog-row">
+                    <p>
+                        Full sleeve baby wear (SL: 17665)
+                    </p>
+                    <div class="progress progress-xs mtop10">
+                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
+                            <span class="sr-only">70% Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>
+</ul>
+</div>
+<!--right sidebar end-->
+
+</section>
+

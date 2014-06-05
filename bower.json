@@ -18,6 +18,7 @@
     "momentjs": "latest",
     "livestampjs": "latest",
     "select2": "latest",
+    "angular-wizard": "latest",
     "datetimepicker": "latest"
   }
 }

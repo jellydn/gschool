@@ -302,12 +302,12 @@
                                 </a>
                             </li>
                             <li class="">
-                                <a data-toggle="tab" href="#messages">
+                                <a data-toggle="tab" href="#quizzes">
                                       Quiz 
                                 </a>
                             </li>
                             <li class="">
-                                <a data-toggle="tab" href="#chat">
+                                <a data-toggle="tab" href="#assignment">
                                   Assignment
                                 </a>
                             </li>
@@ -378,11 +378,11 @@
 
                                                     <ul class="nav nav-pills nav-stacked">
                                                         <li><a href="/#!/notes/{{note._id}}"> <i class="fa fa-comment"></i> Comments <span class="badge label-success pull-right r-activity">{{note.totalComments}}</span></a></li>
-                                                        <div data-ng-if="hasAuthorization(note)">
+                                                        <div data-ng-if="hasNoteAuthorization(note)">
                                                             <a class="btn" href="/#!/notes/{{note._id}}/edit">
                                                                 <i class="glyphicon glyphicon-edit"></i>
                                                             </a>
-                                                            <a class="btn" data-ng-click="remove(note);">
+                                                            <a class="btn" data-ng-click="removeNote(note);">
                                                                 <i class="glyphicon glyphicon-trash"></i>
                                                             </a>
                                                         </div>
@@ -397,20 +397,41 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id="messages" class="tab-pane">
+                            <div id="quizzes" class="tab-pane">
                                 <div class="row">
-                                    <div class="col-md-6">
-                                        
+                                    <div class="col-sm-12">
+                       
+                                    <div class="col-md-4" data-ng-repeat="quiz in class.quizzes| orderBy:'-dateCreate' ">
+                                            <!--widget start-->
+                                            <aside class="profile-nav alt">
+                                                <section class="panel">
+                                                    <div class="user-heading alt gray-bg">
+                                                        <h1>{{quiz.question}}</h1>
+                                                    </div>
 
+                                                    <ul class="nav nav-pills nav-stacked">
+                                                        <li><a href="/#!/quizzes/{{quiz._id}}"> <i class="fa fa-users"></i> Players <span class="badge label-success pull-right r-activity">{{quiz.playMembers.length}}</span></a></li>
 
+                                                        <div data-ng-if="hasQuizAuthorization(quiz)">
+                                                            <a class="btn" href="/#!/quizzes/{{quiz._id}}/edit">
+                                                                <i class="glyphicon glyphicon-edit"></i>
+                                                            </a>
+                                                            <a class="btn" data-ng-click="removeQuiz(quiz);">
+                                                                <i class="glyphicon glyphicon-trash"></i>
+                                                            </a>
+                                                        </div>
+                                                    </ul>
+
+                                                </section>
+                                            </aside>
+                                            <!--widget end-->
+
+                                        </div>
 
                                     </div>
-                                    <div class="col-md-6">
-                                        <!--location goes here-->
-                                   
                                 </div>
                             </div>
-                            <div id="chat" class="tab-pane ">
+                            <div id="assignment" class="tab-pane ">
                                 <div class="position-center">
                                     <div class="prf-contacts sttng">
                                        

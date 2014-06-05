@@ -8,6 +8,7 @@ var mongoose = require('mongoose'),
     Message = mongoose.model('Message'),
     Note = mongoose.model('Note'),
     Comment = mongoose.model('Comment'),
+    Quizzes = mongoose.model('Quiz'),
     User = mongoose.model('User'),
     _ = require('lodash');
 
@@ -57,14 +58,14 @@ exports.suggest = function(req, res) {
     else
         var q = Classes.find({members : req.user.username,name: new RegExp('^'+req.query.q, "i")});
 
-    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, notes) {
+    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, classes) {
         if (err) {
             console.log(err);
             res.render('error', {
                 status: 500
             });
         } else {
-            res.jsonp(notes);
+            res.jsonp(classes);
         }
     });
 
@@ -94,14 +95,14 @@ exports.all = function(req, res) {
     else
         var q = Classes.find({members : req.user.username});
 
-    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, notes) {
+    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, classes) {
         if (err) {
             console.log(err);
             res.render('error', {
                 status: 500
             });
         } else {
-            res.jsonp(notes);
+            res.jsonp(classes);
         }
     });
 
@@ -117,15 +118,20 @@ exports.class = function(req, res, next, id) {
             if (e) return next(e);
             if (!notes) return next(new Error('Failed to load note of class ' + id));
             item.notes = notes;
-            req.class = item;
-            next();
+            Quizzes.find({ofClass : id}).populate('createBy', 'name username avatar').exec(function(e,quizzes){
+                if (e) return next(e);
+                if (!quizzes) return next(new Error('Failed to load quizzes of class ' + id));
+                item.quizzes = quizzes;
+                req.class = item;
+                next();
+            });
         });
 
     });
 };
 
 /**
- * Create a ntoe
+ * Create a class
  */
 
  exports.create = function(req, res) {

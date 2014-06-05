@@ -1,7 +1,6 @@
 
 <section id="container" >
 <!--header start-->
-
 <header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
 <!--logo start-->
 <my-logo></my-logo>
@@ -35,7 +34,7 @@
                 </a>
                 <ul class="sub">
                     <li data-ng-show="global.user.type =='teacher'" ><a href="/#!/classes/create">Create new class</a></li>
-                    <li class="active"><a href="/#!/classes">Your classes</a></li>
+                    <li><a href="/#!/classes">Your classes</a></li>
                 </ul>
             </li>
             <li class="sub-menu">
@@ -62,62 +61,75 @@
         <!-- sidebar menu end-->
     </div>
 </aside>
-
-
 <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content">
-        <section class="wrapper" data-ng-controller="ClassesController" ng-init="find()">
+<section id="main-content">
+        <section class="wrapper">
         <div class="row">
+            <div class="col-sm-12" data-ng-controller="ClassesController" ng-init="$emit('LoadCreateClassJs')">
+                <section class="panel">
+                    <header class="panel-heading">
+                        CREATE NEW CLASS
+                        <span class="tools pull-right">
+                            <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            <a href="javascript:;" class="fa fa-cog"></a>
+                            <a href="javascript:;" class="fa fa-times"></a>
+                         </span>
+                    </header>
+                    
+                    <form role="form" data-ng-submit="create()">
 
 
-        <div class="col-md-4" data-ng-repeat="class in classes">
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <input type="text" required data-ng-model="name" class="form-control" placeholder="Name">
+                        </div>
 
-        <!--widget start-->
-        <aside class="profile-nav alt">
-            <section class="panel">
-                <div class="user-heading alt gray-bg">
-                    <a href="/#!/classes/{{class._id}}">
-                        <my-class-avatar userid="{{class.createBy._id}}" file="{{class.file}}"></my-class-avatar>
-                    </a>
-                    <h1>{{class.name}}</h1>
-                    <p>J.S.S 3</p>
-                    <p>{{class.members.length}} People</p>
-                </div>
-
-                <ul class="nav nav-pills nav-stacked">
-                    <li><a href="/#!/classes/{{class._id}}">This Week:  Integration and Applications </a></li>
-                    <li><a href="/#!/classes/{{class._id}}"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
-                 
-                </ul>
-                <ul class="nav nav-pills nav-stacked">
-                    <div data-ng-if="hasAuthorization(class)">
-                        <a class="btn" href="/#!/classes/{{class._id}}/edit">
-                            <i class="glyphicon glyphicon-edit"></i>
-                        </a>
-                        <a class="btn" href="/#!/classes/{{class._id}}/quiz">
-                            <i class="glyphicon glyphicon-th-list"></i>
-                        </a> 
-                        <a class="btn" href="/#!/classes/{{class._id}}/assignment">
-                            <i class="glyphicon glyphicon-briefcase"></i>
-                        </a>
-                        <a class="btn" data-ng-click="remove(class);">
-                            <i class="glyphicon glyphicon-trash"></i>
-                        </a>
                     </div>
-                </ul>
+                    <div class="panel-body">
+                        <div class="col-sm-12" id="progress"></div>
+                        <div class="col-sm-12">
+                            Thumbnail image
+                            <input type="file" id="uploadfile" ng-file-select="onFileSelect($files)">      
+                        </div>
+                       
+                    </div>
 
-            </section>
-        </aside>
-                        <!--widget end-->
+                    <div class="form-group">
+
+                    <div class="panel-body">
+                        <div class="col-sm-12">
+                            <textarea placeholder="Description" data-ng-model="description" class="wysihtml5 form-control" rows="9" ></textarea>
+                        </div>
+
+                    </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                                <input id="tags_1" type="text" class="tags" data-ng-model="tags"/>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                            <button type="submit" class="btn btn-info">Submit</button>
+                        </div>
+
+                        </div>
+                    </div>
+
+                    </form>
+
+                   
+                </section>
+            </div>
         </div>
 
-        </div>
-
-
-
-
-    
         </section>
     </section>
     <!--main content end-->
@@ -215,3 +227,4 @@
 <!--right sidebar end-->
 
 </section>
+
