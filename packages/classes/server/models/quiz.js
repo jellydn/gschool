@@ -36,6 +36,10 @@ var QuizSchema = new Schema({
     dateCreate: {
         type: Date,
         default: Date.now
+    },
+    expireAt: {
+        type: Date,
+        expires: 0
     }
 });
 

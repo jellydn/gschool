@@ -13,7 +13,6 @@ var mongoose = require('mongoose'),
  * List of class
  */
 exports.all = function(req, res) {
-    console.log(req.class);
     var q = Quizzes.find({ofClass : req.class._id});
     q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, quizzes) {
         if (err) {
@@ -45,6 +44,17 @@ exports.quiz = function(req, res, next, id) {
  exports.create = function(req, res) {
     var quiz = new Quizzes(req.body);
     quiz.createBy = req.user;
+
+    // quiz will default expired in a year
+    if (req.body.expired.length) {
+        quiz.expireAt = req.body.expired;
+    }
+    else
+    {
+        var nextYear = new Date();
+        nextYear.setFullYear(nextYear.getFullYear() + 1);
+        quiz.expireAt = nextYear;
+    }
 
     quiz.save(function(err) {
         if (err) {

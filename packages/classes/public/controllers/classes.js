@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','Classes','Quizzes','Socket',
-    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,Classes,Quizzes,Socket) {
+angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','Classes','Notes','Quizzes','Socket',
+    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,Classes,Notes,Quizzes,Socket) {
         $scope.global = Global;
         $scope.global.classActive = "active";
         $scope.fileName = "";        
@@ -62,6 +62,17 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
         $scope.hasAuthorization = function(classModel) {
             if (!classModel || !classModel.createBy) return false;
             return $scope.global.isAdmin || classModel.createBy._id === $scope.global.user._id;
+        };
+
+
+        $scope.hasNoteAuthorization = function(note) {
+            if (!note || !note.createBy) return false;
+            return $scope.global.isAdmin || note.createBy._id === $scope.global.user._id;
+        };
+
+        $scope.hasQuizAuthorization = function(quiz) {
+            if (!quiz || !quiz.createBy) return false;
+            return $scope.global.isAdmin || quiz.createBy._id === $scope.global.user._id;
         };
 
         // invite students
@@ -179,6 +190,21 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
                 $scope.class.$remove(function(response) {
                     $location.path('classes');
                 });
+            }
+        };
+
+        $scope.removeNote = function(note) {
+            if (note) {
+                console.log(note);
+                console.log($scope.class.notes);
+                Notes.get({ noteId : note._id},function(noteModel){
+                    noteModel.$remove();
+                    for (var i in $scope.class.notes) {
+                        if ($scope.class.notes[i] === note) {
+                            $scope.class.notes.splice(i, 1);
+                        }
+                    }
+                });                
             }
         };
 
