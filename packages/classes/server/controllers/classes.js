@@ -222,12 +222,25 @@ exports.show = function(req, res) {
 exports.join = function(req,res){
     var classModel = req.class;
     // join member
-    if ( ( typeof req.query.join != 'undefined') ) {
+    if ( ( typeof req.query.username != 'undefined') ) {
         // todo, check usernaem is valid
-        var usernameJoin = req.query.join.trim();
-        if (classModel.members.indexOf(usernameJoin) === -1) {
-           classModel.members.push(usernameJoin);
-        };
+        var username = req.query.username.trim();
+        if(req.query.task == 'join'){
+            if (classModel.members.indexOf(username) === -1) {
+               classModel.members.push(username);
+            };
+        }
+        else
+        {
+            if (classModel.members.indexOf(username) !== -1) {
+               for (var i in classModel.members) {
+                    if (classModel.members[i] === username) {
+                        classModel.members.splice(i, 1);
+                    }
+                }
+            };
+        }
+        
     }
 
     classModel.save(function(err) {

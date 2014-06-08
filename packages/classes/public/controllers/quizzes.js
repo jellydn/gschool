@@ -76,7 +76,7 @@ angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$
 
             quiz.$save(function(msg) {
                 // select file again
-                $location.path('classes/' + $stateParams.classId + '#quizzes')
+                $location.path('classes/' + $stateParams.classId )
             });
 
             this.name = '';

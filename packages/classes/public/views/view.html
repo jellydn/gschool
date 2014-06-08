@@ -69,6 +69,16 @@
         <!-- page start-->
 
          <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumbs-alt">
+                    <li>
+                        <a href="#!/">gSchool </a>
+                    </li>
+                    <li>
+                        <a class="current" href="#">{{class.name}}</a>
+                    </li>
+                </ul>
+            </div>
             <div aria-hidden="true" aria-labelledby="myModalNoteLabel" role="dialog" tabindex="-1" id="myModalNote" class="modal fade" >
                 <div class="modal-dialog">
                     <div class="modal-content" data-ng-controller="NotesController" data-ng-init="$emit('LoadJs');$emit('LoadCreateNoteJs');">
@@ -336,6 +346,7 @@
                         <span> 
 
                         <button type="button" data-ng-click="join()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) === -1 " class="btn btn-default btn-lg">Join Class</button>  
+                        <button type="button" data-ng-click="leave()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) !== -1 " class="btn btn-default btn-lg">Leave Class</button>
                         <button type="button" data-ng-if="class.createBy._id == global.user._id" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">Invite Student</button>  
                         <button type="button"  data-toggle="modal" data-target="#myModalNote" data-ng-if="class.createBy._id == global.user._id" class="btn btn-default btn-lg">Write Note</button>
                         <button type="button" data-toggle="modal" data-target="#myModalMessage" class="btn btn-default btn-lg">Message</button>

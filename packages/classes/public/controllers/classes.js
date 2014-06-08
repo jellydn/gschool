@@ -91,7 +91,15 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
 
         $scope.join = function(){
             var classModel = $scope.class;
-            classModel.$join({ join : $scope.global.user.username },function(response){
+            classModel.$join({ username : $scope.global.user.username , task : 'join' },function(response){
+                console.log(response);
+            });
+        }
+
+
+        $scope.leave = function(){
+            var classModel = $scope.class;
+            classModel.$join({ username : $scope.global.user.username , task : 'leave' },function(response){
                 console.log(response);
             });
         }

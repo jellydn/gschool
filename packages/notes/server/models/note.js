@@ -38,6 +38,9 @@ var NoteSchema = new Schema({
     sendToClassIds: {
         type: Array
     },
+    belongClasses : {
+
+    },
     sendToMembers: {
         type: Array
     },

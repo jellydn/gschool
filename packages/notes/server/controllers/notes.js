@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
     Note = mongoose.model('Note'),
     Comment = mongoose.model('Comment'),
+    Classes = mongoose.model('Class'),
     Message = mongoose.model('Message'),
     User = mongoose.model('User'),
     _ = require('lodash');
@@ -41,8 +42,16 @@ exports.note = function(req, res, next, id) {
     Note.load(id, function(err, note) {
         if (err) return next(err);
         if (!note) return next(new Error('Failed to load note ' + id));
-        req.note = note;
-        next();
+        console.log(note);
+        Classes.find({ _id : { '$in' : note.sendToClassIds } }).populate('createBy', 'name username avatar').exec(function(e,classes){
+            if (e) return next(e);
+            if (!classes) return next(new Error('Failed to load classes of note ' + id));
+            note.belongClasses = classes;
+            console.log(classes);
+            req.note = note;
+            next();
+        });
+        
     });
 };
 

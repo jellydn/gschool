@@ -69,8 +69,20 @@
 <section id="main-content">
     <section class="wrapper" data-ng-controller="NotesController"  data-ng-init="share()">
          <div class="row">
+        <div class="col-md-12">
+            <ul class="breadcrumbs-alt">
+                <li>
+                    <a href="#!/">gSchool </a>
+                </li>
+                <li>
+                    <a class="current" href="#">Shared Notes</a>
+                </li>
+            </ul>
+        </div>
          <div class="col-sm-12">
-
+                     <div class="col-md-12" ng-hide="notes.length">
+                        You don't have any shared note.
+                     </div>
                      <div class="col-md-4" data-ng-repeat="note in notes| orderBy:'-dateCreate' ">
                         <!--widget start-->
                         <aside class="profile-nav alt">

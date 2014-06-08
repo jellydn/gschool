@@ -71,6 +71,19 @@
         <!-- page start-->
 
         <div class="row">
+            <div class="col-md-12">
+                <ul class="breadcrumbs-alt">
+                    <li>
+                        <a href="#!/">gSchool </a>
+                    </li>
+                    <li ng-show="note.belongClasses.length">
+                        <a class="active-trail active" href="#!/classes/{{note.belongClasses[0]._id}}">{{note.belongClasses[0].name}}</a>
+                    </li>
+                    <li>
+                        <a class="current" href="#">{{note.title}}</a>
+                    </li>
+                </ul>
+            </div>
             <div class="col-sm-12">
                 <section class="panel">
                     <header class="panel-heading">

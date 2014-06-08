@@ -49,7 +49,6 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
                     },
                     initSelection: function(element, callback) {
                         var id=$(element).val();
-                        alert(element);
                     },
                     formatResult: classFormatResult, 
                     formatSelection: classFormatSelection,  
