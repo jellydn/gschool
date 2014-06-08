@@ -18,7 +18,7 @@
 </header>
 
 <aside>
-    <div id="sidebar" class="nav-collapse" data-ng-controller="ClassesController" ng-init="$emit('LoadJs')">
+    <div id="sidebar" class="nav-collapse" data-ng-controller="QuizzesController" ng-init="$emit('LoadJs')">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
             <li>
@@ -64,12 +64,25 @@
 <!--sidebar end-->
     <!--main content start-->
 <section id="main-content">
-        <section class="wrapper">
+        <section class="wrapper" data-ng-controller="QuizzesController" ng-init="$emit('LoadPlayQuizJs');findOne()">
         <div class="row">
-            <div class="col-sm-12" data-ng-controller="ClassesController" ng-init="$emit('LoadCreateClassJs')">
+            <div class="col-md-12">
+                <ul class="breadcrumbs-alt">
+                    <li>
+                        <a href="#!/">gSchool </a>
+                    </li>
+                    <li>
+                        <a href="#!/classes/{{quiz.ofClass._id}}">{{quiz.ofClass.name}} </a>
+                    </li>
+                    <li>
+                        <a class="current" href="#">{{quiz.name}}</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="col-sm-12" >
                 <section class="panel">
                     <header class="panel-heading">
-                        CREATE NEW CLASS
+                        Play A Quiz
                         <span class="tools pull-right">
                             <a href="javascript:;" class="fa fa-chevron-down"></a>
                             <a href="javascript:;" class="fa fa-cog"></a>
@@ -79,49 +92,6 @@
                     
                     <form role="form" data-ng-submit="create()">
 
-
-                    <div class="panel-body">
-                        <div class="col-sm-12">
-                            <input type="text" required data-ng-model="name" class="form-control" placeholder="Name">
-                        </div>
-
-                    </div>
-                    <div class="panel-body">
-                        <div class="col-sm-12" id="progress"></div>
-                        <div class="col-sm-12">
-                            Thumbnail image
-                            <input type="file" id="uploadfile" ng-file-select="onFileSelect($files)">      
-                        </div>
-                       
-                    </div>
-
-                    <div class="form-group">
-
-                    <div class="panel-body">
-                        <div class="col-sm-12">
-                            <textarea placeholder="Description" data-ng-model="description" class="wysihtml5 form-control" rows="9" ></textarea>
-                        </div>
-
-                    </div>
-                    </div>
-
-                    <div class="form-group">
-                         <div class="panel-body">
-                            <div class="col-sm-12">
-                                <input id="tags_1" type="text" class="tags" data-ng-model="tags"/>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                         <div class="panel-body">
-                            <div class="col-sm-12">
-                            <button type="submit" class="btn btn-info">Submit</button>
-                        </div>
-
-                        </div>
-                    </div>
 
                     </form>
 

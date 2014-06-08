@@ -64,9 +64,22 @@ angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$
             
         });
 
+        $scope.findOne = function() {
+            $('#myModalDetail').modal('hide');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+
+            Quizzes.get({
+                quizId: $stateParams.quizId
+            }, function(quiz) {
+                $scope.quiz = quiz;
+            });
+        };
+
         // create quiz
         $scope.create = function() {
-            var questionsSelection = $('#selectQuestion').select2('data');
+            var questionsSelection = $('#selectQuestion').select2('val');
+            console.log(questionsSelection);
             var quiz = new Quizzes({
                 name : $scope.name,
                 ofClass : $stateParams.classId,

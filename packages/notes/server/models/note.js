@@ -38,9 +38,6 @@ var NoteSchema = new Schema({
     sendToClassIds: {
         type: Array
     },
-    belongClasses : {
-
-    },
     sendToMembers: {
         type: Array
     },
@@ -50,6 +47,18 @@ var NoteSchema = new Schema({
     }
 });
 
+NoteSchema
+.virtual('belongClasses')
+.get(function () {
+  return this._belongClasses;
+})
+.set(function (obj) {
+  this._belongClasses = obj;
+});
+
+NoteSchema.set('toJSON', {
+   virtuals: true
+});
 
 /**
  * Statics

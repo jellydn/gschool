@@ -416,6 +416,7 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
 
             });
             $('#myModal').modal('hide');
+            $('#myModalMessage').modal('hide');
             this.recipient = '';
             this.message = '';
             // reset upload file

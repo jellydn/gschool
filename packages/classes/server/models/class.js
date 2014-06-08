@@ -40,9 +40,7 @@ var ClassSchema = new Schema({
     },
     file : {
         type: String
-    },
-    notes : {},
-    quizzes : {}
+    }
 });
 
 
@@ -55,13 +53,26 @@ ClassSchema.statics.load = function(id, cb) {
     }).populate('createBy', 'name username avatar').exec(cb);
 };
 
-/**
- * Virtuals
- */
-// ClassSchema.virtual('notes').set(function(notes) {
-//     this._notesOfClass= notes;
-// }).get(function() {
-//     return this._notesOfClass;
-// });
+ClassSchema
+.virtual('notes')
+.get(function () {
+  return this._notes;
+})
+.set(function (obj) {
+  this._notes = obj;
+});
+
+ClassSchema
+.virtual('quizzes')
+.get(function () {
+  return this._quizzes;
+})
+.set(function (obj) {
+  this._quizzes = obj;
+});
+
+ClassSchema.set('toJSON', {
+   virtuals: true
+});
 
 mongoose.model('Class', ClassSchema);

@@ -40,9 +40,9 @@ angular.module('mean').config(['$stateProvider',
                 resolve: {
                     loggedin: checkLoggedin
                 }
-            }).state('create assignment', {
-                url: '/classes/:classId/assignment',
-                templateUrl: 'classes/views/assignment.html',
+            }).state('view quiz', {
+                url: '/quizzes/:quizId',
+                templateUrl: 'classes/views/viewquiz.html',
                 resolve: {
                     loggedin: checkLoggedin
                 }

@@ -46,7 +46,22 @@ var QuizSchema = new Schema({
 QuizSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('createBy', 'name username avatar').exec(cb);
+    }).select('name createBy ofClass playMembers questions questionList dateCreate').populate('createBy', 'name username avatar').populate('ofClass', 'name').exec(cb);
 };
+
+
+QuizSchema
+.virtual('questionList')
+.get(function () {
+  return this._questionList;
+})
+.set(function (obj) {
+  this._questionList = obj;
+});
+
+QuizSchema.set('toJSON', {
+   virtuals: true
+});
+
 
 mongoose.model('Quiz', QuizSchema);
