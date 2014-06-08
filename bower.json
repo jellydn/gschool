@@ -19,6 +19,7 @@
     "livestampjs": "latest",
     "select2": "latest",
     "angular-wizard": "latest",
+    "AngularJS-Toaster": "latest",
     "datetimepicker": "latest"
   }
 }

@@ -401,16 +401,13 @@
                                             <aside class="profile-nav alt">
                                                 <section class="panel">
                                                     <div class="user-heading alt gray-bg">
-                                                        <h1>{{quiz.question}}</h1>
+                                                        <h1>{{quiz.name}}</h1>
                                                     </div>
 
                                                     <ul class="nav nav-pills nav-stacked">
                                                         <li><a href="/#!/quizzes/{{quiz._id}}"> <i class="fa fa-users"></i> Players <span class="badge label-success pull-right r-activity">{{quiz.playMembers.length}}</span></a></li>
 
                                                         <div data-ng-if="hasQuizAuthorization(quiz)">
-                                                            <a class="btn" href="/#!/quizzes/{{quiz._id}}/edit">
-                                                                <i class="glyphicon glyphicon-edit"></i>
-                                                            </a>
                                                             <a class="btn" data-ng-click="removeQuiz(quiz);">
                                                                 <i class="glyphicon glyphicon-trash"></i>
                                                             </a>

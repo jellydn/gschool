@@ -1,4 +1,4 @@
-
+<toaster-container></toaster-container>
 <section id="container" >
 <!--header start-->
 <header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
@@ -65,135 +65,28 @@
     <!--main content start-->
 <section id="main-content">
         <section class="wrapper">
-        <div class="row">
+         <div class="row">
             <div class="col-sm-12" data-ng-controller="QuizzesController" ng-init="$emit('LoadCreateQuizJs')">
                 <section class="panel">
                     <header class="panel-heading">
-                        CREATE QUIZ
+                        CREATE A QUIZ
                         <span class="tools pull-right">
                             <a href="javascript:;" class="fa fa-chevron-down"></a>
                             <a href="javascript:;" class="fa fa-cog"></a>
                             <a href="javascript:;" class="fa fa-times"></a>
                          </span>
                     </header>
-                    
-                    <form id="form-quiz" name="quizForm" role="form" class="form-horizontal" ng-submit="create()">
-                            <wizard on-finish="finishedWizard()"> 
-                                <wz-step title="Question Description">
-                                    <h1>Question Description</h1>
-                                    <section>
-                                        <div class="form-group">
-                                            <label class="col-lg-2 control-label">Question description</label>
-                                            <span class="help-inline" ng-show="quizForm.question.$error.required">*Required</span>
-                                            <div class="col-lg-8">
-                                                <textarea type="text" name="question" required ng-model="question" class="form-control" placeholder="Your description here" rows="3"></textarea>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-lg-2 control-label">Type</label>
-                                            <div class="col-lg-8">
-                                               <input ng-model="type" name="type" type="radio" value="one"> One selection.
-                                               <input ng-model="type" name="type" type="radio" value="multiple"> Multiple choice.
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <div class="col-lg-8 col-lg-offset-2">
-                                             <input type="submit" class="btn btn-info" wz-next="validForm(1)" value="Continue" />
-                                             </div>
-                                        </div>
-                                    </section>
-                                    <br/>
-                                </wz-step>
-                                <wz-step title="Your Answering">
-                                     <h2>Your Answering</h2>
-                                    <section>
-                                            <div class="form-group">
-                                                <label class="col-lg-2 control-label">Answer A</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" name="answerA" ng-model="answerA" class="form-control" placeholder="Option A">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-2 control-label">Answer B</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" name="answerB" ng-model="answerB" class="form-control" placeholder="Option B">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-2 control-label">Answer C</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" name="answerC" ng-model="answerC" class="form-control" placeholder="Option C">
-                                                </div>
-                                            </div>
+                    <div class="panel-body">
+                            <form role="form" data-ng-submit="create()">
+                            <div class="form-group">
+                                <div class="panel-body">
+                                    <div class="col-sm-6">
+                                        <input type="text" required data-ng-model="name" class="form-control" placeholder="Name">
+                                    </div>
+                                </div>
+                                <div class="panel-body">
+                                    <div class="col-sm-12">
 
-                                            <div class="form-group">
-                                                <label class="col-lg-2 control-label">Answer D</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" name="answerD" ng-model="answerD" class="form-control" placeholder="Option D">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-2 control-label">Answer E</label>
-                                                <div class="col-lg-8">
-                                                    <input type="text" name="answerE" ng-model="answerE" class="form-control" placeholder="Option E">
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label class="col-lg-2 control-label">Correct answer</label>
-                                                <span class="help-inline" ng-show="showOneSelection()">*Required</span>
-                                                <div id="onSelectionGroup" ng-show="type=='one'">
-                                                    <input ng-model="oneselection" ng-show="answerA.length && showOneSelection()" name="oneselectionA" type="radio" value="{{answerA}}">
-                                                    <label ng-show="answerA.length && showOneSelection()" for="oneselectionA">Anwser A.</label> 
-                                                    
-                                                    <input ng-model="oneselection" ng-show="answerB.length && showOneSelection()" name="oneselectionB" type="radio" value="{{answerB}}">
-                                                    <label ng-show="answerB.length && showOneSelection()" for="oneselectionB">Anwser B.</label> 
-                                                    
-                                                    <input ng-model="oneselection" ng-show="answerC.length && showOneSelection()" name="oneselectionC" type="radio" value="{{answerC}}">
-                                                    <label ng-show="answerC.length && showOneSelection()" for="oneselectionC">Anwser C.</label> 
-                                                    
-                                                    <input ng-model="oneselection" ng-show="answerD.length && showOneSelection()" name="oneselectionD" type="radio" value="{{answerD}}">
-                                                    <label ng-show="answerD.length && showOneSelection()" for="oneselectionD">Anwser D.</label> 
-                                                    
-                                                    <input ng-model="oneselection" ng-show="answerE.length && showOneSelection()" name="oneselectionE" type="radio" value="{{answerE}}">
-                                                    <label ng-show="answerE.length && showOneSelection()" for="oneselectionE">Anwser E.</label> 
-                                                </div>
-                                                <div id="onMultiSelectionGroup" ng-show="showMultiSelection()">
-                                                    <input ng-model="multiselectionA" ng-show="answerA.length && showMultiSelection()" name="multiselectionA" type="checkbox">
-                                                    <label ng-show="answerA.length && showMultiSelection()" for="multiselectionA">Anwser A.</label> 
-                                                    
-                                                    <input ng-model="multiselectionB" ng-show="answerB.length && showMultiSelection()" name="multiselectionB" type="checkbox">
-                                                    <label ng-show="answerB.length && showMultiSelection()" for="multiselectionB">Anwser B.</label> 
-                                                    
-                                                    <input ng-model="multiselectionC" ng-show="answerC.length && showMultiSelection()" name="multiselectionC" type="checkbox">
-                                                    <label ng-show="answerC.length && showMultiSelection()" for="multiselectionC">Anwser C.</label> 
-                                                    
-                                                    <input ng-model="multiselectionD" ng-show="answerD.length && showMultiSelection()" name="multiselectionD" type="checkbox">
-                                                    <label ng-show="answerD.length && showMultiSelection()" for="multiselectionD">Anwser D.</label> 
-                                                    
-                                                    <input ng-model="multiselectionE" ng-show="answerE.length && showMultiSelection()" name="multiselectionE" type="checkbox">
-                                                    <label ng-show="answerE.length && showMultiSelection()" for="multiselectionE">Anwser E.</label> 
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                 <div class="form-group">
-                                                    <div class="col-lg-8 col-lg-offset-2">
-                                                     <input type="submit" class="btn btn-info" wz-next="validForm(2)" value="Continue" />
-                                                     </div>
-                                                </div>
-                                            </div>
-                                    </section>
-                                    <br/>                                   
-                                </wz-step>
-                                <wz-step title="Preview And Publish">
-                                    <h2>Preview And Publish</h2>
-                                    <section>
-                                        <p>Congratulations. Preview your quiz below.</p>
-                                        <div ng-bind-html="questionHtml">
-                                            {{previewQuestion()}}
-                                        </div>
-                                        <div ng-bind-html="answerHtml"> 
-                                            {{previewCorrectAnswer()}}
-                                        </div>
                                         <label for="exampleInputRepeat">Expired</label>
                                         <input  type="checkbox" name="occurChecked" id="occurcheckbox" ng-model="occurChecked" ng-init="occurChecked=false" ng-click="repeatChecked=false;$emit('LoadDateTimePicker');"/>
                                         <div ng-if="occurChecked">
@@ -215,10 +108,161 @@
                                                 </table>
                                           
                                         </div>
+                                    </div>
+                                </div>
+                                 <div class="panel-body">
+                                    <div class="col-sm-12">
+                                        <input type="hidden" id="selectQuestion" style="width:50%"/>
+                                    </div>
+
+                                </div>
+                                 <div class="panel-body">
+                                    <div class="col-sm-12">
+                                    <button type="submit" class="btn btn-info">Submit</button>
+                                </div>
+
+                                </div>
+                            </div>
+
+                            </form>
+                        </div>
+            </div>
+         </div>
+
+        <div class="row">
+            <div class="col-sm-12" data-ng-controller="QuestionsController" ng-init="$emit('LoadCreateQuestionJs')">
+                <section class="panel">
+                    <header class="panel-heading">
+                        ADD A QUESTION
+                        <span class="tools pull-right">
+                            <a href="javascript:;" class="fa fa-chevron-down"></a>
+                            <a href="javascript:;" class="fa fa-cog"></a>
+                            <a href="javascript:;" class="fa fa-times"></a>
+                         </span>
+                    </header>
+                    <div class="panel-body">
+                    <form id="form-quiz" name="quizForm" role="form" class="form-horizontal">
+                            <wizard on-finish="finishedWizard()"> 
+                                <wz-step title="Question Description">
+                                    <h3>Question Description</h3>
+                                    <section>
+                                        <div class="form-group">
+                                            <div class="col-lg-10 col-lg-offset-2">
+                                                <span class="help-inline" ng-show="quizForm.question.$error.required">*Required</span>
+
+                                                <textarea type="text" name="question" required minlength=1 ng-model="question.description" class="form-control" placeholder="Your description here" rows="3"></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 control-label">Type</label>
+                                            <div class="col-lg-8">
+                                               <input ng-model="question.type" required name="type" type="radio" value="one"> One selection.
+                                               <input ng-model="question.type" required name="type" type="radio" value="multiple"> Multiple choice.
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-lg-8 col-lg-offset-2">
+                                             <input type="button" class="btn btn-info" wz-next="validForm(1)" value="Continue" />
+                                             </div>
+                                        </div>
+                                    </section>
+                                    <br/>
+                                </wz-step>
+                                <wz-step title="Your Answering">
+                                     <h3>Your Answering</h3>
+                                    <section>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label">Answer A</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="answerA" ng-model="question.answerA" class="form-control" placeholder="Option A">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label">Answer B</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="answerB" ng-model="question.answerB" class="form-control" placeholder="Option B">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label">Answer C</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="answerC" ng-model="question.answerC" class="form-control" placeholder="Option C">
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label">Answer D</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="answerD" ng-model="question.answerD" class="form-control" placeholder="Option D">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label">Answer E</label>
+                                                <div class="col-lg-8">
+                                                    <input type="text" name="answerE" ng-model="question.answerE" class="form-control" placeholder="Option E">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 control-label">Correct answer</label>
+                                                <span class="help-inline">*Required</span>
+                                                <div id="onSelectionGroup" ng-show="showOneSelection()">
+                                                    <input ng-model="question.oneselection" ng-show="question.answerA.length && showOneSelection()" name="oneselectionA" type="radio" value="{{question.answerA}}">
+                                                    <label ng-show="question.answerA.length && showOneSelection()" for="oneselectionA">Anwser A.</label> 
+                                                    
+                                                    <input ng-model="question.oneselection" ng-show="question.answerB.length && showOneSelection()" name="oneselectionB" type="radio" value="{{question.answerB}}">
+                                                    <label ng-show="question.answerB.length && showOneSelection()" for="oneselectionB">Anwser B.</label> 
+                                                    
+                                                    <input ng-model="question.oneselection" ng-show="question.answerC.length && showOneSelection()" name="oneselectionC" type="radio" value="{{question.answerC}}">
+                                                    <label ng-show="question.answerC.length && showOneSelection()" for="oneselectionC">Anwser C.</label> 
+                                                    
+                                                    <input ng-model="question.oneselection" ng-show="question.answerD.length && showOneSelection()" name="oneselectionD" type="radio" value="{{question.answerD}}">
+                                                    <label ng-show="question.answerD.length && showOneSelection()" for="oneselectionD">Anwser D.</label> 
+                                                    
+                                                    <input ng-model="question.oneselection" ng-show="question.answerE.length && showOneSelection()" name="oneselectionE" type="radio" value="{{question.answerE}}">
+                                                    <label ng-show="question.answerE.length && showOneSelection()" for="oneselectionE">Anwser E.</label> 
+                                                </div>
+                                                <div id="onMultiSelectionGroup" ng-show="showMultiSelection()">
+                                                    <input ng-model="question.multiselectionA" ng-show="question.answerA.length && showMultiSelection()" name="multiselectionA" type="checkbox">
+                                                    <label ng-show="question.answerA.length && showMultiSelection()" for="multiselectionA">Anwser A.</label> 
+                                                    
+                                                    <input ng-model="question.multiselectionB" ng-show="question.answerB.length && showMultiSelection()" name="multiselectionB" type="checkbox">
+                                                    <label ng-show="question.answerB.length && showMultiSelection()" for="multiselectionB">Anwser B.</label> 
+                                                    
+                                                    <input ng-model="question.multiselectionC" ng-show="question.answerC.length && showMultiSelection()" name="multiselectionC" type="checkbox">
+                                                    <label ng-show="question.answerC.length && showMultiSelection()" for="multiselectionC">Anwser C.</label> 
+                                                    
+                                                    <input ng-model="question.multiselectionD" ng-show="question.answerD.length && showMultiSelection()" name="multiselectionD" type="checkbox">
+                                                    <label ng-show="question.answerD.length && showMultiSelection()" for="multiselectionD">Anwser D.</label> 
+                                                    
+                                                    <input ng-model="question.multiselectionE" ng-show="question.answerE.length && showMultiSelection()" name="multiselectionE" type="checkbox">
+                                                    <label ng-show="question.answerE.length && showMultiSelection()" for="multiselectionE">Anwser E.</label> 
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                 <div class="form-group">
+                                                    <div class="col-lg-8 col-lg-offset-2">
+                                                     <input type="button" class="btn btn-info" wz-next="validForm(2)" value="Continue" />
+                                                     </div>
+                                                </div>
+                                            </div>
+                                    </section>
+                                    <br/>                                   
+                                </wz-step>
+                                <wz-step title="Preview And Publish">
+                                    <h3>Preview And Publish</h3>
+                                    <section>
+                                        <p>Congratulations. Preview your quiz below.</p>
+                                        <div ng-bind-html="questionHtml">
+                                            {{previewQuestion()}}
+                                        </div>
+                                        <div ng-bind-html="answerHtml"> 
+                                            {{previewCorrectAnswer()}}
+                                        </div>
+                                        
                                     </section>
                                     <div class="form-group">
                                         <div class="col-lg-8">
-                                         <input type="submit" class="btn btn-info" wz-next="validForm(3)" value="Finish" />
+                                         <input type="button" class="btn btn-info" wz-next="validForm(3)" value="Finish" />
                                          </div>
                                     </div>
                                     <br/>
@@ -227,11 +271,52 @@
 
                     </form>
 
-                   
+                   </div>
                 </section>
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-sm-12">
+                <section class="panel">
+                    <header class="panel-heading">
+                        Questions
+                        <span class="tools pull-right">
+                            <a href="" class="fa fa-chevron-down"></a>
+                            <a href="" class="fa fa-cog"></a>
+                            <a href="" class="fa fa-times"></a>
+                         </span>
+                    </header>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-sm-12" data-ng-controller="QuestionsController" data-ng-init="find()">
+               
+                            <div class="col-md-4" data-ng-repeat="question in questions">
+                                    <!--widget start-->
+                                    <aside class="profile-nav alt">
+                                        <section class="panel">
+                                            <div class="user-heading alt gray-bg">
+                                                <h1>{{question.description}}</h1>
+                                            </div>
+
+                                            <ul class="nav nav-pills nav-stacked">
+                                                    <a class="btn" data-ng-click="remove(question);">
+                                                        <i class="glyphicon glyphicon-trash"></i>
+                                                    </a>
+                                            </ul>
+
+                                        </section>
+                                    </aside>
+                                    <!--widget end-->
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
         </section>
     </section>
     <!--main content end-->

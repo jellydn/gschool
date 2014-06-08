@@ -253,7 +253,15 @@ exports.update = function(req, res) {
 
     // invite member
     if ( ( typeof req.query.recipients != 'undefined') ) {
-        var recipientsArr = req.query.recipients;
+        if (typeof req.query.recipients == 'string') {
+            var recipientsArr = [];
+            recipientsArr.push(req.query.recipients);
+        }
+        else
+        {
+            var recipientsArr = req.query.recipients;
+        }
+            
         var sendNotificationArr = [];
         for (var i = recipientsArr.length - 1; i >= 0; i--) {
             if (classModel.pendingMembers.indexOf(recipientsArr[i].trim()) === -1 && classModel.members.indexOf(recipientsArr[i].trim()) === -1) {

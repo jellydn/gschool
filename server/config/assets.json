@@ -13,6 +13,7 @@
             "public/lib/assets/jquery-tags-input/jquery.tagsinput.css",
             "public/system/lib/angular-wizard/dist/angular-wizard.min.css",
             "public/system/lib/select2/select2.css",
+            "public/system/lib/AngularJS-Toaster/toaster.css",
             "public/**/assets/css/*.css"
         ]
     },
@@ -57,6 +58,8 @@
             "public/system/lib/momentjs/moment.js",
             "public/system/lib/livestampjs/livestamp.js",
             "public/system/lib/select2/select2.js",
+            "public/system/lib/angular-animate/angular-animate.min.js",
+            "public/system/lib/AngularJS-Toaster/toaster.js",
             "public/init.js",
             "public/*/*.js",
             "public/*/*/*.js",

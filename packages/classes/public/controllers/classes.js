@@ -30,7 +30,6 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
                     },
                     initSelection: function(element, callback) {
                         var id=$(element).val();
-                        alert(element);
                     },
                     formatResult: userFormatResult, 
                     formatSelection: userFormatSelection,  
@@ -195,13 +194,24 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
 
         $scope.removeNote = function(note) {
             if (note) {
-                console.log(note);
-                console.log($scope.class.notes);
                 Notes.get({ noteId : note._id},function(noteModel){
                     noteModel.$remove();
                     for (var i in $scope.class.notes) {
                         if ($scope.class.notes[i] === note) {
                             $scope.class.notes.splice(i, 1);
+                        }
+                    }
+                });                
+            }
+        };
+
+        $scope.removeQuiz = function(quiz) {
+            if (quiz) {
+                Quizzes.get({ quizId : quiz._id},function(quizModel){
+                    quizModel.$remove();
+                    for (var i in $scope.class.quizzes) {
+                        if ($scope.class.quizzes[i] === quiz) {
+                            $scope.class.quizzes.splice(i, 1);
                         }
                     }
                 });                

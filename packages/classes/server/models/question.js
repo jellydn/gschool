@@ -8,9 +8,9 @@ var mongoose = require('mongoose'),
 
 
 /**
- * Quiz Schema
+ * Question Schema
  */
-var QuizSchema = new Schema({
+var QuestionSchema = new Schema({
     createBy: {
         type: Schema.ObjectId,
         ref: 'User'
@@ -19,23 +19,16 @@ var QuizSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Class'
     },
-    name: {
+    description: {
         type: String,
         default: '',
         trim: true
     },
-    questions: {
-    },
-    playMembers: {
+    rightAnswer: {
         type: Array
     },
-    dateCreate: {
-        type: Date,
-        default: Date.now
-    },
-    expireAt: {
-        type: Date,
-        expires: 0
+    listAnswer: {
+        type: Array
     }
 });
 
@@ -43,10 +36,10 @@ var QuizSchema = new Schema({
 /**
  * Statics
  */
-QuizSchema.statics.load = function(id, cb) {
+QuestionSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
     }).populate('createBy', 'name username avatar').exec(cb);
 };
 
-mongoose.model('Quiz', QuizSchema);
+mongoose.model('Question', QuestionSchema);

@@ -6,6 +6,7 @@
 var mongoose = require('mongoose'),
     Classes = mongoose.model('Class'),
     Quizzes = mongoose.model('Quiz'),
+    Questions = mongoose.model('Question'),
     User = mongoose.model('User'),
     _ = require('lodash');
 
@@ -64,6 +65,9 @@ exports.quiz = function(req, res, next, id) {
             });
         } else {
             res.jsonp(quiz);
+
+            // send notify to inbox of our student
+
         }
     });
 };
