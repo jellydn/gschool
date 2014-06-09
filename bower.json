@@ -20,6 +20,7 @@
     "select2": "latest",
     "angular-wizard": "latest",
     "AngularJS-Toaster": "latest",
+    "angular-dialog-service": "latest",
     "datetimepicker": "latest"
   }
 }

@@ -46,7 +46,7 @@ var QuizSchema = new Schema({
 QuizSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).select('name createBy ofClass playMembers questions questionList dateCreate').populate('createBy', 'name username avatar').populate('ofClass', 'name').exec(cb);
+    }).select('name createBy ofClass playMembers questions questionList dateCreate').populate('createBy', 'name username avatar').populate('ofClass', 'name members').exec(cb);
 };
 
 

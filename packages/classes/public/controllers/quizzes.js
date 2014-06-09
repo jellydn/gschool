@@ -1,10 +1,11 @@
 'use strict';
 
-angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','Classes','Quizzes','Socket','WizardHandler',
-    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,Classes,Quizzes,Socket,WizardHandler) {
+angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$upload', '$stateParams','$timeout','$translate','dialogs','$http','$location','toaster','Global','Classes','Quizzes','Grades','Socket','WizardHandler',
+    function($scope,$rootScope, $upload, $stateParams,$timeout,$translate,dialogs, $https, $location,toaster, Global,Classes,Quizzes,Grades,Socket,WizardHandler) {
         $scope.global = Global;
         $scope.global.classActive = "active";
         $scope.expireTime = "";
+        $scope.answerArr = {};
         // utility function
         $scope.$on('LoadJs', function() {
         		// load menu
@@ -64,6 +65,147 @@ angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$
             
         });
 
+        // process input
+
+        $scope.getName = function(id,type,index){
+            if (type == 'one') {
+                return id;
+            }
+            else
+            {
+                return id + '-' + index;
+            }
+        }
+
+
+        $scope.getType = function(type){
+            if (type == 'one') {
+                return 'radio';
+            }
+            else
+                return 'checkbox';
+        }
+
+        $scope.processQuestion = function(index,id,type){
+            
+        }
+
+        // submit answer
+        $scope.evaluate = function(questionsList){
+            var userData = [];
+            for (var i = 0; i < questionsList.length; i++) {
+                var item = questionsList[i];
+
+                if (item.type == 'one') {
+                    var answerData = [];
+                    if ( item._id in $scope.answerArr) {
+                        answerData.push($scope.answerArr[item._id]);
+                        userData.push({ _id : item._id , rightAnswer: answerData});
+                    }
+                    else
+                    {
+                        WizardHandler.wizard().goTo(i);
+                        toaster.pop("info","Question " + (i + 1),"Please select your answer!");
+                        return ;
+                    }
+                }
+                else
+                {
+                    // check has select
+                    var hasSelected = false;
+                    var answerData = [];
+                    for (var j = 0; j < item.listAnswer.length; j++) {
+                        var key = (item._id + '-' +j );
+                        if ( key in $scope.answerArr) {
+                            if($scope.answerArr[key])
+                            {
+                                hasSelected = true;
+                                answerData.push(item.listAnswer[j]);
+                            }
+                        }
+                    };
+                    if (!hasSelected) {
+                        WizardHandler.wizard().goTo(i);
+                        toaster.pop("info","Question " + (i + 1),"Please select your answer!");
+                        return ;
+                    }
+                    else
+                    {
+                        userData.push({ _id : item._id , rightAnswer: answerData });
+                    }
+                }
+                
+            };
+
+            // ask to join
+            
+
+            // teacher play
+            var isTeacher = 0;
+            var isMember = 0;
+
+            if ($scope.global.user._id == $scope.quiz.createBy._id) {
+                isTeacher = 1;
+            } 
+            else
+            {
+                if($scope.quiz.ofClass.members.indexOf($scope.global.user.username) == -1)
+                {
+                    var dlg = dialogs.confirm("Confirm To Join Class","Are you want to join this class? <br/> If you click on 'Yes', you will become a member. Otherwise, you will be back to class.");
+                        dlg.result.then(function(btn){
+                            isMember = 1;
+                            Grades.save({
+                                quizId: $stateParams.quizId,
+                                answer: userData,
+                                isTeacher : isTeacher,
+                                isMember : isMember
+                            }, function(resp) {
+                                if (resp.error != undefined) {
+                                    toaster.pop("warning","Your point","Your point is " + resp.point + "." + resp.error);
+                                }
+                                else 
+                                    toaster.pop("sucess","Your point","Your point is " + resp.point);
+                                if(!isTeacher){
+                                    $timeout(function(){ 
+                                     $location.path('classes/' + $scope.quiz.ofClass._id );
+                                    },1500);
+                                }
+                            });
+                        },function(btn){
+                            isMember = 0;
+                            // redirect to class
+                            $location.path('classes/' + $scope.quiz.ofClass._id );
+                        });
+
+                }
+                else
+                    isMember = 1;
+            }
+
+            if(isMember || isTeacher){
+                Grades.save({
+                    quizId: $stateParams.quizId,
+                    answer: userData,
+                    isTeacher : isTeacher,
+                    isMember : isMember
+                }, function(resp) {
+                    if (resp.error != undefined) {
+                        toaster.pop("warning","Your point","Your point is " + resp.point + "." + resp.error);
+                    }
+                    else 
+                        toaster.pop("sucess","Your point","Your point is " + resp.point);
+                    if(!isTeacher){
+                        $timeout(function(){ 
+                         $location.path('classes/' + $scope.quiz.ofClass._id );
+                        },1500);
+                    }
+                });
+            };
+            
+        }
+
+
+        // find a quiz
         $scope.findOne = function() {
             $('#myModalDetail').modal('hide');
             $('body').removeClass('modal-open');
@@ -89,7 +231,7 @@ angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$
 
             quiz.$save(function(msg) {
                 // select file again
-                $location.path('classes/' + $stateParams.classId )
+                $location.path('classes/' + $stateParams.classId );
             });
 
             this.name = '';

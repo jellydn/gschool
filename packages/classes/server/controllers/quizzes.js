@@ -33,11 +33,10 @@ exports.quiz = function(req, res, next, id) {
     Quizzes.load(id, function(err, item) {
         if (err) return next(err);
         if (!item) return next(new Error('Failed to load quiz ' + id));
-            Questions.find({ _id : { '$in' : item.questions }}).populate('createBy', 'name username avatar').exec(function(e,questions){
+            Questions.find({ _id : { '$in' : item.questions }}).select('description listAnswer type').exec(function(e,questions){
                 if (e) return next(e);
                 if (!questions) return next(new Error('Failed to load questions of quiz ' + id));
                 item.questionList = questions;
-                console.log(item);
                 req.quiz = item;
                 next();
             });

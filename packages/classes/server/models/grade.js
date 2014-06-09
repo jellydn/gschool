@@ -8,9 +8,9 @@ var mongoose = require('mongoose'),
 
 
 /**
- * Question Schema
+ * Grade Schema
  */
-var QuestionSchema = new Schema({
+var GradeSchema = new Schema({
     createBy: {
         type: Schema.ObjectId,
         ref: 'User'
@@ -19,36 +19,28 @@ var QuestionSchema = new Schema({
         type: Schema.ObjectId,
         ref: 'Class'
     },
-    description: {
-        type: String,
-        default: '',
-        trim: true
-    },
-    type: {
-        type: String,
-        default: 'one',
-        trim: true
-    },
-    rightAnswer: {
-        type: Array
+    inQuiz: {
     },
     listAnswer: {
         type: Array
     },
+    point : {
+
+    },
     dateCreate: {
         type: Date,
         default: Date.now
-    }
+    },
 });
 
 
 /**
  * Statics
  */
-QuestionSchema.statics.load = function(id, cb) {
+GradeSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
     }).populate('createBy', 'name username avatar').exec(cb);
 };
 
-mongoose.model('Question', QuestionSchema);
+mongoose.model('Grade', GradeSchema);

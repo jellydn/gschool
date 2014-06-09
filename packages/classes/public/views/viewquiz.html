@@ -1,4 +1,4 @@
-
+<toaster-container></toaster-container>
 <section id="container" >
 <!--header start-->
 <header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
@@ -89,12 +89,28 @@
                             <a href="javascript:;" class="fa fa-times"></a>
                          </span>
                     </header>
-                    
-                    <form role="form" data-ng-submit="create()">
-
-
+                    <div class="panel-body">
+                    <form id="form-questions" name="questionsForm" role="form" class="form-horizontal">
+                        <wizard on-finish="evaluate(quiz.questionList)"> 
+                                <wz-step title="Question {{$index + 1}}" data-ng-repeat="question in quiz.questionList">
+                                    <h3>{{question.description}}</h3>
+                                    <section>
+                                        <div class="form-group">
+                                            <div class="col-lg-10 col-lg-offset-2" ng-init="inputType=getType(question.type);inputName=getName(question._id,question.type,$index)" data-ng-repeat="answer in question.listAnswer">
+                                                <input type="{{inputType}}" ng-model="answerArr[inputName]" value="{{answer}}" /> {{answer}}
+                                            </div>
+                                         </div>
+                                         <div class="form-group">
+                                            <div class="col-lg-8 col-lg-offset-2">
+                                             <input type="button" ng-show="$index == quiz.questionList.length - 1" class="btn btn-info" wz-next value="Finish" />
+                                             <input type="button" ng-show="$index < quiz.questionList.length - 1" class="btn btn-info" wz-next="processQuestion($index,question._id,question.type)" value="Continue" />
+                                             </div>
+                                        </div>
+                                    </section>
+                                </wz-step>
+                        </wizard>
                     </form>
-
+                    </div>
                    
                 </section>
             </div>

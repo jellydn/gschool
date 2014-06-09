@@ -14,6 +14,7 @@
             "public/system/lib/angular-wizard/dist/angular-wizard.min.css",
             "public/system/lib/select2/select2.css",
             "public/system/lib/AngularJS-Toaster/toaster.css",
+            "public/system/lib/angular-dialog-service/dialogs.min.css",
             "public/**/assets/css/*.css"
         ]
     },
@@ -60,6 +61,8 @@
             "public/system/lib/select2/select2.js",
             "public/system/lib/angular-animate/angular-animate.min.js",
             "public/system/lib/AngularJS-Toaster/toaster.js",
+            "public/system/lib/angular-translate/angular-translate.min.js",
+            "public/system/lib/angular-dialog-service/dialogs.min.js",
             "public/init.js",
             "public/*/*.js",
             "public/*/*/*.js",
