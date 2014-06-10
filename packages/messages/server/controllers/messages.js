@@ -76,7 +76,7 @@ exports.all = function(req, res) {
             }
         }
 
-        q.sort({ dateSent : 'desc' }).exec(function(err, messages) {
+        q.populate('from','name avatar username').sort({ dateSent : 'desc' }).exec(function(err, messages) {
             if (err) {
                 console.log(err);
                 res.render('error', {
@@ -309,8 +309,8 @@ exports.send = function(req, res) {
                     }
                 });
             };
-            res.jsonp(message);
 
+            res.jsonp(message);
             // recursive msg
             if (req.body.repeatChecked) {
                 var schedule = require('node-schedule');

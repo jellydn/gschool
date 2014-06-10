@@ -37,25 +37,25 @@
                 <i class="fa fa-envelope-o"></i>
                 <span class="badge bg-important" data-ng-show="global.unreadInbox">{{global.unreadInbox}}</span>
             </a>
-            <ul class="dropdown-menu extended inbox" data-ng-show="global.unreadInbox">
+            <ul class="dropdown-menu extended inbox">
                 <li>
-                    <p class="red">You have {{global.unreadInbox}} Mails</p>
+                    <p class="red">You have {{global.unreadInbox}} unread Mails</p>
                 </li>
-                <li>
-                    <a href="#">
-                        <span class="photo"><img alt="avatar" src="/public/lib/images/avatar-mini.jpg"></span>
+                <li data-ng-repeat="msg in global.messages">
+                    <a ng-click="global.showModal(msg);">
+                        <span class="photo"><my-avatar type="small" userid="{{msg.from._id}}" file="{{msg.from.avatar}}"></my-avatar></span>
                                 <span class="subject">
-                                <span class="from">Jonathan Smith</span>
-                                <span class="time">Just now</span>
+                                <span class="from">{{msg.from.name}}</span>
+                                <span class="time"><span data-livestamp="{{msg.dateSent}}"></span></span>
                                 </span>
-                                <span class="message">
-                                    Hello, this is an example msg.
+                                <span class="message" ng-bind-html="msg.message | limitTo:40">
                                 </span>
                     </a>
                 </li>
                 <li>
                     <a href="#!/messages">See all messages</a>
                 </li>
+
             </ul>
         </li>
         <!-- inbox dropdown end -->

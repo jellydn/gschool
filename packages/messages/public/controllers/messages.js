@@ -20,7 +20,8 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
         // Incoming
         Socket.on('onMessageCreated', function(data) {
             // check if current user in array recipients
-            if (data.to.indexOf($scope.global.user.username) !== -1) {
+            var msg = data.message;
+            if (msg.to.indexOf($scope.global.user.username) !== -1) {
                 $scope.find();
             };
         });
@@ -410,7 +411,7 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
 
             message.$save(function(response) {
                 $scope.find();
-                Socket.emit('createMessage', message);
+                Socket.emit('createMessage', {message : message , user : $scope.global.user});
                 $('#uploadfile').val('');
                 $('#exampleInputEmail3').tokenfield('createToken', '');
 
@@ -438,7 +439,6 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
           }).success(function(data, status, headers, config) {
             // file is uploaded successfully
             $scope.fileName = data.files.file.name;
-            console.log($scope.fileName);
           });
         }
         

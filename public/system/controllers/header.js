@@ -1,13 +1,24 @@
 'use strict';
 
-angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','Global', 'Menus', 'Messages','Socket',
-    function($scope, $rootScope, $http, $location, Global, Menus,Messages,Socket) {
+angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','dialogs','Global', 'Menus', 'Messages','Socket',
+    function($scope, $rootScope, $http, $location,dialogs, Global, Menus,Messages,Socket) {
         $scope.global = Global;
 
         $scope.isCollapsed = false;
 
         $scope.userinfo = $rootScope.user;
         $scope.unreadInbox = 0;
+
+        Socket.on('onMessageCreated', function(data) {
+            // check if current user in array recipients
+            var msg = data.message;
+            msg.from = data.user;
+            if (msg.to.indexOf($scope.global.user.username) !== -1) {
+                $scope.global.messages.pop();
+                $scope.global.messages.unshift(msg);
+                $scope.global.unreadInbox++;
+            };
+        });
 
         $scope.init = function(){
         	$http.get('/api/unread').success(function(response){
@@ -28,8 +39,32 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         $scope.init();
 
         $scope.$on('LoadScriptsJs', function() {
-
+           Messages.query({limit : 5 , page : 1 , inbox : 1, trash : 0 , schedule : 0 },function(messages) {
+               messages.pop(); // remove last item
+               $scope.global.messages = messages;
+            });
         });
+
+        $scope.global.showModal = function (message) {
+            $('#myModalDetailHeader h4').text('From ' + message.fromName);
+            var htmlMessage = message.message;
+            
+            if ( (typeof message.file != 'undefined') &&  message.file != "") {
+                htmlMessage +='<div id="attachment"> Your attachment: <a href="/public/uploads/' + message.file + '">' + message.file + '</a></div></br>';
+            }
+            
+            var dlg = dialogs.notify('From ' + message.from.name,htmlMessage);
+
+            $('#myModalDetailHeader').modal('show');
+
+             var msgModel = new Messages(message);
+              msgModel.$update(function() {
+                   $http.get('/api/unread').success(function(response){
+                        $scope.global.unreadInbox = response.totals;
+                    }); 
+                });
+            
+        };
     }
 ])
 .directive('myLeftMenu', function() {

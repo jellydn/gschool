@@ -1,26 +1,23 @@
 'use strict';
+var notifications = require('../controllers/notifications');
 
+var hasAuthorization = function(req, res, next) {
+    if (req.notification.to.id !== req.user.id ) {
+        return res.send(401, 'User is not authorized');
+    }
+    next();
+};
 // The Package is past automatically as first parameter
 module.exports = function(Notification, app, auth, database) {
 
-    app.get('/notification/example/anyone', function(req, res, next) {
-        res.send('Anyone can access this');
-    });
+    app.route('/notifications')
+        .get(notifications.all);
 
-    app.get('/notification/example/auth', auth.requiresLogin, function(req, res, next) {
-        res.send('Only authenticated users can access this');
-    });
+    app.route('/api/notifications/unread').get(notifications.unread,auth.requiresLogin);
 
-    app.get('/notification/example/admin', auth.requiresAdmin, function(req, res, next) {
-        res.send('Only users with Admin role can access this');
-    });
+    app.route('/notifications/:notificationId')
+        .delete(auth.requiresLogin, hasAuthorization, notifications.destroy);
 
-    app.get('/notification/example/render', function(req, res, next) {
-        Notification.render('index', {
-            package: 'notification'
-        }, function(err, html) {
-            //Rendering a view from the Package server/views
-            res.send(html);
-        });
-    });
+    // Finish with setting up the articleId param
+    app.param('notificationId', notifications.notification);
 };
