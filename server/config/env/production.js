@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = {
-    db: 'mongodb://gschool:gschool@oceanic.mongohq.com:10096/gschool-dev',
+    db: 'mongodb://localhost/gschool-production',
     app: {
-        name: 'MEAN - A Modern Stack - Production'
+        name: 'GSchool - Production'
     },
     facebook: {
         clientID: 'APP_ID',

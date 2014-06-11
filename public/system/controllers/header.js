@@ -22,7 +22,12 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
 
         Socket.on('onQuizCreated', function(data) {
             // check if current user in array recipients
-            console.log(data);
+            Notifications.query({limit : 5, page : 1 , type : 'quiz'},function(quizzes){
+                $scope.global.quizzes = quizzes;
+                $http.get('/api/notifications/unread?type=quiz').success(function(response){
+                    $scope.global.unreadQuiz = response.totals;
+                  });
+             });
         });
 
         $scope.init = function(){
