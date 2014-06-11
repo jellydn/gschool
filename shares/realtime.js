@@ -7,6 +7,10 @@ module.exports = function (socket, users) {
         socket.broadcast.emit('onMessageCreated', data);
     });
 
+    socket.on('createQuiz', function(quiz) {
+        socket.broadcast.emit('onQuizCreated', quiz);
+    });
+
     socket.on('createComment', function(comment) {
         socket.broadcast.emit('onCommentCreated', comment);
     });

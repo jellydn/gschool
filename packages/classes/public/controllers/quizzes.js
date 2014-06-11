@@ -231,6 +231,7 @@ angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$
 
             quiz.$save(function(msg) {
                 // select file again
+                Socket.emit('createQuiz', { quiz : quiz , user : $scope.global.user});
                 $location.path('classes/' + $stateParams.classId );
             });
 

@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
     Classes = mongoose.model('Class'),
     Quizzes = mongoose.model('Quiz'),
     Questions = mongoose.model('Question'),
+    Notifications = mongoose.model('Notification'),
     User = mongoose.model('User'),
     _ = require('lodash');
 
@@ -51,7 +52,6 @@ exports.quiz = function(req, res, next, id) {
  exports.create = function(req, res) {
     var quiz = new Quizzes(req.body);
     quiz.createBy = req.user;
-
     // quiz will default expired in a year
     if (req.body.expired.length) {
         quiz.expireAt = req.body.expired;
@@ -71,8 +71,26 @@ exports.quiz = function(req, res, next, id) {
             });
         } else {
             res.jsonp(quiz);
-
+            // todo:
             // send notify to inbox of our student
+            Classes.load(quiz.ofClass,function(e,classModel){
+                if (e) {
+                    console.error(e)
+                }
+                else
+                {
+                    for(var index = 0 ; index <classModel.members.length ; index++){
+                        var notify = new Notifications();
+                        notify.source = quiz;
+                        notify.from = req.user;
+                        notify.to = classModel.members[index];
+                        notify.type = 'quiz';
+                        notify.content =  req.user.name + ' has created quiz "'+ quiz.name +'" on your class.';
+                        notify.save();
+                    }
+                }
+            });
+            
 
         }
     });

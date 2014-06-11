@@ -16,8 +16,10 @@ var NotificationSchema = new Schema({
         ref: 'User'
     },
     to: {
-        type: Schema.ObjectId,
-        ref: 'User'
+        type: String
+    },
+    source: {
+        type: Schema.ObjectId
     },
     content: {
         type: String,
@@ -33,7 +35,8 @@ var NotificationSchema = new Schema({
         default: '',
     },
     status : {
-        type: String
+        type: String,
+        default: 'unread'
     },
     type : {
         type: String
@@ -47,7 +50,7 @@ var NotificationSchema = new Schema({
 NotificationSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('from', 'name username').populate('to', 'name username').exec(cb);
+    }).populate('from', 'name username').exec(cb);
 };
 
 mongoose.model('Notification', NotificationSchema);

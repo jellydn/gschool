@@ -1,14 +1,14 @@
 'use strict';
 
-angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','dialogs','Global', 'Menus', 'Messages','Socket',
-    function($scope, $rootScope, $http, $location,dialogs, Global, Menus,Messages,Socket) {
+angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','dialogs','Global', 'Menus', 'Messages', 'Notifications', 'Socket',
+    function($scope, $rootScope, $http, $location,dialogs, Global, Menus,Messages,Notifications,Socket) {
         $scope.global = Global;
 
         $scope.isCollapsed = false;
 
         $scope.userinfo = $rootScope.user;
         $scope.unreadInbox = 0;
-
+        $scope.unreadQuiz = 0;
         Socket.on('onMessageCreated', function(data) {
             // check if current user in array recipients
             var msg = data.message;
@@ -20,9 +20,18 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
             };
         });
 
+        Socket.on('onQuizCreated', function(data) {
+            // check if current user in array recipients
+            console.log(data);
+        });
+
         $scope.init = function(){
         	$http.get('/api/unread').success(function(response){
-        		$scope.global.unreadInbox = response.totals;
+            $scope.global.unreadInbox = response.totals;
+          });
+
+          $http.get('/api/notifications/unread?type=quiz').success(function(response){
+        		$scope.global.unreadQuiz = response.totals;
         	});
 
           $http.get('/users/me').success(function(user){
@@ -43,7 +52,22 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
                messages.pop(); // remove last item
                $scope.global.messages = messages;
             });
+           // list notification
+           Notifications.query({limit : 5, page : 1 , type : 'quiz'},function(quizzes){
+              $scope.global.quizzes = quizzes;
+           });
+
         });
+
+        $scope.global.markRead = function(notify){
+          var quizNotificationModel = new Notifications(notify);
+              quizNotificationModel.status = 'read';
+              quizNotificationModel.$update(function() {
+                   $http.get('/api/notifications/unread?type=quiz').success(function(response){
+                    $scope.global.unreadQuiz = response.totals;
+                  });
+                });
+        }
 
         $scope.global.showModal = function (message) {
             $('#myModalDetailHeader h4').text('From ' + message.fromName);
