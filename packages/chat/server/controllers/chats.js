@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Chat = mongoose.model('Chat'),
+    Notifications = mongoose.model('Notification'),
     User = mongoose.model('User'),
     _ = require('lodash');
 
@@ -167,6 +168,15 @@ exports.chat = function(req, res, next, id) {
             Chat.load(chat._id, function(err, data) {
                 if (err) return next(err);
                 res.jsonp(data);
+                // notify to receiver
+                var notify = new Notifications();
+                notify.source = chat;
+                notify.from = req.user;
+                notify.to = data.to.username;
+                notify.type = 'activity';
+                notify.content =  req.user.name + ' has sent chat mesasge to you.';
+                notify.save();
+                
             });
         }
     });

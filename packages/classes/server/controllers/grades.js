@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Classes = mongoose.model('Class'),
+    Notifications = mongoose.model('Notification'),
     Questions = mongoose.model('Question'),
     Quizzes = mongoose.model('Quiz'),
     Grades = mongoose.model('Grade'),
@@ -34,7 +35,6 @@ exports.all = function(req, res) {
  */
 
  exports.create = function(req, res) {
-    console.log(req.body);
 
     Quizzes.load(req.body.quizId, function(err, item) {
         if (err) return next(err);
@@ -121,6 +121,14 @@ exports.all = function(req, res) {
                             });
                         } else {
                             res.jsonp(grade);
+                            // notify to student
+                            var notify = new Notifications();
+                            notify.source = grade;
+                            notify.from = req.user;
+                            notify.to = req.user.username;
+                            notify.type = 'activity';
+                            notify.content =  req.user.name + ' have got '+ grade.point + ' point.';
+                            notify.save();
                         }
                     });
                 }

@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Classes = mongoose.model('Class'),
+    Notifications = mongoose.model('Notification'),
     Message = mongoose.model('Message'),
     Note = mongoose.model('Note'),
     Comment = mongoose.model('Comment'),
@@ -210,6 +211,13 @@ exports.class = function(req, res, next, id) {
             });
         } else {
             res.jsonp(classModel);
+            var notify = new Notifications();
+            notify.source = classModel;
+            notify.from = req.user;
+            notify.to = req.user.username;
+            notify.type = 'activity';
+            notify.content =  req.user.name + ' has created class '+ classModel.name;
+            notify.save();
         }
     });
 };
@@ -251,12 +259,26 @@ exports.join = function(req,res){
             });
         } else {
             res.jsonp(classModel);
+            classModel.populate('createBy','name').exec(function(item){
+                if (req.query.task == 'join') {
+                    // notify to member and teacher of class
+                    var notify = new Notifications();
+                    notify.source = item;
+                    notify.from = req.user;
+                    notify.to = item.createBy.username;
+                    notify.type = 'activity';
+                    notify.content =  req.user.name + ' has joined class '+ item.name;
+                    notify.save();
+                };
+            })
+            
+            
         }
     });
 }
 
 /**
- * Update an note
+ * Update an class
  */
 exports.update = function(req, res) {
     var classModel = req.class;

@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Message = mongoose.model('Message'),
+    Notifications = mongoose.model('Notification'),
     User = mongoose.model('User'),
     Schedule = mongoose.model('Schedule'),
     _ = require('lodash');
@@ -311,6 +312,23 @@ exports.send = function(req, res) {
             };
 
             res.jsonp(message);
+
+            // notify to receiver
+            if(!req.body.repeatChecked)
+            {
+                for (var i = 0; i < message.to.length; i++) {
+                    var username = message.to[i];
+                    var notify = new Notifications();
+                    notify.source = message;
+                    notify.from = req.user;
+                    notify.to = username;
+                    notify.type = 'activity';
+                    notify.content =  req.user.name + ' has sent mail to you.';
+                    notify.save();
+                };
+            }
+            
+
             // recursive msg
             if (req.body.repeatChecked) {
                 var schedule = require('node-schedule');

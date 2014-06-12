@@ -5,14 +5,17 @@ module.exports = function (socket, users) {
      
     socket.on('createMessage', function(data) {
         socket.broadcast.emit('onMessageCreated', data);
+        socket.broadcast.emit('onNotifyCreated', data);
     });
 
     socket.on('createQuiz', function(quiz) {
         socket.broadcast.emit('onQuizCreated', quiz);
+        socket.broadcast.emit('onNotifyCreated', quiz);
     });
 
     socket.on('createComment', function(comment) {
         socket.broadcast.emit('onCommentCreated', comment);
+        socket.broadcast.emit('onNotifyCreated', comment);
     });
 
     // send for current online for new user
@@ -60,7 +63,6 @@ module.exports = function (socket, users) {
     // user logout or disconnect
 
     socket.on('disconnect',function(){
-        console.log('user logout or disconnect');
         users.removeUser(userName);
         socket.broadcast.emit("listOnlineUser", users.get());
     });

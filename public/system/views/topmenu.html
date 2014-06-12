@@ -16,8 +16,9 @@
                         <div class="task-info clearfix">
                             <div class="desc pull-left">
                                 <h5>{{notify.content}}</h5>
+                                
                             </div>
-                            </span>
+                            <span class="time"><span data-livestamp="{{notify.dateCreate}}"></span></span>
                         </div>
                     </a>
                 </li>
@@ -36,7 +37,7 @@
             </a>
             <ul class="dropdown-menu extended inbox">
                 <li>
-                    <p class="red">You have {{global.unreadInbox}} unread Mails</p>
+                    <p class="red">You have {{global.unreadInbox}} unread mails.</p>
                 </li>
                 <li data-ng-repeat="msg in global.messages">
                     <a ng-click="global.showModal(msg);">
@@ -61,19 +62,22 @@
             <a data-toggle="dropdown" class="dropdown-toggle" href="#">
 
                 <i class="fa fa-bell-o"></i>
-                <span class="badge bg-warning">3</span>
+                <span class="badge bg-warning" data-ng-show="global.unreadNotify">{{global.unreadNotify}}</span>
             </a>
             <ul class="dropdown-menu extended notification">
                 <li>
-                    <p>Notifications</p>
+                    <p>{{global.unreadNotify}} unread notifications.</p>
                 </li>
-                <li>
+                <li data-ng-repeat="notify in global.notifications">
                     <div class="alert alert-info clearfix">
-                        <span class="alert-icon"><i class="fa fa-bolt"></i></span>
                         <div class="noti-info">
-                            <a href="#"> Server #1 overloaded.</a>
+                            <a ng-click="global.markRead(notify);"> {{notify.content}}</a>
+                             (<span data-livestamp="{{notify.dateCreate}}"></span>)
                         </div>
                     </div>
+                </li>
+                <li>
+                    <a href="#!/activities">See All Notifications</a>
                 </li>
             </ul>
         </li>

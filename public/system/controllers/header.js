@@ -9,6 +9,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         $scope.userinfo = $rootScope.user;
         $scope.unreadInbox = 0;
         $scope.unreadQuiz = 0;
+        $scope.unreadNotify = 0;
         Socket.on('onMessageCreated', function(data) {
             // check if current user in array recipients
             var msg = data.message;
@@ -30,6 +31,16 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
              });
         });
 
+        Socket.on('onNotifyCreated', function(data) {
+            // check if current user in array recipients
+            Notifications.query({limit : 10, page : 1 , type : 'activity'},function(notifications){
+                $scope.global.notifications = notifications;
+                $http.get('/api/notifications/unread?type=activity').success(function(response){
+                    $scope.global.unreadNotify = response.totals;
+                  });
+             });
+        });
+
         $scope.init = function(){
         	$http.get('/api/unread').success(function(response){
             $scope.global.unreadInbox = response.totals;
@@ -38,6 +49,10 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
           $http.get('/api/notifications/unread?type=quiz').success(function(response){
         		$scope.global.unreadQuiz = response.totals;
         	});
+
+          $http.get('/api/notifications/unread?type=activity').success(function(response){
+            $scope.global.unreadNotify = response.totals;
+          });
 
           $http.get('/users/me').success(function(user){
               $scope.global.user = user;
@@ -62,12 +77,18 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
               $scope.global.quizzes = quizzes;
            });
 
+            Notifications.query({limit : 5, page : 1 , type : 'activity'},function(notifications){
+              $scope.global.notifications = notifications;
+           });
         });
 
         $scope.global.markRead = function(notify){
           var quizNotificationModel = new Notifications(notify);
               quizNotificationModel.status = 'read';
-              quizNotificationModel.$update(function() {
+              quizNotificationModel.$update(function(resp) {
+                   $http.get('/api/notifications/unread?type=activity').success(function(response){
+                      $scope.global.unreadNotify = response.totals;
+                    });
                    $http.get('/api/notifications/unread?type=quiz').success(function(response){
                     $scope.global.unreadQuiz = response.totals;
                   });

@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Note = mongoose.model('Note'),
+    Notifications = mongoose.model('Notification'),
     Comment = mongoose.model('Comment'),
     Classes = mongoose.model('Class'),
     Message = mongoose.model('Message'),
@@ -76,6 +77,15 @@ exports.note = function(req, res, next, id) {
         } else {
             res.jsonp(note);
 
+            // notify to owner
+            var notify = new Notifications();
+            notify.source = note;
+            notify.from = req.user;
+            notify.to = req.user.username;
+            notify.type = 'activity';
+            notify.content =  req.user.name + ' has created note "' + note.title + '"' ;
+            notify.save();
+
             // send to inbox
             if ( ( typeof req.body.members != 'undefined') ) {
               
@@ -95,6 +105,18 @@ exports.note = function(req, res, next, id) {
                             });
                         } 
                      });
+
+                     // notify to shared note user
+                     for (var i = 0; i < req.body.members.length; i++) {
+                         var username = req.body.members[i];
+                         var notify = new Notifications();
+                            notify.source = note;
+                            notify.from = req.user;
+                            notify.to = username;
+                            notify.type = 'activity';
+                            notify.content =  req.user.name + ' has shared note "' + note.title + '" with you.' ;
+                            notify.save();
+                     };
                 };
             };
 

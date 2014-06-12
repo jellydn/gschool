@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('MessageController', ['$scope','$upload', '$stateParams','$http', '$location', 'Global', 'Messages', 'Socket',
-    function($scope, $upload, $stateParams, $http, $location, Global, Messages, Socket) {
+angular.module('mean').controller('MessageController', ['$scope','$upload', '$stateParams','$http', '$location', 'Global','dialogs', 'Messages', 'Socket',
+    function($scope, $upload, $stateParams, $http, $location, Global, dialogs, Messages, Socket) {
         $scope.global = Global;
         $scope.limit = 10;
         $scope.fromOffset = 0;

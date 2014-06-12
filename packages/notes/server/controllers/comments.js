@@ -5,6 +5,7 @@
  */
 var mongoose = require('mongoose'),
     Note = mongoose.model('Note'),
+    Notifications = mongoose.model('Notification'),
     Comment = mongoose.model('Comment'),
     User = mongoose.model('User'),
     _ = require('lodash');
@@ -71,6 +72,20 @@ exports.comment = function(req, res, next, id) {
                         else
                         {
                             note.totalComments = totals;
+
+                            // notify to member and owner of note
+
+                            for (var i = 0; i < note.sendToMembers.length; i++) {
+                                var username = note.sendToMembers[i];
+                                var notify = new Notifications();
+                                notify.source = comment;
+                                notify.from = req.user;
+                                notify.to = req.user.username;
+                                notify.type = 'activity';
+                                notify.content =  req.user.name + ' has commented on note "' + note.title + '"' ;
+                                notify.save();
+                            };
+
                             note.save(); 
                         }
                     });

@@ -30,7 +30,7 @@ exports.all = function(req, res) {
 
    var query = Notifications.find({to : req.user.username , type : req.query.type }).limit(req.query.limit);
 
-   query.exec(function(err,items){
+   query.sort({ dateCreate : 'desc' }).exec(function(err,items){
         if (err) {
                 console.log(err);
                 res.render('error', {

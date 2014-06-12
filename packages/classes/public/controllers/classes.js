@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','Classes','Notes','Quizzes','Socket',
-    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,Classes,Notes,Quizzes,Socket) {
+angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','dialogs','Classes','Notes','Quizzes','Socket',
+    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,dialogs,Classes,Notes,Quizzes,Socket) {
         $scope.global = Global;
         $scope.global.classActive = "active";
         $scope.fileName = "";        
@@ -141,7 +141,7 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
             $('#myModalDetail').modal('hide');
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
-
+            $('.dialogs-default button').trigger('click');
             Classes.get({
                 classId: $stateParams.classId
             }, function(classModel) {
