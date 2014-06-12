@@ -123,8 +123,13 @@ exports.class = function(req, res, next, id) {
                 if (e) return next(e);
                 if (!quizzes) return next(new Error('Failed to load quizzes of class ' + id));
                 item.quizzes = quizzes;
-                req.class = item;
-                next();
+                User.find({username : {'$in' : item.members}},'name username avatar').exec(function(e,students){
+                    if (e) return next(e);
+                    if (!students) return next(new Error('Failed to load students of class ' + id));
+                    item.students = students;
+                    req.class = item;
+                    next();
+                });
             });
         });
 

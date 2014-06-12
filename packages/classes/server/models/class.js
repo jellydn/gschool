@@ -71,6 +71,15 @@ ClassSchema
   this._quizzes = obj;
 });
 
+ClassSchema
+.virtual('students')
+.get(function () {
+  return this._students;
+})
+.set(function (obj) {
+  this._students = obj;
+});
+
 ClassSchema.set('toJSON', {
    virtuals: true
 });

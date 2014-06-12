@@ -363,10 +363,27 @@
 
                     <span><i class="fa fa-user"></i></span><li class="metaDescription">{{class.createBy.name}}</li>
                      <p> {{class.createBy.name}} bio (from profile page) </p>
+                     <span><i class="fa fa-group"></i>Members</span>
+                     <div class="row">
+                        <div class="col-md-4" data-ng-repeat="student in class.students">
+                        <!--widget start-->
+                        <aside class="profile-nav alt">
+                            <section class="panel">
+                                <div class="user-heading alt gray-bg">
+                                    <a href="#">
+                                        <my-avatar userid="{{student.id}}" file="{{student.avatar}}" type="medium"></my-avatar>
+                                    </a>
+                                    <h1>{{student.name}}</h1>
+                                </div>
 
+                            </section>
+                        </aside>
+                        <!--widget end-->
+                        </div>
+                     </div>
 
                         </div>
-                        
+                    
 
                     </header>
                                 </div>
