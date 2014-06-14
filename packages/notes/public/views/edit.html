@@ -129,6 +129,38 @@
                         </div>
                     </div>
 
+                    <section class="panel">
+                        <header class="panel-heading">
+                          Note attachments
+                            <span class="tools pull-right">
+                                <a href="javascript:;" class="fa fa-chevron-down"></a>
+                                <a href="javascript:;" class="fa fa-cog"></a>
+                                <a href="javascript:;" class="fa fa-times"></a>
+                             </span>
+                        </header>
+                        <div class="panel-body">
+                            <ul data-ng-repeat="file in note.fileNames">
+                                <li>
+                                    <a href="/public/uploads/notes/{{global.user._id}}/{{file}}"> {{file}} </a>
+                                    <a class="btn" data-ng-click="removeFile(note,file);">
+                                        <i class="glyphicon glyphicon-trash"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                     </section>
+
+                    <div class="form-group">
+                         <div class="panel-body">
+                            <div class="col-sm-12">
+                                  <input type="file" ng-file-select="onFileSelect($files)" multiple>
+
+                            </div>
+
+                        </div>
+                    </div>
+
+
                     <div class="form-group">
                          <div class="panel-body">
                             <div class="col-sm-12">

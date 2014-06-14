@@ -224,6 +224,17 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
             }
         };
 
+        $scope.removeFile = function(note,file){
+            for (var i in note.fileNames) {
+                    if (note.fileNames[i] === file) {
+                        note.fileNames.splice(i, 1);
+                    }
+            }
+            note.$update(function() {
+                //todo: remove file
+            });
+        }
+
         $scope.update = function() {
             var note = $scope.note;
             note.content = $('.wysihtml5').val();
@@ -232,7 +243,6 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
                 note.updated = [];
             }
             note.updated.push(new Date().getTime());
-
             var classArr = [];
             var classIdArr = [];
             var membersArr = [];
@@ -247,6 +257,13 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
 
             note.sendToClass = classArr;
             note.sendToClassIds = classIdArr;
+
+            if ($scope.fileNames.length) {
+                for (var i = 0; i < $scope.fileNames.length; i++) {
+                    var filename = $scope.fileNames[i];
+                    note.fileNames.push(filename);
+                };
+            };
 
             note.$update(function() {
                 $location.path('notes/' + note._id);

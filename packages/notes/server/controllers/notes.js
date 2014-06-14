@@ -234,7 +234,41 @@ exports.show = function(req, res) {
 exports.update = function(req, res) {
     var note = req.note;
 
+    // upload file
+
     note = _.extend(note, req.body);
+
+    if (note.fileNames.length) {
+         var fs = require('fs-extra');
+         var path = require('path');
+
+         // move file
+        var new_location = './public/uploads/notes/' + req.user._id + '/';
+        fs.mkdirs(new_location, function(err){
+          if (err) return console.error(err);
+          console.log("create folder!")
+        });
+
+
+        for (var i = 0; i < note.fileNames.length; i++) {
+            var fileName = note.fileNames[i];
+            fs.copy('./public/uploads/tmp/' + req.user._id + fileName, new_location + fileName, function(err) {  
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("move file success!")
+                // remove tmp file
+                fs.remove('./public/uploads/tmp/' + req.user._id + fileName,function(e){
+                    if(e)
+                        return console.error(e);
+                });
+                
+            }   
+        });
+        };
+        
+    };
+
     note.save(function(err) {
         if (err) {
             return res.send('users/signup', {

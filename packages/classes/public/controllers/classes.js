@@ -159,10 +159,7 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
               })
               .progress(function(evt) {
                 var percent =parseInt(100.0 * evt.loaded / evt.total);
-                $('#progress').html('<div class="progress"><div class="progress-bar" role="progressbar" aria-valuenow="'+percent+'" aria-valuemin="0" aria-valuemax="100" style="width: '+percent+'%;">'+percent+'%</div></div>');
-                if (percent == 100) {
-                    $('#progress').html('');
-                };
+                
               });
             }
         
