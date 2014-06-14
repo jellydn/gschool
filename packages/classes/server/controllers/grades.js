@@ -104,7 +104,7 @@ exports.all = function(req, res) {
                     grade.point = point + '/' + answerData.length;
                     grade.listAnswer = answerData;
 
-                    item.playMembers.push({ id : req.user.id , name : req.user.name, username : req.user.username, point : grade.point });
+                    item.playMembers.push({ id : req.user.id , createDate : Date.now() , name : req.user.name, username : req.user.username, point : grade.point });
 
                     item.save(function(er){
                         if(er)

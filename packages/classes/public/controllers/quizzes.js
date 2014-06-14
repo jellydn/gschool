@@ -218,6 +218,10 @@ angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$
             });
         };
 
+        $scope.listGrade = function(){
+
+        }
+
         // create quiz
         $scope.create = function() {
             var questionsSelection = $('#selectQuestion').select2('val');

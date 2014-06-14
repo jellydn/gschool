@@ -47,6 +47,13 @@ angular.module('mean').config(['$stateProvider',
                     loggedin: checkLoggedin
                 }
             })
+            .state('view grade quiz', {
+                url: '/quizzes/:quizId/grade',
+                templateUrl: 'classes/views/viewgrade.html',
+                resolve: {
+                    loggedin: checkLoggedin
+                }
+            })
             .state('edit class', {
                 url: '/classes/:classId/edit',
                 templateUrl: 'classes/views/edit.html',
