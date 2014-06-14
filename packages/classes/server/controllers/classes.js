@@ -127,8 +127,13 @@ exports.class = function(req, res, next, id) {
                     if (e) return next(e);
                     if (!students) return next(new Error('Failed to load students of class ' + id));
                     item.students = students;
-                    req.class = item;
-                    next();
+                    Notifications.find({group : 'Grade', source : id }).exec(function(e,gradebook){
+                        if (e) return next(e);
+                        if (!gradebook) return next(new Error('Failed to load students of class ' + id));
+                        item.gradebook = gradebook;
+                        req.class = item;
+                        next();
+                    });
                 });
             });
         });

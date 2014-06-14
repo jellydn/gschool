@@ -56,6 +56,7 @@ exports.notification = function(req, res, next, id) {
 exports.update = function(req, res) {
     var notification = req.notification;
     notification = _.extend(notification, req.body);
+    notification.dateOpen = Date.now();
     notification.save(function(err) {
         if (err) {
             return res.send('users/signup', {

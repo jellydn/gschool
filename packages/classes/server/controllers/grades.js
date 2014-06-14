@@ -123,12 +123,23 @@ exports.all = function(req, res) {
                             res.jsonp(grade);
                             // notify to student
                             var notify = new Notifications();
-                            notify.source = grade;
+                            notify.source = req.quiz.ofClass;
                             notify.from = req.user;
                             notify.to = req.user.username;
-                            notify.type = 'activity';
-                            notify.content =  req.user.name + ' have got '+ grade.point + ' point.';
+                            notify.group = 'Grade';
+                            notify.type = 'coins';
+                            notify.data = point;
+                            notify.content = 'You earned '+point+' coins from <a href="#!/quizzes/'+req.quiz._id+'">'+ req.quiz.name + '</a>.';
                             notify.save();
+
+                            var notify1 = new Notifications();
+                            notify1.source = req.quiz.ofClass;
+                            notify1.from = req.user;
+                            notify1.to = req.user.username;
+                            notify1.group = 'Grade';
+                            notify1.type = 'grade';
+                            notify1.content = 'You got '+point+' questions right from '+answerData.length+' Questions in <a href="#!/quizzes/'+req.quiz._id+'">'+ req.quiz.name + '</a>.';
+                            notify1.save();
                         }
                     });
                 }

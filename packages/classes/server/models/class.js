@@ -80,6 +80,15 @@ ClassSchema
   this._students = obj;
 });
 
+ClassSchema
+.virtual('gradebook')
+.get(function () {
+  return this._gradebook;
+})
+.set(function (obj) {
+  this._gradebook= obj;
+});
+
 ClassSchema.set('toJSON', {
    virtuals: true
 });

@@ -74,6 +74,46 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
             return $scope.global.isAdmin || quiz.createBy._id === $scope.global.user._id;
         };
 
+        $scope.hasPlay = function(quiz,username){
+            var hasPlayClass = "";
+            _.findKey(quiz.playMembers, function(chr) {
+                if (chr.username == username) {
+                    hasPlayClass = "green";
+                };
+            });
+            return hasPlayClass;
+        }
+
+        $scope.getPoint = function(quiz,username){
+            var point = "N/A";
+            _.findKey(quiz.playMembers, function(chr) {
+                if (chr.username == username) {
+                    point = chr.point;
+                };
+            });
+            return point;
+        }
+
+        $scope.getGradeType = function(type,coins){
+            if (type == 'coins') {
+                return '+' + coins;
+            }
+            else
+            {
+                return '<i class="fa fa-list"></i>';
+            }
+        }
+
+        $scope.getGradeColor = function(type){
+            if (type == 'coins') {
+                return 'purple';
+            }
+            else
+            {
+                return 'red';
+            }
+        }
+
         // invite students
 
         $scope.invite = function(){

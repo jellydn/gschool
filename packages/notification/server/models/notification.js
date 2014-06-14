@@ -38,8 +38,14 @@ var NotificationSchema = new Schema({
         type: String,
         default: 'unread'
     },
+    group : {
+        type: String,
+        default: 'System'
+    },
     type : {
         type: String
+    },
+    data : {
     }
 });
 

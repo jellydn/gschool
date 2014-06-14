@@ -424,7 +424,54 @@
                                 </div>
                             </div>
                             <div id="quizzes" class="tab-pane">
-                                <div class="row">
+
+                                <!-- For student -->
+                                <div class="row" data-ng-show="class.createBy._id != global.user._id">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                        <div class="col-md-3" data-ng-repeat="quiz in class.quizzes| orderBy:'-dateCreate' ">
+                                            <div class="mini-stat clearfix">
+                                                <span class="mini-stat-icon {{hasPlay(quiz,global.user.username)}}"><i class="fa fa-list"></i></span>
+                                                <div class="mini-stat-info">
+                                                    <a href="/#!/quizzes/{{quiz._id}}"><span>{{getPoint(quiz,global.user.username)}}</span>
+                                                    {{quiz.name}}</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        </div>
+                                        <section class="panel">
+                 
+                                        <div class="panel-body">
+                                        
+                                         <div class="col-md-12">
+                                                            <div class="recent-act">
+                                                                <h1>Grades Activity</h1>
+                                                            
+                                                                 <div class="activity-icon purple">
+                                                                    <i class="fa fa-dot-circle-o"></i>
+                                                                </div>
+                                                                <div class="activity-icon {{getGradeColor(notify.type)}}" ng-repeat-start="notify in class.gradebook" ng-bind-html="getGradeType(notify.type,notify.data)">
+                                                                    
+                                                                </div>
+                                                                <div class="activity-desk" ng-repeat-end>
+
+
+                                                                    <h2 class="{{getGradeColor(notify.type)}}" data-livestamp="{{notify.dateCreate}}"></h2>
+                                                                      
+                                                                    <p ng-bind-html="notify.content"></p>
+                                                                
+                                                                </div>  
+
+                                                            </div>
+                                                        </div>
+                                        
+                                        </div>
+
+                                    </section>
+                                    </div>
+                                </div>
+                                <!-- For teacher -->
+                                <div class="row" data-ng-show="class.createBy._id == global.user._id">
                                     <div class="col-sm-12">
                        
                                     <div class="col-md-4" data-ng-repeat="quiz in class.quizzes| orderBy:'-dateCreate' ">
@@ -452,6 +499,7 @@
                                         </div>
 
                                     </div>
+                                    <h3 data-ng-hide="class.createBy._id == global.user._id && !class.quizzes || class.quizzes.length">No quizzes yet. <br> Why don't you <a href="/#!/classes/{{class._id}}/quiz">Create One</a>?</h3>
                                 </div>
                             </div>
                         </div>
