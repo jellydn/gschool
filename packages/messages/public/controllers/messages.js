@@ -17,6 +17,7 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
         $scope.heading = "Inbox";
         $scope.fileName = "";
         $scope.repeatTime = "";
+        $scope.uploadProgress = 0;
         // Incoming
         Socket.on('onMessageCreated', function(data) {
             // check if current user in array recipients
@@ -428,7 +429,7 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
 
         // upload file
         $scope.onFileSelect = function($files) {
-
+        var dlg = dialogs.wait('Upload your file',undefined,$scope.uploadProgress);
         for (var i = 0; i < $files.length; i++) {
           var file = $files[i];
           $scope.upload = $upload.upload({
@@ -436,7 +437,16 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
             method: 'POST',
             withCredentials: true,
             file: file
-          }).success(function(data, status, headers, config) {
+          }).progress(function(evt) {
+             $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total);
+             if ($scope.uploadProgress == 100) {
+                $scope.$broadcast('dialogs.wait.complete');
+                $scope.uploadProgress = 0;
+             }    
+             else
+                $scope.$broadcast('dialogs.wait.progress',{'progress' : $scope.uploadProgress});
+          })
+          .success(function(data, status, headers, config) {
             // file is uploaded successfully
             $scope.fileName = data.files.file.name;
           });
