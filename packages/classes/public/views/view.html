@@ -367,17 +367,12 @@
                      <div class="row">
                         <div class="col-md-4" data-ng-repeat="student in class.students">
                         <!--widget start-->
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <my-avatar userid="{{student.id}}" file="{{student.avatar}}" type="medium"></my-avatar>
-                                    </a>
-                                    <h1>{{student.name}}</h1>
-                                </div>
-
-                            </section>
-                        </aside>
+                        <div class="user-heading alt">
+                            <a href="#">
+                                <my-avatar userid="{{student.id}}" file="{{student.avatar}}" type="medium"></my-avatar>
+                            </a>
+                            <h4>{{student.name}}</h4>
+                        </div>
                         <!--widget end-->
                         </div>
                      </div>
