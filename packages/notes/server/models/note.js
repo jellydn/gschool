@@ -25,6 +25,9 @@ var NoteSchema = new Schema({
         default: '',
         trim: true
     },
+    fileNames : {
+        type : Array
+    },
     tags: {
         type: Array
     },

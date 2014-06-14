@@ -19,6 +19,8 @@ module.exports = function(Notes, app, auth, database) {
         .put(auth.requiresLogin, hasNoteAuthorization , notes.update)
         .delete(auth.requiresLogin, hasNoteAuthorization, notes.destroy);
 
+     app.route('/upload/note').post(auth.requiresLogin,notes.upload);
+
     // Finish with setting up the articleId param
     app.param('noteId', notes.note);
 };

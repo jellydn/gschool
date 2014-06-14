@@ -1,15 +1,37 @@
 'use strict';
 
-angular.module('mean').controller('NotesController', ['$scope', '$stateParams','$http', '$location', 'Global', 'Notes', 'Comments', 'Classes','Socket',
-    function($scope, $stateParams, $http, $location, Global, Notes, Comments,Classes,Socket) {
+angular.module('mean').controller('NotesController', ['$scope','$rootScope','$upload', '$stateParams','$http', '$location', 'Global', 'Notes', 'Comments', 'Classes','Socket',
+    function($scope,$rootScope, $upload, $stateParams, $http, $location, Global, Notes, Comments,Classes,Socket) {
         $scope.global = Global;
         $scope.isEditModel = false;
+        $scope.fileNames = [];
         // Incoming
         Socket.on('onCommentCreated', function(data) {
             if (data.onNote  == $stateParams.noteId ) {
                 $scope.findComment();
             };
         });
+
+        $scope.onFileSelect = function($files) {
+            $scope.fileNames = [];
+            for (var i = 0; i < $files.length; i++) {
+              var file = $files[i];
+              $scope.upload = $upload.upload({
+                url: '/upload/note', 
+                method: 'POST',
+                withCredentials: true,
+                file: file
+              }).success(function(data, status, headers, config) {
+                // file is uploaded successfully
+                $scope.fileNames.push(data.files.file.name);
+              })
+              .progress(function(evt) {
+                var percent =parseInt(100.0 * evt.loaded / evt.total);
+                console.log(percent);
+              });
+            }
+        
+      };
 
         // utility function
         $scope.$on('LoadJs', function() {
@@ -168,7 +190,8 @@ angular.module('mean').controller('NotesController', ['$scope', '$stateParams','
                 classes : classArr,
                 classesIds : classIdArr,
                 members : membersArr,
-                quickComment : this.quickComment
+                quickComment : this.quickComment,
+                fileNames : $scope.fileNames
             });
 
             note.$save(function(response) {

@@ -442,7 +442,8 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
 
 
         $scope.onFileSelect = function($files) {
-        var dlg = dialogs.wait('Upload your file',undefined,$scope.uploadProgress);
+        if ($files.length) 
+            var dlg = dialogs.wait('Upload your file','Upload your file in progress',$scope.uploadProgress);
         for (var i = 0; i < $files.length; i++) {
           var file = $files[i];
           $scope.upload = $upload.upload({

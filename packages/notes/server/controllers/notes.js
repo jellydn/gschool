@@ -12,6 +12,45 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     _ = require('lodash');
 
+// process upload file
+exports.upload = function(req,res){
+    var formidable = require('formidable'),fs = require('fs-extra'), util = require('util');
+
+    var form = new formidable.IncomingForm();
+    
+    form.parse(req, function(err, fields, files) {
+      res.jsonp({ files: files});
+    });
+    
+    form.on('error', function(err) {
+        console.error(err);
+    });
+
+    form.on('progress', function(bytesReceived, bytesExpected) {
+        var percent_complete = (bytesReceived / bytesExpected) * 100;
+        console.log(percent_complete.toFixed(2));
+    });
+
+    form.on('end', function(fields, files) {
+        /* Temporary location of our uploaded file */
+        var temp_path = this.openedFiles[0].path;
+        /* The file name of the uploaded file */
+        var file_name = this.openedFiles[0].name;
+        /* Location where we want to copy the uploaded file */
+        // Todo: Clean temp folder
+        var new_location = './public/uploads/tmp/';
+ 
+        fs.copy(temp_path, new_location  + req.user._id + file_name, function(err) {  
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("upload success!")
+            }
+        });
+    });
+    
+
+}
 
 /**
  * List of notes
@@ -63,7 +102,40 @@ exports.note = function(req, res, next, id) {
  exports.create = function(req, res) {
     var note = new Note(req.body);
     note.createBy = req.user;
-    // todo: send to class and member
+
+    if (note.fileNames.length) {
+         var fs = require('fs-extra');
+         var path = require('path');
+
+         // move file
+        var new_location = './public/uploads/notes/' + req.user._id + '/';
+        fs.mkdirs(new_location, function(err){
+          if (err) return console.error(err);
+          console.log("create folder!")
+        });
+
+
+        for (var i = 0; i < note.fileNames.length; i++) {
+            var fileName = note.fileNames[i];
+            fs.copy('./public/uploads/tmp/' + req.user._id + fileName, new_location + fileName, function(err) {  
+            if (err) {
+                console.error(err);
+            } else {
+                console.log("move file success!")
+                // remove tmp file
+                fs.remove('./public/uploads/tmp/' + req.user._id + fileName,function(e){
+                    if(e)
+                        return console.error(e);
+                });
+                
+            }   
+        });
+        };
+
+        
+        
+    };
+
     note.tags = req.body.tags.split(',');
     note.sendToClass = req.body.classes;
     note.sendToClassIds = req.body.classesIds;
