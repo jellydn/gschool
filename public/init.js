@@ -18,7 +18,7 @@ for (var index in window.modules) {
 
 // Default modules
 // add 'ui.select2', 'ngSanitize'
-var modules = ['dialogs.main','pascalprecht.translate','toaster','ngAnimate','mgo-angular-wizard','ngSanitize','ngCookies', 'ngResource', 'ui.bootstrap', 'ui.router', 'mean.system', 'mean.auth'];
+var modules = ['angular-loading-bar','dialogs.main','pascalprecht.translate','toaster','ngAnimate','mgo-angular-wizard','ngSanitize','ngCookies', 'ngResource', 'ui.bootstrap', 'ui.router', 'mean.system', 'mean.auth'];
 modules = modules.concat(packageModules);
 
 // Combined modules

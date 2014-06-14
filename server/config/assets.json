@@ -15,6 +15,7 @@
             "public/system/lib/select2/select2.css",
             "public/system/lib/AngularJS-Toaster/toaster.css",
             "public/system/lib/angular-dialog-service/dialogs.min.css",
+            "public/system/lib/angular-loading-bar/build/loading-bar.min.css",
             "public/**/assets/css/*.css"
         ]
     },
@@ -63,6 +64,7 @@
             "public/system/lib/AngularJS-Toaster/toaster.js",
             "public/system/lib/angular-translate/angular-translate.min.js",
             "public/system/lib/angular-dialog-service/dialogs.min.js",
+            "public/system/lib/angular-loading-bar/build/loading-bar.min.js",
             "public/init.js",
             "public/*/*.js",
             "public/*/*/*.js",

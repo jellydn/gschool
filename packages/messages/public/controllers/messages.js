@@ -442,8 +442,8 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
 
 
         $scope.onFileSelect = function($files) {
-        if ($files.length) 
-            var dlg = dialogs.wait('Upload your file','Upload your file in progress',$scope.uploadProgress);
+        // if ($files.length) 
+        //     var dlg = dialogs.wait('Upload your file','Upload your file in progress',$scope.uploadProgress);
         for (var i = 0; i < $files.length; i++) {
           var file = $files[i];
           $scope.upload = $upload.upload({
@@ -453,8 +453,7 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
             file: file
           }).progress(function(evt) {
              $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total);
-             _waitProgress();
-                
+             // _waitProgress();
           })
           .success(function(data, status, headers, config) {
             // file is uploaded successfully

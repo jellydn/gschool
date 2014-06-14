@@ -21,6 +21,7 @@
     "angular-wizard": "latest",
     "AngularJS-Toaster": "latest",
     "angular-dialog-service": "latest",
+    "angular-loading-bar": "latest",
     "datetimepicker": "latest"
   }
 }
