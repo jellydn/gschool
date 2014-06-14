@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('MessageController', ['$scope','$upload', '$stateParams','$http', '$location', 'Global','dialogs', 'Messages', 'Socket',
-    function($scope, $upload, $stateParams, $http, $location, Global, dialogs, Messages, Socket) {
+angular.module('mean').controller('MessageController', ['$scope','$rootScope','$timeout','$upload', '$stateParams','$http', '$location', 'Global','dialogs', 'Messages', 'Socket',
+    function($scope,$rootScope,$timeout,$upload, $stateParams, $http, $location, Global, dialogs, Messages, Socket) {
         $scope.global = Global;
         $scope.limit = 10;
         $scope.fromOffset = 0;
@@ -428,6 +428,19 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
         };
 
         // upload file
+        var _waitProgress = function(){
+            $timeout(function(){
+                if( $scope.uploadProgress < 100){
+                    $rootScope.$broadcast('dialogs.wait.progress',{'progress' : $scope.uploadProgress});
+                    _waitProgress();
+                }else{
+                    $rootScope.$broadcast('dialogs.wait.complete');
+                    $scope.uploadProgress = 0;
+                }
+            },1000);
+        };
+
+
         $scope.onFileSelect = function($files) {
         var dlg = dialogs.wait('Upload your file',undefined,$scope.uploadProgress);
         for (var i = 0; i < $files.length; i++) {
@@ -439,12 +452,8 @@ angular.module('mean').controller('MessageController', ['$scope','$upload', '$st
             file: file
           }).progress(function(evt) {
              $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total);
-             if ($scope.uploadProgress == 100) {
-                $scope.$broadcast('dialogs.wait.complete');
-                $scope.uploadProgress = 0;
-             }    
-             else
-                $scope.$broadcast('dialogs.wait.progress',{'progress' : $scope.uploadProgress});
+             _waitProgress();
+                
           })
           .success(function(data, status, headers, config) {
             // file is uploaded successfully

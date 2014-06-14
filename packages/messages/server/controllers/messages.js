@@ -148,8 +148,6 @@ exports.update = function(req, res) {
 exports.destroy = function(req, res) {
     var message = req.message;
 
-    console.log(message);
-
     // if only me on this message, this message will remove
     if (message.to.length == 1 && message.to.indexOf(req.user.username) !== -1 ) {
          message.remove(function(err) {
@@ -195,9 +193,7 @@ exports.clean = function(req, res) {
     var idArr = req.query.ids.split(',');
     var counter = 0;
 
-    console.log(idArr);
     if (!idArr.length || idArr[0] == '') {
-        console.log('Empty');
         res.jsonp({'error' : 'empty'});
         return ;
     };
