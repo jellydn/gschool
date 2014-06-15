@@ -62,7 +62,6 @@ NotificationSchema.statics.load = function(id, cb) {
 NotificationSchema.pre('save', function(next) {
     if (!this.isNew) return next();
 
-    console.log(this);
     var Statistics = mongoose.model('Statistic');
     var userid = this.from;
     var type = this.type;

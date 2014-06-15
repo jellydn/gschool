@@ -377,10 +377,6 @@ exports.send = function(req, res) {
                     });
                 });
 
-                // var j = schedule.scheduleJob({hour: hoursArr[0], minute: hoursArr[1], dayOfWeek: timeSelect}, function(){
-                //     console.log('Time for tea!');
-                // });
-
             } else 
             if (req.body.occurChecked) { // schedule msg on time
 

@@ -3032,6 +3032,7 @@ input:focus:invalid:focus,textarea:focus:invalid:focus,select:focus:invalid:focu
     width:85px;
     height:85px;
     border-radius:50%;
+    border: 5px solid rgba(5, 5, 5, 0.3);
     -webkit-border-radius:50%;
 }
 .twt-feed {
@@ -5303,4 +5304,37 @@ div.tagsinput span.tag {
 .evnt-input::-webkit-input-placeholder {
     color:#fff !important;
     font-size: 12px;
+}
+
+/* Updated Code Lumi 29/05/2014 */
+
+
+.classTitle {
+padding: 15px;
+}
+
+.classTitle h4 {
+font-size: 42px;
+color: #4E4E4E;
+font-weight: 200;
+text-transform: initial;
+letter-spacing: 3px;
+
+}
+
+.metaDescription {
+font-size: 13px;
+color: #4E4E4E;
+font-weight: 200;
+text-transform: initial;
+display: inline-block;
+margin-right: 10px;
+}
+
+.metaUl {
+margin-left: 60px;
+}
+
+.mini-stat .red {
+background: #EF6F66 !important;
 }
