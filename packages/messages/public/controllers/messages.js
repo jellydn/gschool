@@ -152,7 +152,7 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
         // Show modal
         $scope.showModal = function (message) {
             $scope.currentMesssage = message;
-            $('#myModalDetail h4').text('From ' + message.fromName);
+            $('#myModalDetail h4').html('<p>From ' + message.fromName + ' - <span data-livestamp="'+ message.dateSent +'"></span></p>');
 
             $('#myModalDetail .modal-body').html(message.message);
 
