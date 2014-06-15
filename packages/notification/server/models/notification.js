@@ -59,4 +59,50 @@ NotificationSchema.statics.load = function(id, cb) {
     }).populate('from', 'name username').exec(cb);
 };
 
+NotificationSchema.pre('save', function(next) {
+    if (!this.isNew) return next();
+
+    console.log(this);
+    var Statistics = mongoose.model('Statistic');
+    var userid = this.from;
+    var type = this.type;
+    var data = this.data;
+    // save point
+    var coin = Statistics.findOne({createBy : userid},function(err,item){
+        if (err) {
+            console.error(err);
+            next();
+        }
+        else
+        {
+            if (item != null) {
+                if (type == 'coins') {
+                    item.coins += data;
+                    item.quizzes += 1;
+                };
+            }
+            else {
+                item = new Statistics();
+                item.createBy = userid;
+                if (type == 'coins') {
+                    item.coins = data;
+                    item.quizzes = 1;
+                };
+            }
+
+
+            item.save(function(e,coin){
+                if (e) {
+                    console.error(e);
+                }
+                 next();
+            });
+                
+        }
+        
+    });
+
+   
+});
+
 mongoose.model('Notification', NotificationSchema);

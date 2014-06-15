@@ -55,7 +55,7 @@
             <div class="mini-stat clearfix">
                 <span class="mini-stat-icon pink"><i class="fa fa-circle-o"></i></span>
                 <div class="mini-stat-info popovers" data-original-title="Coins" data-content="And here's some amazing content. It's very engaging. right?" data-placement="top" data-trigger="hover">
-                    <span>22</span>
+                    <span>{{ statistic.coins }}</span>
                         Coins
                 </div>
             </div>
@@ -74,7 +74,8 @@
             <div class="mini-stat clearfix">
                 <span class="mini-stat-icon green"><i class="fa fa-list"></i></span>
                 <div class="mini-stat-info popovers" data-original-title="Quizzes" data-content="And here's some amazing content. It's very engaging. right?" data-placement="top" data-trigger="hover">
-                    <span>{{quizzes.length}}</span>
+                    <span ng-show="global.user.type=='teacher'">{{quizzes.length}}</span>
+                    <span ng-show="global.user.type!='teacher'">{{ statistic.quizzes }}</span>
                     Quizzes
                 </div>
             </div>
