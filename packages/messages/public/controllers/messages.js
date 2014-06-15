@@ -15,9 +15,11 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
         $scope.isTrash = 0;
         $scope.isSchedule = 0;
         $scope.heading = "Inbox";
+        $scope.inboxActive = "active";
         $scope.fileName = "";
         $scope.repeatTime = "";
         $scope.uploadProgress = 0;
+        $scope.currentMesssage = null;
         // Incoming
         Socket.on('onMessageCreated', function(data) {
             // check if current user in array recipients
@@ -113,6 +115,9 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
             $scope.isTrash = 0;
             $scope.isSchedule = 0;
             $scope.heading = "Inbox";
+            $scope.inboxActive = "active";
+            $scope.trashActive = "";
+            $scope.scheduleActive = "";
             $scope.getMessages($scope.pageNumber);
         };   
 
@@ -124,6 +129,9 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
             $scope.isTrash = 1;
             $scope.isSchedule = 0;
             $scope.heading = "Trash";
+            $scope.inboxActive = "";
+            $scope.trashActive = "active";
+            $scope.scheduleActive = "";
             $scope.getMessages($scope.pageNumber);
         }
 
@@ -135,11 +143,15 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
             $scope.isTrash = 0;
             $scope.isSchedule = 1;
             $scope.heading = "Schedule";
+            $scope.inboxActive = "";
+            $scope.trashActive = "";
+            $scope.scheduleActive = "active";
             $scope.getMessages($scope.pageNumber);
         }
 
         // Show modal
         $scope.showModal = function (message) {
+            $scope.currentMesssage = message;
             $('#myModalDetail h4').text('From ' + message.fromName);
 
             $('#myModalDetail .modal-body').html(message.message);
@@ -315,6 +327,34 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
         };
 
 
+        $scope.deleteMessage = function () {
+
+            $scope.showLoading = true;
+            Messages.clean({ids : [$scope.currentMesssage._id] , inbox : $scope.isInbox, trash : $scope.isTrash , schedule : $scope.isSchedule},function(resp){
+                // reset pagination
+                $scope.totals -= 1;
+
+                $scope.totalsPage = Math.ceil($scope.totals / $scope.limit);
+
+                if($scope.totalsPage < 1)
+                    $scope.totalsPage = 1;
+
+                if ($scope.pageNumber > $scope.totalsPage) {
+                    $scope.pageNumber = $scope.totalsPage;
+                };
+                if ($scope.isSchedule) {
+                        $scope.schedule();
+                }
+                else
+                {
+                    $scope.find(); 
+                }
+            
+                 
+                $('#checkAll').prop('checked',false);
+            });
+        };
+
         // remove msg
         $scope.massDelete = function () {
             $scope.showLoading = true;
@@ -375,9 +415,16 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
 
 
         // send msg
+
+        $scope.quickReply = function(){
+            var tmpData = { 'id' : $scope.currentMesssage.from.username , 'text' : $scope.currentMesssage.from.name };
+            $("#selectRecipient").select2('data', tmpData);
+            $("#selectRecipient").select2('readonly', true);
+            $('#myModal').modal();
+        }
+
          $scope.send = function() {
             this.recipient = $('#selectRecipient').select2('val');
-            console.log(this.recipient);
             if (!this.recipient.length) {
                     alert('Please select at least on recipient!');
                     return;
@@ -415,7 +462,8 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                 Socket.emit('createMessage', {message : message , user : $scope.global.user});
                 $('#uploadfile').val('');
                 $('#exampleInputEmail3').tokenfield('createToken', '');
-
+                $("#selectRecipient").select2('data', []);
+                $("#selectRecipient").select2('readonly', false);
             });
             $('#myModal').modal('hide');
             $('#myModalMessage').modal('hide');

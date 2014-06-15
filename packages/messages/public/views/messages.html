@@ -162,6 +162,10 @@
                                     <div class="modal-body">
 
                                     </div>
+                                     <div class="modal-footer" ng-show="isInbox">
+                                        <button type="button" ng-click="quickReply()" class="btn btn-info" data-dismiss="modal">Reply</button>
+                                        <button type="button" ng-click="deleteMessage()" class="btn btn-danger" data-dismiss="modal">Delete</button>
+                                     </div>
                                 </div>
                             </div>
                         </div>
@@ -174,12 +178,12 @@
 
 
                         <ul class="nav nav-pills nav-stacked mail-nav">
-                            <li class="active"><a href="#" ng-click="inbox()"> <i class="fa fa-inbox"></i> Inbox  <span class="label label-danger pull-right inbox-notification" data-ng-if="global.unreadInbox > 0">{{ global.unreadInbox }}</span></a></li>
+                            <li class="{{inboxActive}}"><a href="#" ng-click="inbox()"> <i class="fa fa-inbox"></i> Inbox  <span class="label label-danger pull-right inbox-notification" data-ng-if="global.unreadInbox > 0">{{ global.unreadInbox }}</span></a></li>
                             <li><a href="#"> <i class="fa fa-envelope-o"></i> Sent Mail</a></li>
                             <li><a href="#"> <i class="fa fa-certificate"></i> Important</a></li>
-                            <li><a href="#" ng-click="schedule()"> <i class="fa fa-clock-o"></i> Schedule</a></li>
-                            <li><a href="#"> <i class="fa fa-file-text-o"></i> Drafts <!-- <span class="label label-info pull-right inbox-notification">123</span> --></a></a></li>
-                         <li><a href="#" ng-click="trash()"> <i class="fa fa-trash-o"></i> Trash</a></li>
+                            <li class="{{scheduleActive}}"><a href="#" ng-click="schedule()"> <i class="fa fa-clock-o"></i> Schedule</a></li>
+                            <li><a href="#"> <i class="fa fa-file-text-o"></i> Drafts </a></a></li>
+                         <li class="{{trashActive}}"><a href="#" ng-click="trash()"> <i class="fa fa-trash-o"></i> Trash</a></li>
                         </ul>
                     </div>
                 </section>

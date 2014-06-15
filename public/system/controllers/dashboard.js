@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http', '$location','Global','Classes','Notes','Socket', function ($scope,$rootScope, $http, $location, Global,Classes,Notes, Socket) {
+angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http', '$location','Global','Classes','Notes','Quizzes','Socket', function ($scope,$rootScope, $http, $location, Global,Classes,Notes,Quizzes, Socket) {
     $scope.global = Global;
       // get dashboard information
 
@@ -11,6 +11,10 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
 
        Notes.query(function(notes) {
             $scope.notes = notes;
+       });
+
+       Quizzes.query(function(quizzes) {
+            $scope.quizzes = quizzes;
        });
       } 
       

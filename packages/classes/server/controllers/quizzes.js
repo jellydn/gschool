@@ -15,7 +15,7 @@ var mongoose = require('mongoose'),
  * List of class
  */
 exports.all = function(req, res) {
-    var q = Quizzes.find({ofClass : req.class._id});
+    var q = Quizzes.find({createBy : req.user._id});
     q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, quizzes) {
         if (err) {
             console.log(err);
