@@ -326,11 +326,15 @@
                             <div id="overview" class="tab-pane active">
                                 <div class="row">
                         <div class="col-md-8">
-                           
-
                             <header class="classTitle">
-                       <h4> {{class.name}}</h4>
-                      
+                            <div class="user-heading alt">
+                                    <a href="#">
+                                        <my-avatar type="medium" userid="{{class.createBy.id}}" file="{{class.createBy.avatar}}"></my-avatar>
+                                    </a>
+                                </div>
+                                
+                            <h4> {{class.name}}</h4>
+                            <span><i class="fa fa-user"></i></span><span class="metaDescription"> by {{class.createBy.name}}</span>
                        
                        <ul class="metaDescription">
                     
@@ -339,31 +343,26 @@
                         <li class="metaDescription">{{class.notes.length}} Notes </li>
 
 
-                        <span><i class="fa fa-tags"></i></span> 
-                           <li class="metaDescription">{{class.tags}}
-                        </li>
-
+                        <span>
+                            <i class="fa fa-tags"></i></span> 
+                            <li class="metaDescription">{{class.tags.join(",")}}</li>
                         </ul>
                         <br/>
 
                         <span> 
 
-                        <button type="button" data-ng-click="join()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) === -1 " class="btn btn-default btn-lg">Join Class</button>  
-                        <button type="button" data-ng-click="leave()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) !== -1 " class="btn btn-default btn-lg">Leave Class</button>
-                        <button type="button" data-ng-if="class.createBy._id == global.user._id" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">Invite Student</button>  
-                        <button type="button"  data-toggle="modal" data-target="#myModalNote" data-ng-if="class.createBy._id == global.user._id" class="btn btn-default btn-lg">Write Note</button>
-                        <button type="button" data-toggle="modal" data-target="#myModalMessage" class="btn btn-default btn-lg">Message</button>
-                        <button type="button" class="btn btn-default btn-lg">Settings</button>
+                        <button type="button" data-ng-click="join()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) === -1 " class="btn btn-success btn-lg">Join Class</button>  
+                        <button type="button" data-ng-click="leave()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) !== -1 " class="btn btn-primary btn-lg">Leave Class</button>
+                        <button type="button" data-ng-if="class.createBy._id == global.user._id" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Invite Student</button>  
+                        <button type="button"  data-toggle="modal" data-target="#myModalNote" data-ng-if="class.createBy._id == global.user._id" class="btn btn-primary btn-lg">Write Note</button>
+                        <button type="button" data-toggle="modal" data-target="#myModalMessage" class="btn btn-primary btn-lg">Message</button>
+                        <button type="button" data-ng-click="broadcast()" data-ng-if="class.createBy._id == global.user._id" class="btn btn-primary btn-lg">Broadcast</button>
+
+                        <button type="button" class="btn btn-info btn-lg">Settings</button>
                         <br/>
                         <br/>
 
-                      <div ng-bind-html="class.description"></div>
-
-
-
-                    <span><i class="fa fa-user"></i></span><li class="metaDescription">{{class.createBy.name}}</li>
-                     <p> {{class.createBy.name}} bio (from profile page) </p>
-                     <span><i class="fa fa-group"></i>Members</span>
+                      <p ng-bind-html="class.description"></p>
                      <div class="row">
                         <div class="col-md-4" data-ng-repeat="student in class.students">
                         <!--widget start-->

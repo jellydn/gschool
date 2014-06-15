@@ -132,7 +132,7 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
         $scope.join = function(){
             var classModel = $scope.class;
             classModel.$join({ username : $scope.global.user.username , task : 'join' },function(response){
-                console.log(response);
+                $scope.class = response;
             });
         }
 
@@ -140,8 +140,19 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
         $scope.leave = function(){
             var classModel = $scope.class;
             classModel.$join({ username : $scope.global.user.username , task : 'leave' },function(response){
-                console.log(response);
+                $scope.class = response;
             });
+        }
+
+        $scope.broadcast = function(){
+            var classModel = $scope.class;
+            var tmpData = [];
+             for (var i = 0; i < classModel.students.length; i++) {
+                tmpData[i] = { 'id' : classModel.students[i].username , 'text' : classModel.students[i].name } ;
+            };
+            $("#selectRecipient").select2('data', tmpData);
+            $("#selectRecipient").select2('readonly', true);
+            $('#myModalMessage').modal();
         }
 
          // upload photo 
@@ -182,7 +193,6 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
             Classes.get({
                 classId: $stateParams.classId
             }, function(classModel) {
-                classModel.tags = classModel.tags.join(',');
                 $scope.class = classModel;
                 if ($scope.isEditModel) {
                     $('#tags_1').val(classModel.tags);

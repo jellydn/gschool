@@ -377,7 +377,7 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
         // send msg
          $scope.send = function() {
             this.recipient = $('#selectRecipient').select2('val');
-
+            console.log(this.recipient);
             if (!this.recipient.length) {
                     alert('Please select at least on recipient!');
                     return;
@@ -427,23 +427,9 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
             $scope.occurChecked = false;
         };
 
-        // upload file
-        var _waitProgress = function(){
-            $timeout(function(){
-                if( $scope.uploadProgress < 100){
-                    $rootScope.$broadcast('dialogs.wait.progress',{'progress' : $scope.uploadProgress});
-                    _waitProgress();
-                }else{
-                    $rootScope.$broadcast('dialogs.wait.complete');
-                    $scope.uploadProgress = 0;
-                }
-            },1000);
-        };
-
-
+    
         $scope.onFileSelect = function($files) {
-        // if ($files.length) 
-        //     var dlg = dialogs.wait('Upload your file','Upload your file in progress',$scope.uploadProgress);
+
         for (var i = 0; i < $files.length; i++) {
           var file = $files[i];
           $scope.upload = $upload.upload({
@@ -453,7 +439,6 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
             file: file
           }).progress(function(evt) {
              $scope.uploadProgress = parseInt(100.0 * evt.loaded / evt.total);
-             // _waitProgress();
           })
           .success(function(data, status, headers, config) {
             // file is uploaded successfully

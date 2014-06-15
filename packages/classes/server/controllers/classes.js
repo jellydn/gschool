@@ -246,6 +246,12 @@ exports.join = function(req,res){
         if(req.query.task == 'join'){
             if (classModel.members.indexOf(username) === -1) {
                classModel.members.push(username);
+               for (var i in classModel.pendingMembers) {
+                    if (classModel.pendingMembers[i] === username) {
+                        classModel.pendingMembers.splice(i, 1);
+                    }
+                }
+               classModel.students.push( { id : req.user.id , avatar : req.user.avatar , name : req.user.name, username : req.user.username })
             };
         }
         else
@@ -254,6 +260,12 @@ exports.join = function(req,res){
                for (var i in classModel.members) {
                     if (classModel.members[i] === username) {
                         classModel.members.splice(i, 1);
+                    }
+                }
+
+                for (var i in classModel.students) {
+                    if (classModel.students[i].username === username) {
+                        classModel.students.splice(i, 1);
                     }
                 }
             };
@@ -269,18 +281,16 @@ exports.join = function(req,res){
             });
         } else {
             res.jsonp(classModel);
-            classModel.populate('createBy','name').exec(function(item){
-                if (req.query.task == 'join') {
+            if (req.query.task == 'join') {
                     // notify to member and teacher of class
-                    var notify = new Notifications();
-                    notify.source = item;
-                    notify.from = req.user;
-                    notify.to = item.createBy.username;
-                    notify.type = 'activity';
-                    notify.content =  req.user.name + ' has joined class '+ item.name;
-                    notify.save();
-                };
-            })
+                var notify = new Notifications();
+                notify.source = classModel;
+                notify.from = req.user;
+                notify.to = req.user.username;
+                notify.type = 'activity';
+                notify.content =  req.user.name + ' has joined class '+ classModel.name;
+                notify.save();
+            };
             
             
         }
