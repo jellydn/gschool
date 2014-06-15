@@ -310,7 +310,7 @@ exports.send = function(req, res) {
             res.jsonp(message);
 
             // notify to receiver
-            if(!req.body.repeatChecked)
+            if(!req.body.repeatChecked && !req.body.occurChecked)
             {
                 for (var i = 0; i < message.to.length; i++) {
                     var username = message.to[i];
@@ -333,13 +333,52 @@ exports.send = function(req, res) {
                 var timeSelect = message.repeat.split(',');
                 var hoursArr = timeSelect[timeSelect.length - 1].split(':');
                 var rule = new schedule.RecurrenceRule();
-                rule.minute = hoursArr[1];
-                rule.hour = hoursArr[0];
+                rule.minute = parseInt(hoursArr[1]);
+                rule.hour = parseInt(hoursArr[0]);
                 timeSelect.pop(); // remove hours from arr
-                rule.dayOfWeek = timeSelect;
+                var dayOfWeek = [];
+                for (var i = 0; i < timeSelect.length; i++) {
+                    dayOfWeek[i] = parseInt(timeSelect[i]);
+                };
+                rule.dayOfWeek = dayOfWeek;
                 console.log(rule);
-                // var j = schedule.scheduleJob(rule, function(){
-                //     console.log('Today is recognized by Rebecca Black!');
+                var j = schedule.scheduleJob(rule, function(){
+                    console.log('Schedule message is running');
+                     Schedule.find({_id : message._id},function(err,resp){
+                        console.log(resp);
+                        if (err) {
+                            console.log('Schedule has been cancel.');
+                            schedule.cancelJob(j);
+                        }
+                        else
+                        {
+                            if (resp.length) {
+                                var msg = new Message();
+                                 msg.to = message.to;
+                                 msg.from = message.from;
+                                 msg.fromName = message.fromName;
+                                 msg.file = message.file;
+                                 msg.message = message.message;
+
+                                 msg.save(function(e){
+                                        if (e) {
+                                            console.log(e);
+                                        }
+                                        else
+                                        {
+                                            console.log(msg);
+                                        }
+                                 });
+                             }
+                             else
+                                schedule.cancelJob(j);
+                             
+                        }
+                    });
+                });
+
+                // var j = schedule.scheduleJob({hour: hoursArr[0], minute: hoursArr[1], dayOfWeek: timeSelect}, function(){
+                //     console.log('Time for tea!');
                 // });
 
             } else 
