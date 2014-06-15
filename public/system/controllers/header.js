@@ -59,6 +59,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
               $scope.userinfo = user;
               Socket.emit('online', user);
           });
+          $('.popovers').popover();
 
           // custom scroll bar
           $("#sidebar").niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});

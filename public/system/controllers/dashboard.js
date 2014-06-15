@@ -1,8 +1,19 @@
 'use strict';
 
-angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http', '$location','Global','Socket', function ($scope,$rootScope, $http, $location, Global, Socket) {
+angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http', '$location','Global','Classes','Notes','Socket', function ($scope,$rootScope, $http, $location, Global,Classes,Notes, Socket) {
     $scope.global = Global;
-      // check useronline
+      // get dashboard information
+
+      $scope.dashboard = function(){
+      	Classes.query(function(classes) {
+            $scope.classes = classes;
+       	});
+
+       Notes.query(function(notes) {
+            $scope.notes = notes;
+       });
+      } 
+      
 
       // new user has been login
 	  Socket.on('listOnlineUser', function (users) {
@@ -20,6 +31,17 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
 	  Socket.on('onUserJoin',function(user){
 	  		$scope.onlines.push(user);
 	  });
+
+	  $scope.hasAuthorization = function(classModel) {
+            if (!classModel || !classModel.createBy) return false;
+        		return $scope.global.isAdmin || classModel.createBy._id === $scope.global.user._id;
+    };
+
+
+    $scope.hasNoteAuthorization = function(note) {
+        if (!note || !note.createBy) return false;
+        	return $scope.global.isAdmin || note.createBy._id === $scope.global.user._id;
+    };
 
     $scope.userOnline = function(){
     	// process online

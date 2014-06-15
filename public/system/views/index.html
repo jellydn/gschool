@@ -23,7 +23,7 @@
 
 <!--sidebar end-->
     <!--main content start-->
-    <section id="main-content" data-ng-controller="DashboardController">
+    <section id="main-content" data-ng-controller="DashboardController" ng-init="dashboard()">
         <section class="wrapper">
         <div class="row">
 <div class="col-md-12">
@@ -51,39 +51,29 @@
 <div class="col-md-12">
 
 <div class="row">
-           <div class="col-md-3">
+           <div class="col-md-4">
             <div class="mini-stat clearfix">
                 <span class="mini-stat-icon pink"><i class="fa fa-circle-o"></i></span>
-                <div class="mini-stat-info">
+                <div class="mini-stat-info popovers" data-original-title="Coins" data-content="And here's some amazing content. It's very engaging. right?" data-placement="top" data-trigger="hover">
                     <span>22</span>
                         Coins
                 </div>
             </div>
         </div>
 
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="mini-stat clearfix">
                 <span class="mini-stat-icon orange"><i class="fa fa-file-text"></i></span>
-                <div class="mini-stat-info">
-                    <span>25</span>
+                <div class="mini-stat-info popovers" data-original-title="Notes" data-content="And here's some amazing content. It's very engaging. right?" data-placement="top" data-trigger="hover">
+                    <span>{{notes.length}}</span>
                     Notes 
                 </div>
             </div>
         </div>
-   
-        <div class="col-md-3">
-            <div class="mini-stat clearfix">
-                <span class="mini-stat-icon tar"><i class="fa fa-group"></i></span>
-                <div class="mini-stat-info">
-                    <span>10</span>
-                    Alerts
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3">
+        <div class="col-md-4">
             <div class="mini-stat clearfix">
                 <span class="mini-stat-icon green"><i class="fa fa-list"></i></span>
-                <div class="mini-stat-info">
+                <div class="mini-stat-info popovers" data-original-title="Quizzes" data-content="And here's some amazing content. It's very engaging. right?" data-placement="top" data-trigger="hover">
                     <span>44</span>
                     Quizzes
                 </div>
@@ -104,17 +94,12 @@
                                 </a>
                             </li>
                             <li class="">
-                                <a data-toggle="tab" href="#job-history">
+                                <a data-toggle="tab" href="#classes">
                                     Classes
                                 </a>
                             </li>
                             <li class="">
-                                <a data-toggle="tab" href="#contacts">
-                                    Contacts
-                                </a>
-                            </li>
-                            <li class="">
-                                <a data-toggle="tab" href="#settings">
+                                <a data-toggle="tab" href="#notes">
                                     Notes
                                 </a>
                             </li>
@@ -200,278 +185,86 @@
                 
                 </div>
             </div>
-
-
-                                    
-
-                            </div>
-                            <div id="job-history" class="tab-pane">
-                                <div class="row">
-                                                                         <div class="col-md-4">
-
-        <!--widget start-->
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/math.jpg">
-                                    </a>
-                                    <h1>Mathematics</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>46 People</p>
-                                </div>
-                            </section>
-                        </aside>
-                        <!--widget end-->
-
-
-</div>
-
-
-        <div class="col-md-4">
-
-                                <!--widget start-->
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/physics.jpg">
-                                    </a>
-                                    <h1>Physics</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>20 People</p>
-                                </div>
-
-                       
-
-                            </section>
-                        </aside>
-                        <!--widget end-->
-
             </div>
-        <!--widget start-->
+            <div id="classes" class="tab-pane">
+                <div class="row">
 
+                    <div class="col-md-4" data-ng-repeat="class in classes">
 
-          <div class="col-md-4">
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/english.jpg">
-                                    </a>
-                                    <h1>English</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>60 People</p>
-                                </div>
-
-                            </section>
-                        </aside>
-                        <!--widget end-->
-
-            </div>
-
-                      <div class="col-md-4">
-                                <!--widget start-->
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/biology.jpg">
-                                    </a>
-                                    <h1>Biology</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>30 Members</p>
-                                </div>
-
-                            </section>
-                        </aside>
-                        <!--widget end-->
-
-                        </div>
-
-
-                                </div>
-                            </div>
-                            <div id="contacts" class="tab-pane ">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="prf-contacts">
-                                            <h2> <span><i class="fa fa-map-marker"></i></span> location</h2>
-                                            <div class="location-info">
-                                                <p>Postal Address<br>
-                                                    PO Box 16122 Collins Street West<br>
-                                                    Victoria 8007 Australia</p>
-                                                <p>Headquarters<br>
-                                                    121 King Street, Melbourne<br>
-                                                    Victoria 3000 Australia</p>
-                                            </div>
-                                            <h2> <span><i class="fa fa-phone"></i></span> contacts</h2>
-                                            <div class="location-info">
-                                                <p>Phone    : +61 3 8376 6284 <br>
-                                                    Cell        : +61 3 8376 6284</p>
-                                                <p>Email        : david@themebucket.net<br>
-                                                    Skype       : david.rojormillan</p>
-                                                <p>
-                                                    Facebook    : https://www.facebook.com/themebuckets <br>
-                                                    Twitter : https://twitter.com/theme_bucket
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <!--location goes here-->
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="settings" class="tab-pane ">
-                                <div class="col-sm-12">
-                <div class="timeline">
-                    <article class="timeline-item alt">
-                        <div class="text-right">
-                            <div class="time-show first">
-                                <a href="#" class="btn btn-primary">Today</a>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="timeline-item alt">
-                        <div class="timeline-desk">
-                            <div class="panel">
-                                <div class="panel-body ">
-                                    <span class="arrow-alt"></span>
-
-                                    <span class="timeline-icon red">
-                                        <i class="fa fa-envelope"></i>
-                                    </span>
-                                    <span class="timeline-date">08:25 am</span>
-                                    <h1 class="red">Message from Adunola Dina</h1>
-                                    <p>Hey are you available for a 3:00pm meeting with my chemistry group to go over past questions? please respond to Class </p>
-                                     <span class="legacyMessagingTime">1 Hour Ago </span>
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="timeline-item ">
-                        <div class="timeline-desk">
-                            <div class="panel">
-                                <div class="panel-body">
-                                    <span class="arrow"></span>
-                                    <span class="timeline-icon green">
-                                        <i class="fa fa-group"></i>
-                                    </span>
-                                    
-                                    
                         <!--widget start-->
                         <aside class="profile-nav alt">
                             <section class="panel">
                                 <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/math.jpg">
+                                    <a href="/#!/classes/{{class._id}}">
+                                        <my-class-avatar userid="{{class.createBy._id}}" file="{{class.file}}"></my-class-avatar>
                                     </a>
-                                    <h1>Mathematics</h1>
+                                    <h1>{{class.name}}</h1>
                                     <p>J.S.S 3</p>
-                                    <p>46 Members</p>
+                                    <p>{{class.members.length}} People</p>
                                 </div>
-
                                 <ul class="nav nav-pills nav-stacked">
-                                    <li><a href="javascript:;"> <i class="fa fa-envelope-o"></i> Mail Inbox <span class="badge label-success pull-right r-activity">10</span></a></li>
-                                    <li><a href="javascript:;"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
-                                    <li><a href="javascript:;"> <i class="fa fa-bell-o"></i> Notification <span class="badge label-success pull-right r-activity">11</span></a></li>
-                                    <li><a href="javascript:;"> <i class="fa fa-comments-o"></i> Message <span class="badge label-warning pull-right r-activity">03</span></a></li>
+                                    <div data-ng-if="hasAuthorization(class)">
+                                        <a class="btn" href="/#!/classes/{{class._id}}/edit">
+                                            <i class="glyphicon glyphicon-edit"></i>
+                                        </a>
+                                        <a class="btn" href="/#!/classes/{{class._id}}/quiz">
+                                            <i class="glyphicon glyphicon-th-list"></i>
+                                        </a> 
+                                        <a class="btn" data-ng-click="remove(class);">
+                                            <i class="glyphicon glyphicon-trash"></i>
+                                        </a>
+                                    </div>
                                 </ul>
 
                             </section>
                         </aside>
-                        <!--widget end-->
-
-
-                                </div>
-                            </div>
                         </div>
-                    </article>
-                    <article class="timeline-item alt">
-                        <div class="timeline-desk">
-                            <div class="panel">
-                                <div class="panel-body">
-                                    <span class="arrow-alt"></span>
-                                    <span class="timeline-icon purple">
-                                        <i class="fa fa-circle-o"></i>
-                                    </span>
-                                    <span class="timeline-date">11:35 am</span>
-                                    <h1 class="purple">10 hours ago</h1>
-                                    <p>Congratulations, you just earned 5 coins for </p><h1 class="purple">English Quiz 2</h1> <p></p>
-                            
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                
                 </div>
             </div>
+            <div id="notes" class="tab-pane ">
+                <div class="row">
+                     <div class="col-sm-12">
+
+                     <div class="col-md-4" data-ng-repeat="note in notes| orderBy:'-dateCreate' ">
+                        <!--widget start-->
+                                <aside class="profile-nav alt">
+                                    <section class="panel">
+                                        <div class="user-heading alt gray-bg">
+                                        
+                                            <h1>{{note.title}}</h1>
+                                            <p>{{note.createBy.name}}</p>
+                                        </div>
+
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <li><a href="/#!/notes/{{note._id}}"> <i class="fa fa-comment"></i> Comments <span class="badge label-success pull-right r-activity">{{note.totalComments}}</span></a></li>
+                                            <div data-ng-if="hasAuthorization(note)">
+                                                <a class="btn" href="/#!/notes/{{note._id}}/edit">
+                                                    <i class="glyphicon glyphicon-edit"></i>
+                                                </a>
+                                                <a class="btn" data-ng-click="remove(note);">
+                                                    <i class="glyphicon glyphicon-trash"></i>
+                                                </a>
+                                            </div>
+                                        </ul>
+
+                                    </section>
+                                </aside>
+                                <!--widget end-->
+
                             </div>
-                        </div>
-                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
                 </section>
             </div>
 
 
 </div>
 
-
- 
-
-  
-
         </div>
-
-
-
-  
-
         </div>
-
-
-        <!-- page start-->
-        <div class="col-md-2">
-                          <div class="profile-nav alt">
-                            <section class="panel text-center">
-                                <div class="user-heading alt wdgt-row purple-bg">
-                                    <i class="fa fa-shield"></i>
-                                </div>
-
-                                <div class="panel-body">
-                                    <div class="wdgt-value">
-                                        <h1 class="count">25</h1>
-                                        <p>New Users</p>
-                                    </div>
-                                </div>
-
-                            </section>
-                        </div>
-                       </div>
-
-                    <div class="col-md-2">
-                        <div class="profile-nav alt">
-                            <section class="panel text-center">
-                                <div class="user-heading alt wdgt-row red-bg">
-                                    <i class="fa fa-tags"></i>
-                                </div>
-
-                                <div class="panel-body">
-                                    <div class="wdgt-value">
-                                        <h1 class="count">295</h1>
-                                        <p>Sales</p>
-                                    </div>
-                                </div>
-
-                            </section>
-                        </div>
-                    </div>
-        
-
-
-
-
-        <!-- page end-->
         </section>
     </section>
     <!--main content end-->

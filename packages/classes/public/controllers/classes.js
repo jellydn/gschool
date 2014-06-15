@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$http','$location', 'Global','dialogs','Classes','Notes','Quizzes','Socket',
-    function($scope,$rootScope, $upload, $stateParams, $https, $location, Global,dialogs,Classes,Notes,Quizzes,Socket) {
+angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$upload', '$stateParams','$timeout','$http','$location', 'Global','dialogs','toaster','Classes','Notes','Quizzes','Socket',
+    function($scope,$rootScope, $upload, $stateParams,$timeout, $https, $location, Global,dialogs,toaster,Classes,Notes,Quizzes,Socket) {
         $scope.global = Global;
         $scope.global.classActive = "active";
         $scope.fileName = "";        
@@ -205,6 +205,13 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
                                             );
                     $('.wysihtml5').wysihtml5();
                     $scope.isEditModel = false;
+                };
+            },function(err){
+                if (err.status == 500) {
+                    toaster.pop("warning","Your request is not exist!");
+                    $timeout(function(){ 
+                     $location.path('classes');
+                    },1500);
                 };
             });
         };
