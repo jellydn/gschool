@@ -1,10 +1,20 @@
 'use strict';
 var messages = require('../controllers/messages');
-
+var _ = require('lodash');
 var hasAuthorization = function(req, res, next) {
-    if (req.message.to.indexOf(req.user.username) == -1 ) {
+    var findKey = false;
+    
+    for (var i = 0; i < req.message.to.length; i++) {
+        if(req.message.to[i]._id.toString() == req.user._id.toString())
+        {
+            findKey = true;
+            break;
+        }
+    };
+
+    if (!findKey) {
         return res.send(401, 'User is not authorized');
-    }
+    };
     next();
 };
 
@@ -22,6 +32,7 @@ module.exports = function(Messages, app, auth, database) {
      app.route('/upload').post(auth.requiresLogin,messages.upload);
 
      app.route('/messages/:messageId')
+        .get(messages.show)
         .put(auth.requiresLogin, hasAuthorization , messages.update)
         .delete(auth.requiresLogin, hasAuthorization, messages.destroy);
 

@@ -24,7 +24,7 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
         Socket.on('onMessageCreated', function(data) {
             // check if current user in array recipients
             var msg = data.message;
-            if (msg.to.indexOf($scope.global.user.username) !== -1) {
+            if (msg.to.indexOf($scope.global.user._id) !== -1) {
                 $scope.find();
             };
         });
@@ -65,11 +65,15 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                     
                     if ($scope.isSchedule) {
                         // switch to receiver
-                        tmp.fromName = tmp.to.join(',');
+                        var tmpName = [];
+                        for (var key in tmp.to) {
+                            tmpName.push(tmp.to[key].name);
+                        };
+                        tmp.fromName = tmpName.join(',');
                     };
 
                     if ($scope.isInbox) {
-                        if( tmp.isRead.indexOf($scope.global.user.username) !== -1 )
+                        if( _.contains(tmp.isRead, $scope.global.user._id) )
                             tmp.status = 'read';
                         else
                             tmp.status = 'unread';
@@ -80,7 +84,6 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                     }
 
                     
-
                     finalResult.push(tmp);
                 };
 
@@ -149,9 +152,21 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
             $scope.getMessages($scope.pageNumber);
         }
 
+        // reset to field
+
+        $('#myModal').on('hidden.bs.modal', function () {
+            $("#selectRecipient").select2('data', []);
+            $("#selectRecipient").select2('readonly', false);
+        })
+
+
         // Show modal
         $scope.showModal = function (message) {
-            $scope.currentMesssage = message;
+            
+            Messages.get({ messageId : message._id },function(msg){
+                $scope.currentMesssage = msg;
+            });
+
             $('#myModalDetail h4').html('<p>From ' + message.fromName + ' - <span data-livestamp="'+ message.dateSent +'"></span></p>');
 
             $('#myModalDetail .modal-body').html(message.message);
@@ -166,7 +181,7 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
             
             // mark as read right now
             if ($scope.isInbox) {
-                message.$update(function() {
+                message.$update(function(msg) {
                    $http.get('/api/unread').success(function(response){
                         $scope.global.unreadInbox = response.totals;
                     }); 
@@ -264,7 +279,7 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                         results: function (data, page) {
                             var classData = [];
                             for (var i = 0; i < data.length; i++) {
-                                classData[i] = { id : data[i].username , text : data[i].name , owner : data[i]._id, file : data[i].avatar };
+                                classData[i] = { id : data[i]._id , text : data[i].name , owner : data[i]._id, file : data[i].avatar };
                             };
                             return {results: classData};
                         }
@@ -320,6 +335,12 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                 if( $scope.messages[i].status == 'unread' && idArr.indexOf($scope.messages[i]._id) !== -1)
                     $scope.messages[i].$update(); 
             };
+            $timeout(function(){
+                 $http.get('/api/unread').success(function(response){
+                    $scope.global.unreadInbox = response.totals;
+                }); 
+             },1000);
+           
         };
 
         $scope.massUnread = function () {
@@ -417,7 +438,14 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
         // send msg
 
         $scope.quickReply = function(){
-            var tmpData = { 'id' : $scope.currentMesssage.from.username , 'text' : $scope.currentMesssage.from.name };
+            var tmpData = [];
+            if ($scope.global.user._id != $scope.currentMesssage.from._id )
+                tmpData.push({ 'id' : $scope.currentMesssage.from._id , 'text' : $scope.currentMesssage.from.name });
+            
+            for (var i = 0; i < $scope.currentMesssage.to.length; i++) {
+                if ($scope.currentMesssage.to[i]._id != $scope.global.user._id  )
+                    tmpData.push({ 'id' : $scope.currentMesssage.to[i]._id , 'text' : $scope.currentMesssage.to[i].name }) ;
+            };
             $("#selectRecipient").select2('data', tmpData);
             $("#selectRecipient").select2('readonly', true);
             $('#myModal').modal();

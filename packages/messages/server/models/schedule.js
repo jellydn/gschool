@@ -18,9 +18,11 @@ var ScheduleSchema = new Schema({
     fromName: {
         type: String
     },
-    to: {
-        type: Array
-    },
+    to: [ {
+        type: Schema.ObjectId,
+        ref: 'User'
+        }
+    ],
     message: {
         type: String,
         default: '',
@@ -45,7 +47,7 @@ var ScheduleSchema = new Schema({
 ScheduleSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('from', 'name username').exec(cb);
+    }).populate('from', 'name username').populate('to', 'name username').exec(cb);
 };
 
 mongoose.model('Schedule', ScheduleSchema);

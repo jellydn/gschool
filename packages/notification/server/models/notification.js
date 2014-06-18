@@ -16,7 +16,8 @@ var NotificationSchema = new Schema({
         ref: 'User'
     },
     to: {
-        type: String
+        type: Schema.ObjectId,
+        ref: 'User'
     },
     source: {
         type: Schema.ObjectId
@@ -56,7 +57,7 @@ var NotificationSchema = new Schema({
 NotificationSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('from', 'name username').exec(cb);
+    }).populate('from', 'name username').populate('to', 'name username').exec(cb);
 };
 
 NotificationSchema.pre('save', function(next) {

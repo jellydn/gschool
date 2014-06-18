@@ -28,7 +28,7 @@ exports.unread = function(req,res){
  */
 exports.all = function(req, res) {
 
-   var query = Notifications.find({to : req.user.username , type : req.query.type }).limit(req.query.limit);
+   var query = Notifications.find({to : req.user.id , type : req.query.type }).limit(req.query.limit);
 
    query.sort({ dateCreate : 'desc' }).exec(function(err,items){
         if (err) {

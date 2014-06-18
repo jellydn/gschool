@@ -13,12 +13,12 @@ var mongoose = require('mongoose'),
 
 // unread inbox
 exports.unread = function(req,res){
-    var query = Message.find({to : req.user.username});
+
+    var query = Message.find({to : req.user._id });
 
     query.count(function(err,totals){
-
         // find msg has read
-        var q = Message.find({to : req.user.username,isRead : req.user.username});
+        var q = Message.find({to : req.user._id ,isRead : req.user._id.toString()});
         q.count(function(e,t){
             res.jsonp({'totals' : totals - t});
         });
@@ -40,16 +40,16 @@ exports.all = function(req, res) {
     {
         // from inbox
         if (req.query.inbox == 1) {
-            var query = Message.find({to : req.user.username});
+            var query = Message.find({to : req.user._id});
         }
         else
         {
             // from trash
             if (req.query.trash) {
-                var query = Message.find({isTrashReceiver : req.user.username});
+                var query = Message.find({isTrashReceiver : req.user._id.toString() });
             }
             else // from sent box
-                var query = Message.find({from : req.user._id});
+                var query = Message.find({from : req.user._id });
         }
     }
 
@@ -65,21 +65,23 @@ exports.all = function(req, res) {
         else
         {
             if (req.query.inbox == 1) {
-                var q = Message.find({to : req.user.username}).skip((page - 1) * limit).limit(limit);
+                var q = Message.find({to : req.user._id}).skip((page - 1) * limit).limit(limit);
             }
             else
             {
                 if (req.query.trash) {
-                    var q = Message.find({isTrashReceiver : req.user.username}).skip((page - 1) * limit).limit(limit);
+                    var q = Message.find({isTrashReceiver : req.user._id.toString() }).skip((page - 1) * limit).limit(limit);
                 }
                 else
                     var q = Message.find({from : req.user._id}).skip((page - 1) * limit).limit(limit);
             }
         }
 
-        q.populate('from','name avatar username').sort({ dateSent : 'desc' }).exec(function(err, messages) {
+        q.populate('from','name avatar username')
+        .populate('to','name avatar username')
+        .sort({ dateSent : 'desc' }).exec(function(err, messages) {
             if (err) {
-                console.log(err);
+                console.error(err);
                 res.render('error', {
                     status: 500
                 });
@@ -108,6 +110,11 @@ exports.suggest = function(req,res){
     });
 };
 
+
+exports.show = function(req, res) {
+    res.jsonp(req.message);
+};
+
 // Get message by id
 exports.message = function(req, res, next, id) {
     Message.load(id, function(err, message) {
@@ -124,14 +131,15 @@ exports.message = function(req, res, next, id) {
 exports.update = function(req, res) {
     var message = req.message;
 
-    message = _.extend(message, req.body);
+    // message = _.extend(message, req.body);
 
-    if (!message.hasRead(req.user.username)) {
-        message.isRead.push(req.user.username);
+    if ( _.indexOf(message.isRead, req.user._id.toString()) == -1 ) {
+        message.isRead.push(req.user._id.toString());
     };
 
     message.save(function(err) {
         if (err) {
+            console.error(err);
             return res.send('users/signup', {
                 errors: err.errors,
                 message: message
@@ -149,7 +157,7 @@ exports.destroy = function(req, res) {
     var message = req.message;
 
     // if only me on this message, this message will remove
-    if (message.to.length == 1 && message.to.indexOf(req.user.username) !== -1 ) {
+    if (message.to.length == 1 && message.to.indexOf(req.user._id) !== -1 ) {
          message.remove(function(err) {
             if (err) {
                 return res.send('users/signup', {
@@ -163,8 +171,9 @@ exports.destroy = function(req, res) {
     }
     else     // Otherwise, remove my username from field 'to'
     {
+        console.log(messages.to);
         for (var i = 0; i < message.to.length; i++) {
-            if( message.to[i] == req.user.username)
+            if( message.to[i] == req.user._id)
             {
                 message.to.splice(i,1);
                 break;
@@ -192,7 +201,7 @@ exports.destroy = function(req, res) {
 exports.clean = function(req, res) {
     var idArr = req.query.ids.split(',');
     var counter = 0;
-
+    console.log(idArr);
     if (!idArr.length || idArr[0] == '') {
         res.jsonp({'error' : 'empty'});
         return ;
@@ -200,70 +209,88 @@ exports.clean = function(req, res) {
     // remove from schedule db
     if (req.query.schedule == 1) {
        Schedule.find({ _id : { $in : idArr } },function (err,data) {
-            data.forEach(function(message){
-                message.remove(function(err) {
-                    if (err) {
-                        return res.send('users/signup', {
-                            errors: err.errors,
-                            message: message
-                        });
-                    } 
+            if (err) {
+                console.error(err);
+            }
+            else
+            {
+                 data.forEach(function(message){
+                    message.remove(function(err) {
+                        if (err) {
+                            return res.send('users/signup', {
+                                errors: err.errors,
+                                message: message
+                            });
+                        } 
+                    });
                 });
-            });
-            res.jsonp({'messages' : data});
+                res.jsonp({'messages' : data});
+            }
+           
        });
     }
     else
     {
         Message.find({ _id : { $in : idArr } },function (err,data) {
-             data.forEach(function(message){
-                if (req.query.inbox == 1) {
-                        // move to trash from inbox
-                        message.isTrashReceiver.push(req.user.username);
-                        
-                        var tmpTo = [];
-                        for (var i = 0; i < message.to.length; i++) {
-                            if (message.to[i] == req.user.username)
-                                continue;
-                            else
-                                tmpTo.push(message.to[i]);
-                        };
-
-                        message.to = tmpTo;
-
-                } else {
-                        // note: emty trash
-                        if (req.query.trash == 1) {
-                            var tmpTrash = [];
-                            for (var i = 0; i < message.isTrashReceiver.length; i++) {
-                                if (message.isTrashReceiver[i] == req.user.username)
+             if (err) {
+                console.error(err);
+             }
+             else
+             {
+                data.forEach(function(message){
+                    console.log(message);
+                    if (req.query.inbox == 1) {
+                            // move to trash from inbox
+                            if ( _.indexOf(message.isTrashReceiver, req.user._id.toString()) == -1 ) {
+                                message.isTrashReceiver.push(req.user._id.toString());
+                            };
+                            console.log(message.to);
+                            var tmpTo = [];
+                            for (var i = 0; i < message.to.length; i++) {
+                                if (message.to[i] == req.user._id.toString() )
                                     continue;
                                 else
-                                    tmpTrash.push(message.isTrashReceiver[i]);
+                                    tmpTo.push(message.to[i]);
                             };
-                            message.isTrashReceiver = tmpTrash;
-                        }
-                        else // move to trash from sender
-                            message.isTrashSender.push(req.user.username);
-                }
+                            console.log(tmpTo);
+                            message.to = tmpTo;
 
-                    message.save(function(err) {
-                            if (err) {
-                                return res.send('users/signup', {
-                                    errors: err.errors,
-                                    message: message
-                                });
-                            } 
-                            else
-                            {
-                                counter++;
-                                if (counter == idArr.length) {
-                                    res.jsonp({'messages' : data});
+                    } else {
+                            // note: emty trash
+                            if (req.query.trash == 1) {
+                                var tmpTrash = [];
+                                for (var i = 0; i < message.isTrashReceiver.length; i++) {
+                                    if (message.isTrashReceiver[i] == req.user._id)
+                                        continue;
+                                    else
+                                        tmpTrash.push(message.isTrashReceiver[i]);
                                 };
+                                message.isTrashReceiver = tmpTrash;
                             }
-                        });
+                            else // move to trash from sender
+                                message.isTrashSender.push(req.user._id.toString());
+                    }
+
+                        message.save(function(err) {
+                                if (err) {
+                                    console.error(err);
+                                    return res.send('users/signup', {
+                                        errors: err.errors,
+                                        message: message
+                                    });
+                                } 
+                                else
+                                {
+                                    counter++;
+                                    if (counter == idArr.length) {
+                                        res.jsonp({'messages' : data});
+                                    };
+                                }
+                            });
+                 });
+
+             }
              });
-        });
     }
     
    
@@ -308,22 +335,6 @@ exports.send = function(req, res) {
             };
 
             res.jsonp(message);
-
-            // notify to receiver
-            if(!req.body.repeatChecked && !req.body.occurChecked)
-            {
-                for (var i = 0; i < message.to.length; i++) {
-                    var username = message.to[i];
-                    var notify = new Notifications();
-                    notify.source = message;
-                    notify.from = req.user;
-                    notify.to = username;
-                    notify.type = 'activity';
-                    notify.content =  req.user.name + ' has sent mail to you.';
-                    notify.save();
-                };
-            }
-            
 
             // recursive msg
             if (req.body.repeatChecked) {

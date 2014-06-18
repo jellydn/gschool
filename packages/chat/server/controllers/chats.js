@@ -167,15 +167,7 @@ exports.chat = function(req, res, next, id) {
         } else {
             Chat.load(chat._id, function(err, data) {
                 if (err) return next(err);
-                res.jsonp(data);
-                // notify to receiver
-                var notify = new Notifications();
-                notify.source = chat;
-                notify.from = req.user;
-                notify.to = data.to.username;
-                notify.type = 'activity';
-                notify.content =  req.user.name + ' has sent chat mesasge to you.';
-                notify.save();
+                res.jsonp(data);                
                 
             });
         }

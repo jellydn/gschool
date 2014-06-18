@@ -18,9 +18,11 @@ var MessageSchema = new Schema({
     fromName: {
         type: String
     },
-    to: {
-        type: Array
-    },
+    to: [ {
+        type: Schema.ObjectId,
+        ref: 'User'
+    }
+    ],
     isRead : {
         type : Array
     },
@@ -51,8 +53,28 @@ var MessageSchema = new Schema({
 MessageSchema.statics.load = function(id, cb) {
     this.findOne({
         _id: id
-    }).populate('from', 'name username').exec(cb);
+    }).populate('from', 'name username').populate('to', 'name username').exec(cb);
 };
+
+MessageSchema.post('save', function (doc) {
+  var Notifications = mongoose.model('Notification');
+    //notify 
+    for (var i = 0; i < doc.to.length; i++) {
+        var username = doc.to[i];
+        var notify = new Notifications();
+        notify.source = doc;
+        notify.from = doc.from;
+        notify.to = username;
+        notify.type = 'mail';
+        notify.content =  doc.fromName + ' has sent mail to you.';
+        notify.save();
+    };
+})
+
+MessageSchema.post('remove',function(doc){
+    console.log('Remove all mail relate stuff');
+    console.log(doc);
+});
 
 
 /**
@@ -64,20 +86,23 @@ MessageSchema.virtual('status').set(function(status) {
     return this._status;
 });
 
+MessageSchema.virtual('recipients').set(function(obj) {
+    this._recipients = obj;
+}).get(function() {
+    return this._recipients;
+});
+
+
 MessageSchema.virtual('attachment').set(function(file) {
     this._attachment = file;
 }).get(function() {
     return this._attachment;
 });
 
-/**
- * Methods
- */
-MessageSchema.methods = {
-    hasRead: function(user) {
-        var userArr = this.isRead;
-        return ( userArr.indexOf(user) !== -1);
-    }  
-};
+
+MessageSchema.set('toJSON', {
+   virtuals: true
+});
+
 
 mongoose.model('Message', MessageSchema);

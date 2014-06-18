@@ -48,4 +48,16 @@ ChatSchema.statics.load = function(id, cb) {
     }).populate('createBy', 'name username avatar').populate('to', 'name username avatar').exec(cb);
 };
 
+
+ChatSchema.post('save',function(doc){
+    var Notifications = mongoose.model('Notification');
+    var notify = new Notifications();
+    notify.source = doc;
+    notify.from = doc.createBy;
+    notify.to = doc.to;
+    notify.type = 'chat';
+    notify.content = '{subject} messaged to you.';
+    notify.save();
+});
+
 mongoose.model('Chat', ChatSchema);
