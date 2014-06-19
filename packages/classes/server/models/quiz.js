@@ -49,6 +49,27 @@ QuizSchema.statics.load = function(id, cb) {
     }).select('name createBy ofClass playMembers questions questionList dateCreate').populate('createBy', 'name username avatar').populate('ofClass', 'name members').exec(cb);
 };
 
+QuizSchema.post('save',function(doc){
+    var Classes = mongoose.model('Class');
+    var Notifications = mongoose.model('Notification');
+    Classes.load(doc.ofClass,function(e,classModel){
+        if (e) {
+            console.error(e)
+        }
+        else
+        {
+            for(var index = 0 ; index <classModel.members.length ; index++){
+                var notify = new Notifications();
+                notify.source = doc;
+                notify.from = doc.createBy;
+                notify.to = classModel.members[index];
+                notify.type = 'quiz';
+                notify.content =  classModel.createBy.name + ' has created quiz: '+ doc.name;
+                notify.save();
+            }
+        }
+    });
+});
 
 QuizSchema
 .virtual('questionList')

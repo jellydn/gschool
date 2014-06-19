@@ -71,27 +71,7 @@ exports.quiz = function(req, res, next, id) {
             });
         } else {
             res.jsonp(quiz);
-            // todo:
-            // send notify to inbox of our student
-            Classes.load(quiz.ofClass,function(e,classModel){
-                if (e) {
-                    console.error(e)
-                }
-                else
-                {
-                    for(var index = 0 ; index <classModel.members.length ; index++){
-                        var notify = new Notifications();
-                        notify.source = quiz;
-                        notify.from = req.user;
-                        notify.to = classModel.members[index];
-                        notify.type = 'quiz';
-                        notify.content =  req.user.name + ' has created quiz "'+ quiz.name +'" on your class.';
-                        notify.save();
-                    }
-                }
-            });
             
-
         }
     });
 };

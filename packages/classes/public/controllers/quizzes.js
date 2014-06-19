@@ -149,7 +149,7 @@ angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$
             } 
             else
             {
-                if($scope.quiz.ofClass.members.indexOf($scope.global.user.username) == -1)
+                if($scope.quiz.ofClass.members.indexOf($scope.global.user._id) == -1)
                 {
                     var dlg = dialogs.confirm("Confirm To Join Class","Are you want to join this class? <br/> If you click on 'Yes', you will become a member. Otherwise, you will be back to class.");
                         dlg.result.then(function(btn){
@@ -215,6 +215,21 @@ angular.module('mean').controller('QuizzesController', ['$scope','$rootScope','$
                 quizId: $stateParams.quizId
             }, function(quiz) {
                 $scope.quiz = quiz;
+
+                if (!quiz.ofClass) {
+                    toaster.pop("warning","Your request is not exist!");
+                    $timeout(function(){ 
+                     $location.path('classes');
+                    },1500);
+                };
+                
+            },function(err){
+                if (err.status == 500) {
+                    toaster.pop("warning","Your request is not exist!");
+                    $timeout(function(){ 
+                     $location.path('classes');
+                    },1500);
+                };
             });
         };
 

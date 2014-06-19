@@ -12,7 +12,7 @@ var mongoose = require('mongoose'),
 
 // unread inbox
 exports.unread = function(req,res){
-    var query = Notifications.find({to : req.user.username, type : req.query.type , status : 'unread' });
+    var query = Notifications.find({to : req.user._id, type : req.query.type , status : 'unread' });
 
     query.count(function(err,totals){
 
@@ -27,10 +27,21 @@ exports.unread = function(req,res){
  * List of messages
  */
 exports.all = function(req, res) {
-
-   var query = Notifications.find({to : req.user.id , type : req.query.type }).limit(req.query.limit);
-
-   query.sort({ dateCreate : 'desc' }).exec(function(err,items){
+   var today = new Date();  
+   if ( _.isString(req.query.type)) {
+        var query = Notifications.find({to : req.user.id , type : req.query.type }).limit(req.query.limit);
+   }
+   else {
+        if (req.query.today != undefined) {
+            console.log(req.query);
+            var query = Notifications.find({ dateCreate : { "$gte": new Date(today.getFullYear(),today.getMonth(),today.getDate()), "$lt": new Date(today.getFullYear(),today.getMonth(),today.getDate() + 1)} , to : req.user.id , type : { '$in' : req.query.type } }).limit(req.query.limit);
+        }
+        else
+            var query = Notifications.find({to : req.user.id , type : { '$in' : req.query.type } }).limit(req.query.limit);
+            
+   }
+        
+   query.populate('from', 'name username').populate('to', 'name username').sort({ dateCreate : 'desc' }).exec(function(err,items){
         if (err) {
                 console.log(err);
                 res.render('error', {

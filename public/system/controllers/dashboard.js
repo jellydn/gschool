@@ -1,8 +1,33 @@
 'use strict';
 
-angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http', '$location','Global','Classes','Notes','Quizzes','Statistics','Socket', function ($scope,$rootScope, $http, $location, Global,Classes,Notes,Quizzes,Statistics, Socket) {
+angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http', '$location','Global','Classes','Notes','Quizzes','Statistics','Notifications','Socket', function ($scope,$rootScope, $http, $location, Global,Classes,Notes,Quizzes,Statistics,Notifications, Socket) {
     $scope.global = Global;
       // get dashboard information
+
+      $scope.getClassType = function (type){
+          if (type == 'mail' || type =='chat') {
+            return 'red';
+          }
+          else
+            if (type == 'create') {
+              return 'green';
+            }
+            else
+              return 'purple';
+      };
+
+      $scope.getClassIcon = function (type){
+          if (type == 'mail' || type =='chat') {
+            return 'fa-envelope';
+          }
+          else
+            if (type == 'create') {
+              return 'fa-group';
+            }
+            else
+              return 'fa-circle-o';
+      };
+
 
       $scope.dashboard = function(){
       	Classes.query(function(classes) {
@@ -19,6 +44,11 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
 
          Statistics.get({ statisticId : $scope.global.user._id },function(statistic) {
               $scope.statistic = statistic;
+         });
+
+         Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1 },function(activities){
+            console.log(activities);
+            $scope.activities = activities;
          });
       } 
       

@@ -74,7 +74,7 @@ exports.all = function(req, res) {
                 if(!req.body.isTeacher){
 
                     // check and insert to member of class
-                    if (req.quiz.ofClass.members.indexOf(req.user.username) == -1) {
+                    if (req.quiz.ofClass.members.indexOf(req.user._id.toString()) == -1) {
                         // insert user 
                         Classes.load(req.quiz.ofClass._id,function(e,classModel){
                             if (e) {
@@ -83,7 +83,7 @@ exports.all = function(req, res) {
                             else
                             {
                                 // insert username
-                                classModel.members.push(req.user.username);
+                                classModel.members.push(req.user._id.toString());
                                 classModel.save(function(e,classResult){
                                     if (e) {
                                         console.error(e);
@@ -125,7 +125,7 @@ exports.all = function(req, res) {
                             var notify = new Notifications();
                             notify.source = req.quiz.ofClass;
                             notify.from = req.user;
-                            notify.to = req.user.username;
+                            notify.to = req.user;
                             notify.group = 'Grade';
                             notify.type = 'coins';
                             notify.data = point;
@@ -135,11 +135,13 @@ exports.all = function(req, res) {
                             var notify1 = new Notifications();
                             notify1.source = req.quiz.ofClass;
                             notify1.from = req.user;
-                            notify1.to = req.user.username;
+                            notify1.to = req.user;
                             notify1.group = 'Grade';
                             notify1.type = 'grade';
                             notify1.content = 'You got '+point+' questions right from '+answerData.length+' Questions in <a href="#!/quizzes/'+req.quiz._id+'">'+ req.quiz.name + '</a>.';
                             notify1.save();
+
+                            // notify to teacher
                         }
                     });
                 }

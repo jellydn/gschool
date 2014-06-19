@@ -53,6 +53,10 @@ ClassSchema.statics.load = function(id, cb) {
     }).populate('createBy', 'name username avatar').exec(cb);
 };
 
+ClassSchema.post('remove',function(doc){
+  // remove all quiz
+});
+
 ClassSchema
 .virtual('notes')
 .get(function () {

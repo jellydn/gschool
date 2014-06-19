@@ -14,7 +14,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
             // check if current user in array recipients
             var msg = data.message;
             msg.from = data.user;
-            if (msg.to.indexOf($scope.global.user.username) !== -1) {
+            if (msg.to.indexOf($scope.global.user._id) != -1) {
                 $scope.global.messages.pop();
                 $scope.global.messages.unshift(msg);
                 $scope.global.unreadInbox++;
@@ -23,7 +23,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
 
         Socket.on('onQuizCreated', function(data) {
             // check if current user in array recipients
-            Notifications.query({limit : 5, page : 1 , type : 'quiz'},function(quizzes){
+            Notifications.query({limit : 5, page : 1 , type : ['quiz']},function(quizzes){
                 $scope.global.quizzes = quizzes;
                 $http.get('/api/notifications/unread?type=quiz').success(function(response){
                     $scope.global.unreadQuiz = response.totals;
@@ -33,7 +33,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
 
         Socket.on('onNotifyCreated', function(data) {
             // check if current user in array recipients
-            Notifications.query({limit : 10, page : 1 , type : 'activity'},function(notifications){
+            Notifications.query({limit : 10, page : 1 , type : ['activity']},function(notifications){
                 $scope.global.notifications = notifications;
                 $http.get('/api/notifications/unread?type=activity').success(function(response){
                     $scope.global.unreadNotify = response.totals;
@@ -74,11 +74,11 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
                $scope.global.messages = messages;
             });
            // list notification
-           Notifications.query({limit : 5, page : 1 , type : 'quiz'},function(quizzes){
+           Notifications.query({limit : 5, page : 1 , type : ['quiz']},function(quizzes){
               $scope.global.quizzes = quizzes;
            });
 
-            Notifications.query({limit : 5, page : 1 , type : 'activity'},function(notifications){
+            Notifications.query({limit : 5, page : 1 , type : ['activity']},function(notifications){
               $scope.global.notifications = notifications;
            });
         });

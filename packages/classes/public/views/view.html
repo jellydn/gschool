@@ -351,14 +351,13 @@
 
                         <span> 
 
-                        <button type="button" data-ng-click="join()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) === -1 " class="btn btn-success btn-lg">Join Class</button>  
-                        <button type="button" data-ng-click="leave()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user.username) !== -1 " class="btn btn-primary btn-lg">Leave Class</button>
+                        <button type="button" data-ng-click="join()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user._id) == -1 " class="btn btn-success btn-lg">Join Class</button>  
+                        <button type="button" data-ng-click="leave()" data-ng-if="class.createBy._id != global.user._id && class.members.indexOf(global.user._id) != -1 " class="btn btn-primary btn-lg">Leave Class</button>
                         <button type="button" data-ng-if="class.createBy._id == global.user._id" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Invite Student</button>  
                         <button type="button"  data-toggle="modal" data-target="#myModalNote" data-ng-if="class.createBy._id == global.user._id" class="btn btn-primary btn-lg">Write Note</button>
                         <button type="button" data-toggle="modal" data-target="#myModalMessage" class="btn btn-primary btn-lg">Message</button>
                         <button type="button" data-ng-click="broadcast()" data-ng-if="class.createBy._id == global.user._id" class="btn btn-primary btn-lg">Broadcast</button>
 
-                        <button type="button" class="btn btn-info btn-lg">Settings</button>
                         <br/>
                         <br/>
 
@@ -370,7 +369,7 @@
                             <a href="#">
                                 <my-avatar userid="{{student.id}}" file="{{student.avatar}}" type="medium"></my-avatar>
                             </a>
-                            <h4>{{student.name}}</h4>
+                            <p>{{student.name}}</p>
                         </div>
                         <!--widget end-->
                         </div>

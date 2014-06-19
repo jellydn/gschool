@@ -57,7 +57,7 @@ exports.upload = function(req,res){
  */
 exports.all = function(req, res) {
     if (req.query.share == 1) {
-        var q = Note.find({sendToMembers : req.user.username});
+        var q = Note.find({sendToMembers : req.user._id.toString()});
     }
     else
     {
@@ -139,88 +139,108 @@ exports.note = function(req, res, next, id) {
     note.tags = req.body.tags.split(',');
     note.sendToClass = req.body.classes;
     note.sendToClassIds = req.body.classesIds;
+
     note.sendToMembers = req.body.members;
-    note.save(function(err) {
-        if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                note: note
-            });
-        } else {
-            res.jsonp(note);
 
-            // notify to owner
-            var notify = new Notifications();
-            notify.source = note;
-            notify.from = req.user;
-            notify.to = req.user.username;
-            notify.type = 'activity';
-            notify.content =  req.user.name + ' has created note "' + note.title + '"' ;
-            notify.save();
+    // find Teacher of class
 
-            // send to inbox
-            if ( ( typeof req.body.members != 'undefined') ) {
-              
-                // send notification and inbox to msg
-                if (req.body.members.length) {
-                     var message = new Message();
-                     message.from = req.user._id;
-                     message.fromName = req.user.name;
-                     message.to = req.body.members;
-                     message.file = '';
-                     message.message =  req.user.name + ' has shared note <a href="/#!/notes/' + note._id + '">' + note.title + '</a> with you.' ;
-                     message.save(function(err){
-                        if (err) {
-                            return res.send('users/signup', {
-                                errors: err.errors,
-                                message: message
-                            });
-                        } 
-                     });
+    Classes.find({ _id : {'$in' : note.sendToClassIds }},function(e,classes){
 
-                     // notify to shared note user
-                     for (var i = 0; i < req.body.members.length; i++) {
-                         var username = req.body.members[i];
-                         var notify = new Notifications();
-                            notify.source = note;
-                            notify.from = req.user;
-                            notify.to = username;
-                            notify.type = 'activity';
-                            notify.content =  req.user.name + ' has shared note "' + note.title + '" with you.' ;
-                            notify.save();
-                     };
-                };
+        if (e) {
+            console.log(e);
+        }
+        else
+        {
+            
+            for (var i = 0; i < classes.length; i++) {
+                 note.sendToMembers.push(classes[i].createBy.toString());
             };
 
-
-            // send quick comment
-            if ( (typeof req.body.quickComment != 'undefined') && req.body.quickComment != '' && req.body.quickComment.length) {
-                var comment = new Comment({ content : req.body.quickComment , onNote: note._id});
-                comment.createBy = req.user;
-                // todo: send to class and member
-
-                comment.save(function(err) {
-                    if (err) {
-                        console.error(err);
-                    } else {
-                        // update comment
-                        var query = Comment.find( {onNote : comment.onNote } );
-                        query.count(function(err,totals){
-                            if (err) {
-                                console.error(err);
-                            }
-                            else
-                            {
-                                note.totalComments = totals;
-                                note.save(); 
-                            }
-                        });
-                        
-                    }
+            note.save(function(err) {
+            if (err) {
+                return res.send('users/signup', {
+                    errors: err.errors,
+                    note: note
                 });
-            };
+            } else {
+                res.jsonp(note);
+
+                // notify to owner
+                var notify = new Notifications();
+                notify.source = note;
+                notify.from = req.user;
+                notify.to = req.user._id;
+                notify.type = 'activity';
+                notify.content = 'You have created note "' + note.title + '"' ;
+                notify.save();
+
+                // send to inbox
+                if ( ( typeof req.body.members != 'undefined') ) {
+                  
+                    // send notification and inbox to msg
+                    if (note.sendToMembers.length) {
+                         var message = new Message();
+                         message.from = req.user._id;
+                         message.fromName = req.user.name;
+                         message.to = note.sendToMembers;
+                         message.file = '';
+                         message.message =  req.user.name + ' has shared note <a href="/#!/notes/' + note._id + '">' + note.title + '</a> with you.' ;
+                         message.save(function(err){
+                            if (err) {
+                                return res.send('users/signup', {
+                                    errors: err.errors,
+                                    message: message
+                                });
+                            } 
+                         });
+
+                         // notify to shared note user
+                         for (var i = 0; i < note.sendToMembers.length; i++) {
+                             var username = note.sendToMembers[i];
+                             var notify = new Notifications();
+                                notify.source = note;
+                                notify.from = req.user;
+                                notify.to = username;
+                                notify.type = 'activity';
+                                notify.content =  req.user.name + ' has shared note "' + note.title + '" with you.' ;
+                                notify.save();
+                         };
+                    };
+                };
+
+
+                // send quick comment
+                if ( (typeof req.body.quickComment != 'undefined') && req.body.quickComment != '' && req.body.quickComment.length) {
+                    var comment = new Comment({ content : req.body.quickComment , onNote: note._id});
+                    comment.createBy = req.user;
+                    // todo: send to class and member
+
+                    comment.save(function(err) {
+                        if (err) {
+                            console.error(err);
+                        } else {
+                            // update comment
+                            var query = Comment.find( {onNote : comment.onNote } );
+                            query.count(function(err,totals){
+                                if (err) {
+                                    console.error(err);
+                                }
+                                else
+                                {
+                                    note.totalComments = totals;
+                                    note.save(); 
+                                }
+                            });
+                            
+                        }
+                    });
+                };
+            }
+        });
         }
     });
+
+    
 };
 
 exports.show = function(req, res) {

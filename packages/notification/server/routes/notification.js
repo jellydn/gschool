@@ -2,7 +2,7 @@
 var notifications = require('../controllers/notifications');
 
 var hasAuthorization = function(req, res, next) {
-    if (req.notification.to !== req.user.username ) {
+    if (req.notification.to == req.user.id ) {
         return res.send(401, 'User is not authorized');
     }
     next();

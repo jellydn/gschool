@@ -112,77 +112,30 @@
                             
                             <div class="col-sm-12">
                 <div class="timeline">
-                    <article class="timeline-item alt">
+                    <article class="timeline-item alt" ng-show="activities.length">
                         <div class="text-right">
                             <div class="time-show first">
                                 <a href="#" class="btn btn-primary">Today</a>
                             </div>
                         </div>
                     </article>
-                    <article class="timeline-item alt">
+                    <article class="timeline-item alt" data-ng-repeat="activity in activities">
                         <div class="timeline-desk">
                             <div class="panel">
                                 <div class="panel-body ">
                                     <span class="arrow-alt"></span>
 
-                                    <span class="timeline-icon red">
-                                        <i class="fa fa-envelope"></i>
+                                    <span class="timeline-icon {{getClassType(activity.type)}}">
+                                        <i class="fa {{getClassIcon(activity.type)}}"></i>
                                     </span>
-                                    <span class="timeline-date">08:25 am</span>
-                                    <h1 class="red">Message from Adunola Dina</h1>
-                                    <p>Hey are you available for a 3:00pm meeting with my chemistry group to go over past questions? please respond to Class </p>
-                                     <span class="legacyMessagingTime">1 Hour Ago </span>
+                                    <span class="timeline-date"> {{ activity.dateCreate | date:'medium' }}</span>
+                                    <h1 class="{{getClassType(activity.type)}}" ng-bind-html="activity.content"></h1>
+                                     <span class="legacyMessagingTime" data-livestamp="{{activity.dateCreate}}"></span>
                                 </div>
                             </div>
                         </div>
                     </article>
-                    <article class="timeline-item ">
-                        <div class="timeline-desk">
-                            <div class="panel">
-                                <div class="panel-body">
-                                    <span class="arrow"></span>
-                                    <span class="timeline-icon green">
-                                        <i class="fa fa-group"></i>
-                                    </span>
-                                    
-                                    
-                        <!--widget start-->
-                        <aside class="profile-nav alt">
-                            <section class="panel">
-                                <div class="user-heading alt gray-bg">
-                                    <a href="#">
-                                        <img alt="" src="public/lib/images/math.jpg">
-                                    </a>
-                                    <h1>Mathematics</h1>
-                                    <p>J.S.S 3</p>
-                                    <p>46 Members</p>
-                                </div>
-
-                            </section>
-                        </aside>
-                        <!--widget end-->
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </article>
-                    <article class="timeline-item alt">
-                        <div class="timeline-desk">
-                            <div class="panel">
-                                <div class="panel-body">
-                                    <span class="arrow-alt"></span>
-                                    <span class="timeline-icon purple">
-                                        <i class="fa fa-circle-o"></i>
-                                    </span>
-                                    <span class="timeline-date">11:35 am</span>
-                                    <h1 class="purple">10 hours ago</h1>
-                                    <p>Congratulations, you just earned 5 coins for </p><h1 class="purple">English Quiz 2</h1> <p></p>
-                            
-                                </div>
-                            </div>
-                        </div>
-                    </article>
+                    
                 
                 </div>
             </div>

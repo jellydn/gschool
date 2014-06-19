@@ -57,7 +57,7 @@ exports.suggest = function(req, res) {
     if (req.user.type == 'teacher') 
         var q = Classes.find({createBy : req.user._id,name: new RegExp('^'+req.query.q, "i")});
     else
-        var q = Classes.find({members : req.user.username,name: new RegExp('^'+req.query.q, "i")});
+        var q = Classes.find({members : req.user._id.toString(),name: new RegExp('^'+req.query.q, "i")});
 
     q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, classes) {
         if (err) {
@@ -73,7 +73,7 @@ exports.suggest = function(req, res) {
 };
 
 exports.members = function(req, res) {
-    User.find( {name: new RegExp('^'+req.query.q, "i"), username : req.class.members } ,'username name avatar', function(err, users) {
+    User.find( {name: new RegExp('^'+req.query.q, "i"), _id : {'$in' : req.class.members} } ,'username name avatar', function(err, users) {
         if (err) {
             res.render('error', {
                 status: 500
@@ -94,7 +94,7 @@ exports.all = function(req, res) {
     if (req.user.type == 'teacher') 
         var q = Classes.find({createBy : req.user._id});
     else
-        var q = Classes.find({members : req.user.username});
+        var q = Classes.find({members : req.user._id.toString()});
 
     q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, classes) {
         if (err) {
@@ -123,13 +123,13 @@ exports.class = function(req, res, next, id) {
                 if (e) return next(e);
                 if (!quizzes) return next(new Error('Failed to load quizzes of class ' + id));
                 item.quizzes = quizzes;
-                User.find({username : {'$in' : item.members}},'name username avatar').exec(function(e,students){
+                User.find({_id : {'$in' : item.members}},'name username avatar').exec(function(e,students){
                     if (e) return next(e);
                     if (!students) return next(new Error('Failed to load students of class ' + id));
                     item.students = students;
-                    Notifications.find({group : 'Grade', source : id }).exec(function(e,gradebook){
+                    Notifications.find({group : 'Grade', source : id , from : req.user }).exec(function(e,gradebook){
                         if (e) return next(e);
-                        if (!gradebook) return next(new Error('Failed to load students of class ' + id));
+                        if (!gradebook) return next(new Error('Failed to load grade of class ' + id));
                         item.gradebook = gradebook;
                         req.class = item;
                         next();
@@ -224,9 +224,10 @@ exports.class = function(req, res, next, id) {
             var notify = new Notifications();
             notify.source = classModel;
             notify.from = req.user;
-            notify.to = req.user.username;
-            notify.type = 'activity';
-            notify.content =  req.user.name + ' has created class '+ classModel.name;
+            notify.to = req.user;
+            notify.group = 'Class';
+            notify.type = 'create';
+            notify.content =  'You have created class '+ classModel.name;
             notify.save();
         }
     });
@@ -240,31 +241,31 @@ exports.show = function(req, res) {
 exports.join = function(req,res){
     var classModel = req.class;
     // join member
-    if ( ( typeof req.query.username != 'undefined') ) {
+    if ( ( typeof req.query.userid != 'undefined') ) {
         // todo, check usernaem is valid
-        var username = req.query.username.trim();
+        var userid = req.query.userid.trim();
         if(req.query.task == 'join'){
-            if (classModel.members.indexOf(username) === -1) {
-               classModel.members.push(username);
+            if (classModel.members.indexOf(userid) === -1) {
+               classModel.members.push(userid);
                for (var i in classModel.pendingMembers) {
-                    if (classModel.pendingMembers[i] === username) {
+                    if (classModel.pendingMembers[i] === userid) {
                         classModel.pendingMembers.splice(i, 1);
                     }
                 }
-               classModel.students.push( { id : req.user.id , avatar : req.user.avatar , name : req.user.name, username : req.user.username })
+               classModel.students.push( { id : req.user._id , avatar : req.user.avatar , name : req.user.name, username : req.user.username })
             };
         }
         else
         {
-            if (classModel.members.indexOf(username) !== -1) {
+            if (classModel.members.indexOf(userid) !== -1) {
                for (var i in classModel.members) {
-                    if (classModel.members[i] === username) {
+                    if (classModel.members[i] === userid) {
                         classModel.members.splice(i, 1);
                     }
                 }
 
                 for (var i in classModel.students) {
-                    if (classModel.students[i].username === username) {
+                    if (classModel.students[i].userid === userid) {
                         classModel.students.splice(i, 1);
                     }
                 }
@@ -286,9 +287,10 @@ exports.join = function(req,res){
                 var notify = new Notifications();
                 notify.source = classModel;
                 notify.from = req.user;
-                notify.to = req.user.username;
-                notify.type = 'activity';
-                notify.content =  req.user.name + ' has joined class '+ classModel.name;
+                notify.to = classModel.createBy;
+                notify.group = 'Class';
+                notify.type = 'join';
+                notify.content = req.user.name + ' have joined class '+ classModel.name;
                 notify.save();
             };
             

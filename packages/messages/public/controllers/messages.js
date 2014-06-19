@@ -443,7 +443,6 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                 tmpData.push({ 'id' : $scope.currentMesssage.from._id , 'text' : $scope.currentMesssage.from.name });
             
             for (var i = 0; i < $scope.currentMesssage.to.length; i++) {
-                if ($scope.currentMesssage.to[i]._id != $scope.global.user._id  )
                     tmpData.push({ 'id' : $scope.currentMesssage.to[i]._id , 'text' : $scope.currentMesssage.to[i].name }) ;
             };
             $("#selectRecipient").select2('data', tmpData);

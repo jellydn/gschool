@@ -16,14 +16,14 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
                         dataType: 'jsonp',
                         data: function (term, page) {
                             return {
-                                q: term, // search term
+                                q: term,
                                 page_limit: 10,
                             };
                         },
                         results: function (data, page) {
                             var classData = [];
                             for (var i = 0; i < data.length; i++) {
-                                classData[i] = { id : data[i].username , text : data[i].name , owner : data[i]._id, file : data[i].avatar };
+                                classData[i] = { id : data[i]._id , text : data[i].name , owner : data[i]._id, file : data[i].avatar };
                             };
                             return {results: classData};
                         }
@@ -131,7 +131,7 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
 
         $scope.join = function(){
             var classModel = $scope.class;
-            classModel.$join({ username : $scope.global.user.username , task : 'join' },function(response){
+            classModel.$join({ userid : $scope.global.user._id , task : 'join' },function(response){
                 $scope.class = response;
             });
         }
@@ -139,7 +139,7 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
 
         $scope.leave = function(){
             var classModel = $scope.class;
-            classModel.$join({ username : $scope.global.user.username , task : 'leave' },function(response){
+            classModel.$join({ userid : $scope.global.user._id , task : 'leave' },function(response){
                 $scope.class = response;
             });
         }
@@ -148,7 +148,7 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
             var classModel = $scope.class;
             var tmpData = [];
              for (var i = 0; i < classModel.students.length; i++) {
-                tmpData[i] = { 'id' : classModel.students[i].username , 'text' : classModel.students[i].name } ;
+                tmpData[i] = { 'id' : classModel.students[i]._id , 'text' : classModel.students[i].name } ;
             };
             $("#selectRecipient").select2('data', tmpData);
             $("#selectRecipient").select2('readonly', true);
