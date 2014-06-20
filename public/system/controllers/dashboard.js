@@ -28,6 +28,34 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
               return 'fa-circle-o';
       };
 
+      $scope.recentActivity = function(){
+            Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1,all:1,limit:5 },function(activities){
+
+               var tmpActArr = [];
+               for (var i = 0; i < activities.length; i++) {
+                  var tmp = activities[i];
+                  tmp.content = tmp.content.replace('you',tmp.to.name);
+                  tmpActArr.push(tmp);
+               };
+
+                $scope.activities = tmpActArr;
+             });
+
+            Socket.on('onNotifyCreated', function(data) {
+              // check if current user in array recipients
+              Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1,all:1,limit:5 },function(activities){
+                   var tmpActArr = [];
+                   for (var i = 0; i < activities.length; i++) {
+                      var tmp = activities[i];
+                      tmp.content = tmp.content.replace('you',tmp.to.name);
+                      tmpActArr.push(tmp);
+                   };
+
+                    $scope.activities = tmpActArr;
+                   });
+
+          });
+      }
 
       $scope.dashboard = function(){
       	Classes.query(function(classes) {
@@ -47,9 +75,15 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
          });
 
          Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1 },function(activities){
-            console.log(activities);
-            $scope.activities = activities;
+            $scope.todayActivities = activities;
          });
+
+         Socket.on('onNotifyCreated', function(data) {
+              // check if current user in array recipients
+              Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1 },function(activities){
+                $scope.todayActivities = activities;
+             });
+          });
       } 
       
 

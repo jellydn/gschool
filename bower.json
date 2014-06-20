@@ -22,6 +22,7 @@
     "AngularJS-Toaster": "latest",
     "angular-dialog-service": "latest",
     "angular-loading-bar": "latest",
+    "ngInfiniteScroll": "latest",
     "datetimepicker": "latest"
   }
 }

@@ -12,7 +12,12 @@ var mongoose = require('mongoose'),
 
 // unread inbox
 exports.unread = function(req,res){
-    var query = Notifications.find({to : req.user._id, type : req.query.type , status : 'unread' });
+    var typeArr = req.query.type.split(',');
+    if (typeArr.length>1) {
+        var query = Notifications.find({to : req.user._id, type : { '$in' : typeArr } , status : 'unread' });
+    }
+    else
+        var query = Notifications.find({to : req.user._id, type : req.query.type , status : 'unread' });
 
     query.count(function(err,totals){
 
@@ -33,8 +38,11 @@ exports.all = function(req, res) {
    }
    else {
         if (req.query.today != undefined) {
-            console.log(req.query);
-            var query = Notifications.find({ dateCreate : { "$gte": new Date(today.getFullYear(),today.getMonth(),today.getDate()), "$lt": new Date(today.getFullYear(),today.getMonth(),today.getDate() + 1)} , to : req.user.id , type : { '$in' : req.query.type } }).limit(req.query.limit);
+            if (req.query.all != undefined) {
+                var query = Notifications.find({ dateCreate : { "$gte": new Date(today.getFullYear(),today.getMonth(),today.getDate()), "$lt": new Date(today.getFullYear(),today.getMonth(),today.getDate() + 1)} , type : { '$in' : req.query.type } }).limit(req.query.limit);
+            }
+            else
+                var query = Notifications.find({ dateCreate : { "$gte": new Date(today.getFullYear(),today.getMonth(),today.getDate()), "$lt": new Date(today.getFullYear(),today.getMonth(),today.getDate() + 1)} , to : req.user.id , type : { '$in' : req.query.type } }).limit(req.query.limit);
         }
         else
             var query = Notifications.find({to : req.user.id , type : { '$in' : req.query.type } }).limit(req.query.limit);

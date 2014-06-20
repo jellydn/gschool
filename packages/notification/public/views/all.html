@@ -1,0 +1,82 @@
+<toaster-container></toaster-container>
+<section id="container" >
+<!--header start-->
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
+<!--logo start-->
+<my-logo></my-logo>
+<!--logo end-->
+
+<div class="nav notify-row" id="top_menu" >
+    <!--  notification start -->
+    <my-menu global="global"></my-menu>
+    <!--  notification end -->
+</div>
+<div class="top-nav clearfix">
+    <!--search & user info start-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
+</div>
+</header>
+<my-left-menu></my-left-menu>
+
+<!--sidebar end-->
+    <!--main content start-->
+<section id="main-content">
+        <section class="wrapper" data-ng-controller="NotificationController">
+          <div class="col-md-12">
+            <!--chat start-->
+            <section class="panel">
+                <header class="panel-heading">
+                    All activities <span class="tools pull-right">
+            <a href="javascript:;" class="fa fa-chevron-down"></a>
+            <a href="javascript:;" class="fa fa-cog"></a>
+            <a href="javascript:;" class="fa fa-times"></a>
+            </span>
+                </header>
+                <div class="panel-body" data-ng-init='findNextPage()'>
+                   <div class="timeline">
+                    <article class="timeline-item alt" ng-show="activities.length">
+                        <div class="text-right">
+                            <div class="time-show first">
+                                <a href="#" class="btn btn-primary">All activities</a>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="timeline-item alt" data-ng-repeat="activity in activities">
+                        <div class="timeline-desk">
+                            <div class="panel">
+                                <div class="panel-body">
+                                    <span class="arrow-alt"></span>
+
+                                    <span class="timeline-icon {{getClassType(activity.type)}}">
+                                        <i class="fa {{getClassIcon(activity.type)}}"></i>
+                                    </span>
+                                    <span class="timeline-date"> {{ activity.dateCreate | date:'medium' }}</span>
+                                    <h1 class="{{getClassType(activity.type)}}" ng-bind-html="activity.content"></h1>
+                                     <span class="legacyMessagingTime" data-livestamp="{{activity.dateCreate}}"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </article>
+                    <div ng-show='reddit.busy'>Loading data...</div>
+                
+                </div>
+                </div>
+            </section>
+            <!--chat end-->
+        </section>
+    </section>
+    <!--main content end-->
+<!--right sidebar start-->
+<div class="right-sidebar">
+<div class="search-row">
+    <input type="text" placeholder="Search" class="form-control">
+</div>
+<ul class="right-side-accordion">
+<my-online-list global="global" onlines="onlines" data-ng-controller="DashboardController" data-ng-init="userOnline()"></my-online-list>
+<recent-activity global="global" activities="activities" data-ng-controller="DashboardController" data-ng-init="recentActivity()"></recent-activity>
+
+</ul>
+</div>
+<!--right sidebar end-->
+
+</section>

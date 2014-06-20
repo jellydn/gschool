@@ -9,7 +9,7 @@
             </a>
             <ul class="dropdown-menu extended tasks-bar">
                 <li>
-                    <p class="">You have {{global.unreadQuiz}} unplayable quizzes</p>
+                    <p class="">You have {{global.unreadQuiz}} quizz notifications.</p>
                 </li>
                 <li data-ng-repeat="notify in global.quizzes">
                     <a href="#!/quizzes/{{notify.source}}" ng-click="global.markRead(notify);">
@@ -71,7 +71,7 @@
                 <li data-ng-repeat="notify in global.notifications">
                     <div class="alert alert-info clearfix">
                         <div class="noti-info">
-                            <a ng-click="global.markRead(notify);"> {{notify.content}}</a>
+                            <a ng-click="global.markRead(notify);" ng-bind-html="notify.content"></a>
                              (<span data-livestamp="{{notify.dateCreate}}"></span>)
                         </div>
                     </div>

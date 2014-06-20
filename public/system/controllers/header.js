@@ -15,7 +15,6 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
             var msg = data.message;
             msg.from = data.user;
             if (msg.to.indexOf($scope.global.user._id) != -1) {
-                $scope.global.messages.pop();
                 $scope.global.messages.unshift(msg);
                 $scope.global.unreadInbox++;
             };
@@ -33,15 +32,16 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
 
         Socket.on('onNotifyCreated', function(data) {
             // check if current user in array recipients
-            Notifications.query({limit : 10, page : 1 , type : ['activity']},function(notifications){
+            Notifications.query({limit : 10, page : 1 , type : ['mail','quiz','create','coins'] },function(notifications){
                 $scope.global.notifications = notifications;
-                $http.get('/api/notifications/unread?type=activity').success(function(response){
+                $http.get('/api/notifications/unread?type=mail,quiz,create,coins').success(function(response){
                     $scope.global.unreadNotify = response.totals;
                   });
              });
         });
 
         $scope.init = function(){
+
         	$http.get('/api/unread').success(function(response){
             $scope.global.unreadInbox = response.totals;
           });
@@ -50,7 +50,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         		$scope.global.unreadQuiz = response.totals;
         	});
 
-          $http.get('/api/notifications/unread?type=activity').success(function(response){
+          $http.get('/api/notifications/unread?type=mail,quiz,create,coins').success(function(response){
             $scope.global.unreadNotify = response.totals;
           });
 
@@ -64,12 +64,8 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
           // custom scroll bar
           $("#sidebar").niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
           $(".right-sidebar").niceScroll({styler:"fb",cursorcolor:"#1FB5AD", cursorwidth: '3', cursorborderradius: '10px', background: '#404040', spacebarenabled:false, cursorborder: ''});
-        }
-
-        $scope.init();
-
-        $scope.$on('LoadScriptsJs', function() {
-           Messages.query({limit : 5 , page : 1 , inbox : 1, trash : 0 , schedule : 0 },function(messages) {
+        
+          Messages.query({limit : 5 , page : 1 , inbox : 1, trash : 0 , schedule : 0 },function(messages) {
                messages.pop(); // remove last item
                $scope.global.messages = messages;
             });
@@ -78,16 +74,23 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
               $scope.global.quizzes = quizzes;
            });
 
-            Notifications.query({limit : 5, page : 1 , type : ['activity']},function(notifications){
+            Notifications.query({limit : 5, page : 1 , type : ['mail','quiz','create','coins']},function(notifications){
               $scope.global.notifications = notifications;
            });
+            
+        }
+
+        $scope.init();
+
+        $scope.$on('LoadScriptsJs', function() {
+           
         });
 
         $scope.global.markRead = function(notify){
           var quizNotificationModel = new Notifications(notify);
               quizNotificationModel.status = 'read';
               quizNotificationModel.$update(function(resp) {
-                   $http.get('/api/notifications/unread?type=activity').success(function(response){
+                   $http.get('/api/notifications/unread?type=mail,quiz,create,coins').success(function(response){
                       $scope.global.unreadNotify = response.totals;
                     });
                    $http.get('/api/notifications/unread?type=quiz').success(function(response){
@@ -159,6 +162,16 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         onlines: '='
       },
       templateUrl: 'public/system/views/onlinelist.html',
+    };
+})
+.directive('recentActivity', function() {
+    return {
+      restrict: 'E',
+      scope: {
+        global: '=',
+        activities: '='
+      },
+      templateUrl: 'public/system/views/recentactivity.html',
     };
 })
 .directive('myAvatar', function() {

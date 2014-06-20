@@ -125,88 +125,8 @@
 </div>
 <ul class="right-side-accordion">
 <my-online-list global="global" onlines="onlines" data-ng-controller="DashboardController" data-ng-init="userOnline()"></my-online-list>
+<recent-activity global="global" activities="activities" data-ng-controller="DashboardController" data-ng-init="recentActivity()"></recent-activity>
 
-<li class="widget-collapsible">
-    <a href="#" class="head widget-head purple-bg active">
-        <span class="pull-left"> recent activity (3)</span>
-        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
-    </a>
-    <ul class="widget-container">
-        <li>
-            <div class="prog-row">
-                <div class="user-thumb rsn-activity">
-                    <i class="fa fa-clock-o"></i>
-                </div>
-                <div class="rsn-details ">
-                    <p class="text-muted">
-                        just now
-                    </p>
-                    <p>
-                        <a href="#">John Sinna </a>Purchased new equipments for zonal office setup
-                    </p>
-                </div>
-            </div>
-            <div class="prog-row">
-                <div class="user-thumb rsn-activity">
-                    <i class="fa fa-clock-o"></i>
-                </div>
-                <div class="rsn-details ">
-                    <p class="text-muted">
-                        2 min ago
-                    </p>
-                    <p>
-                        <a href="#">Sumon </a>Purchased new equipments for zonal office setup
-                    </p>
-                </div>
-            </div>
-            <div class="prog-row">
-                <div class="user-thumb rsn-activity">
-                    <i class="fa fa-clock-o"></i>
-                </div>
-                <div class="rsn-details ">
-                    <p class="text-muted">
-                        1 day ago
-                    </p>
-                    <p>
-                        <a href="#">Mosaddek </a>Purchased new equipments for zonal office setup
-                    </p>
-                </div>
-            </div>
-        </li>
-    </ul>
-</li>
-<li class="widget-collapsible">
-    <a href="#" class="head widget-head yellow-bg active">
-        <span class="pull-left"> shipment status</span>
-        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
-    </a>
-    <ul class="widget-container">
-        <li>
-            <div class="col-md-12">
-                <div class="prog-row">
-                    <p>
-                        Full sleeve baby wear (SL: 17665)
-                    </p>
-                    <div class="progress progress-xs mtop10">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">40% Complete</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="prog-row">
-                    <p>
-                        Full sleeve baby wear (SL: 17665)
-                    </p>
-                    <div class="progress progress-xs mtop10">
-                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 70%">
-                            <span class="sr-only">70% Completed</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </li>
-    </ul>
-</li>
 </ul>
 </div>
 <!--right sidebar end-->

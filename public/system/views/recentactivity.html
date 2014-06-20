@@ -1,0 +1,22 @@
+
+<li class="widget-collapsible">
+    <a href="#" class="head widget-head purple-bg active">
+        <span class="pull-left"> Recent activity ({{activities.length}})</span>
+        <span class="pull-right widget-collapse"><i class="ico-minus"></i></span>
+    </a>
+    <ul class="widget-container">
+        <li data-ng-repeat="activity in activities">
+            <div class="prog-row">
+                <div class="user-thumb rsn-activity">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                <div class="rsn-details ">
+                    <p class="text-muted" data-livestamp="{{activity.dateCreate}}">
+                    </p>
+                    <p data-ng-bind-html="activity.content">
+                    </p>
+                </div>
+            </div>
+        </li>
+    </ul>
+</li>

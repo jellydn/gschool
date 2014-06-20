@@ -5,17 +5,17 @@ module.exports = function (socket, users) {
      
     socket.on('createMessage', function(data) {
         socket.broadcast.emit('onMessageCreated', data);
-        socket.broadcast.emit('onNotifyCreated', data);
+        socket.broadcast.emit('onNotifyCreated', {action : 'compose', object : 'message'});
     });
 
     socket.on('createQuiz', function(quiz) {
         socket.broadcast.emit('onQuizCreated', quiz);
-        socket.broadcast.emit('onNotifyCreated', quiz);
+        socket.broadcast.emit('onNotifyCreated', {action : 'create', object : 'quiz'});
     });
 
     socket.on('createComment', function(comment) {
         socket.broadcast.emit('onCommentCreated', comment);
-        socket.broadcast.emit('onNotifyCreated', comment);
+        socket.broadcast.emit('onNotifyCreated', {action : 'comment', object : 'note'});
     });
 
     // send for current online for new user
@@ -58,6 +58,7 @@ module.exports = function (socket, users) {
 
     socket.on('sendChat',function(msg){
          socket.broadcast.emit("onChatCreated", msg);
+         socket.broadcast.emit('onNotifyCreated', {action : 'send', object : 'chat'});
     });
 
     // user logout or disconnect

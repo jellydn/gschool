@@ -65,6 +65,7 @@
             "public/system/lib/angular-translate/angular-translate.min.js",
             "public/system/lib/angular-dialog-service/dialogs.min.js",
             "public/system/lib/angular-loading-bar/build/loading-bar.min.js",
+            "public/system/lib/ngInfiniteScroll/build/ng-infinite-scroll.js",
             "public/init.js",
             "public/*/*.js",
             "public/*/*/*.js",
