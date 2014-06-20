@@ -32,7 +32,7 @@
             <a href="javascript:;" class="fa fa-times"></a>
             </span>
                 </header>
-                <div class="panel-body" data-ng-init='findNextPage()'>
+                <div class="panel-body" infinite-scroll='findNextPage()' infinite-scroll-disabled='busy' infinite-scroll-distance='1'>
                    <div class="timeline">
                     <article class="timeline-item alt" ng-show="activities.length">
                         <div class="text-right">
@@ -57,7 +57,7 @@
                             </div>
                         </div>
                     </article>
-                    <div ng-show='reddit.busy'>Loading data...</div>
+                    <div id="loadingdata" ng-show='busy && !isFinish'>Loading data...</div>
                 
                 </div>
                 </div>

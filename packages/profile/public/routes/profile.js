@@ -29,6 +29,13 @@ angular.module('mean').config(['$stateProvider',
                 loggedin: checkLoggedin
             }
         })
+        .state('profile setting', {
+            url: '/profile/setting',
+            templateUrl: 'profile/views/setting.html',
+            resolve: {
+                loggedin: checkLoggedin
+            }
+        })
         .state('profile by uesrname', {
             url: '/profile/:usernameId',
             templateUrl: 'profile/views/view.html',

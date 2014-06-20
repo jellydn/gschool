@@ -16,14 +16,17 @@ mod.directive('infiniteScroll', [
         infiniteScrollUseDocumentBottom: '='
       },
       link: function(scope, elem, attrs) {
+        elem = $(elem) //requesting jquery function on line 40
         var changeContainer, checkWhenEnabled, container, handleInfiniteScrollContainer, handleInfiniteScrollDisabled, handleInfiniteScrollDistance, handleInfiniteScrollUseDocumentBottom, handler, immediateCheck, scrollDistance, scrollEnabled, throttle, useDocumentBottom;
-        $window = angular.element($window);
+        //$window = angular.element($window);
+        $window = $(window);
         scrollDistance = null;
         scrollEnabled = null;
         checkWhenEnabled = null;
         container = null;
         immediateCheck = true;
         useDocumentBottom = false;
+
         handler = function() {
           var containerBottom, containerTopOffset, elementBottom, remaining, shouldScroll;
           if (container === $window) {

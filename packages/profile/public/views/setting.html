@@ -1,0 +1,165 @@
+<toaster-container></toaster-container>
+<section id="container" >
+<!--header start-->
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController"> 
+<!--logo start-->
+<my-logo></my-logo>
+<!--logo end-->
+
+<div class="nav notify-row" id="top_menu" >
+    <!--  notification start -->
+    <my-menu global="global"></my-menu>
+    <!--  notification end -->
+</div>
+<div class="top-nav clearfix">
+    <!--search & user info start-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
+</div>
+</header>
+
+<my-left-menu></my-left-menu>
+
+<!--sidebar end-->
+    <!--main content start-->
+<section id="main-content">
+        <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-12" data-ng-controller="ProfileController" data-ng-init="me()">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Basic profile information
+                        </header>
+                        <div class="panel-body">
+                                <div class="alert alert-success fade in" data-ng-hide="saveBasic">
+                                    <button data-dismiss="alert" class="close close-sm" type="button">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    <strong>Well done!</strong> Your information has been updated.
+                                </div>
+                                <form class="form-horizontal" role="form" data-ng-submit="update('basic')">
+                                 <div class="form-group">
+                                    <label class="col-sm-3 control-label col-lg-3">Username</label>
+                                    <div class="col-lg-6">
+                                        <div class="input-group m-bot15">
+                                            <span class="input-group-addon btn-white"><i class="fa fa-user"></i></span>
+                                            <input type="text" class="form-control" disabled value="{{global.user.username}}">
+                                        </div>
+                                    </div>
+                                </div>   
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Name</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" ng-model="profile.name" required class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Address</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" ng-model="profile.address" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">City</label>
+                                    <div class="col-sm-6">
+                                        <input type="text" ng-model="profile.city" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-3 control-label">Gender</label>
+                                    <div class="col-sm-6">
+                                        <label class="radio-inline">
+                                            <input type="radio" ng-model="profile.gender" value="Male"> Male
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" ng-model="profile.gender" value="Female"> Female
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-lg-offset-3 col-lg-6">
+                                    <button type="submit" class="btn btn-info">Save</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </section>
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Email address
+                        </header>
+                        <div class="panel-body">
+                                <div class="alert alert-success fade in" data-ng-hide="saveEmail">
+                                    <button data-dismiss="alert" class="close close-sm" type="button">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    <strong>Well done!</strong> Your email has been changed.
+                                </div>
+                                <form class="form-horizontal" role="form" data-ng-submit="update('email')">
+                                <div class="form-group">
+                                    <label  class="col-sm-3 control-label col-lg-3" for="exampleInputEmail1">Email address</label>
+                                    <div class="col-lg-6">
+                                        <div class="input-group m-bot15">
+                                            <span class="input-group-addon btn-white"><i class="fa fa-envelope"></i></span>
+                                            <input type="email" required ng-model="profile.email" class="form-control" placeholder="Email">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-offset-3 col-lg-6">
+                                    <button type="submit" class="btn btn-info">Save</button>
+                                </div>
+                                 </form>
+
+                        </div>
+                    </section>
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Your avatar photo
+                        </header>
+
+                        <div class="panel-body">
+                            <div class="alert {{classUpload}} fade in" data-ng-hide="uploadPhoto">
+                                    <button data-dismiss="alert" class="close close-sm" type="button">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    {{messageUpload}}
+                            </div>
+
+                            <form class="form-horizontal" role="form" data-ng-submit="uploadAvatar()">
+                            <div class="form-group">
+                                <label class="col-sm-3 control-label col-lg-3" for="exampleInputFile">Your photo</label>
+                                <div class="col-lg-6">
+                                    <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;" data-ng-if="profile.avatar == ''">
+                                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="">
+                                    </div>
+                                    <img src="/public/lib/images/ajax-loader.gif" ng-show="isSelectFile" class="ng-hide">
+                                    <div class="input-group m-bot15">
+                                    <input type="file" id="uploadfile" ng-file-select="onPhotoSelect($files)">
+                                </div>
+                                </div>
+                            </div> 
+                            <div class="col-lg-offset-3 col-lg-6" data-ng-show="uploadPhoto">
+                                <button type="submit" class="btn btn-info">Upload</button>
+                            </div>
+                             </form>
+
+                        </div>
+                    </section>
+            </div>
+        </div>
+        </section>
+    </section>
+    <!--main content end-->
+<!--right sidebar start-->
+<div class="right-sidebar">
+<div class="search-row">
+    <input type="text" placeholder="Search" class="form-control">
+</div>
+<ul class="right-side-accordion">
+
+<my-online-list global="global" onlines="onlines" data-ng-controller="DashboardController" data-ng-init="userOnline()"></my-online-list>
+<recent-activity global="global" activities="activities" data-ng-controller="DashboardController" data-ng-init="recentActivity()"></recent-activity>
+
+</ul>
+</div>
+<!--right sidebar end-->
+
+</section>
