@@ -17,24 +17,29 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
       };
 
       $scope.getClassIcon = function (type){
-          if (type == 'mail' || type =='chat') {
-            return 'fa-envelope';
-          }
-          else
-            if (type == 'create') {
-              return 'fa-group';
+            if (type == 'mail') {
+              return 'fa-envelope';
             }
             else
-              return 'fa-circle-o';
-      };
+              if (type == 'chat') {
+              return 'fa-comment-o';
+              }
+              else
+                if (type == 'create') {
+                 return 'fa-group';
+                }
+                else
+                  return 'fa-circle-o';
+        };
 
       $scope.recentActivity = function(){
-            Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1,all:1,limit:5 },function(activities){
+            Notifications.query({ type : ['mail','quiz','create','coins','chat'] , today : 1,all:1,limit:5 },function(activities){
 
                var tmpActArr = [];
                for (var i = 0; i < activities.length; i++) {
                   var tmp = activities[i];
                   tmp.content = tmp.content.replace('you',tmp.to.name);
+                  tmp.content = tmp.content.replace('{subject}',tmp.from.name);
                   tmpActArr.push(tmp);
                };
 
@@ -43,11 +48,12 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
 
             Socket.on('onNotifyCreated', function(data) {
               // check if current user in array recipients
-              Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1,all:1,limit:5 },function(activities){
+              Notifications.query({ type : ['mail','quiz','create','coins','chat'] , today : 1,all:1,limit:5 },function(activities){
                    var tmpActArr = [];
                    for (var i = 0; i < activities.length; i++) {
                       var tmp = activities[i];
                       tmp.content = tmp.content.replace('you',tmp.to.name);
+                      tmp.content = tmp.content.replace('{subject}',tmp.from.name);
                       tmpActArr.push(tmp);
                    };
 
@@ -74,14 +80,26 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
               $scope.statistic = statistic;
          });
 
-         Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1 },function(activities){
-            $scope.todayActivities = activities;
+         Notifications.query({ type : ['mail','quiz','create','coins','chat'] , today : 1 },function(activities){
+            var tmpActArr = [];
+               for (var i = 0; i < activities.length; i++) {
+                  var tmp = activities[i];
+                  tmp.content = tmp.content.replace('{subject}',tmp.from.name);
+                  tmpActArr.push(tmp);
+            };
+            $scope.todayActivities = tmpActArr;
          });
 
          Socket.on('onNotifyCreated', function(data) {
               // check if current user in array recipients
-              Notifications.query({ type : ['mail','quiz','create','coins'] , today : 1 },function(activities){
-                $scope.todayActivities = activities;
+              Notifications.query({ type : ['mail','quiz','create','coins','chat'] , today : 1 },function(activities){
+                var tmpActArr = [];
+                for (var i = 0; i < activities.length; i++) {
+                      var tmp = activities[i];
+                      tmp.content = tmp.content.replace('{subject}',tmp.from.name);
+                      tmpActArr.push(tmp);
+                };
+                $scope.todayActivities = tmpActArr; 
              });
           });
       } 

@@ -74,7 +74,8 @@
     "easyimage": "latest",
     "time": "latest",
     "moment": "latest",
-    "node-schedule": "latest"
+    "node-schedule": "latest",
+    "nconf": "latest"
   },
   "devDependencies": {
     "assetmanager": "^0.1.2",

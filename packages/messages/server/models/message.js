@@ -4,7 +4,10 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    _ = require('lodash'),
+    fs = require('fs'),
+    nconf = require('nconf');
 
 
 /**
@@ -59,15 +62,21 @@ MessageSchema.statics.load = function(id, cb) {
 MessageSchema.post('save', function (doc) {
   var Notifications = mongoose.model('Notification');
     //notify 
+    nconf.use('file', { file: './user-setting.json' });
+
     for (var i = 0; i < doc.to.length; i++) {
-        var username = doc.to[i];
-        var notify = new Notifications();
-        notify.source = doc;
-        notify.from = doc.from;
-        notify.to = username;
-        notify.type = 'mail';
-        notify.content =  doc.fromName + ' has sent mail to you.';
-        notify.save();
+
+        if (nconf.get('message:' + doc.to.toString()) == undefined || nconf.get('message:' + doc.to.toString()) ) {
+            var username = doc.to[i];
+            var notify = new Notifications();
+            notify.source = doc;
+            notify.from = doc.from;
+            notify.to = username;
+            notify.type = 'mail';
+            notify.content =  doc.fromName + ' has sent mail to you.';
+            notify.save();
+        }
+        
     };
 })
 

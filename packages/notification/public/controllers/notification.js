@@ -18,24 +18,35 @@ angular.module('mean').controller('NotificationController', ['$scope', '$rootSco
 	      };
 
 	      $scope.getClassIcon = function (type){
-	          if (type == 'mail' || type =='chat') {
+	          if (type == 'mail') {
 	            return 'fa-envelope';
 	          }
 	          else
-	            if (type == 'create') {
-	              return 'fa-group';
-	            }
-	            else
-	              return 'fa-circle-o';
+	      	  	if (type == 'chat') {
+	      	  	return 'fa-comment-o';
+	      	  	}
+	          	else
+	           	 	if (type == 'create') {
+	             	 return 'fa-group';
+	            	}
+	            	else
+	              	return 'fa-circle-o';
 	      };
         $scope.findNextPage = function(){
       		if ($scope.busy) return;
     		$scope.busy = true;
     		var limit = $scope.pageNumber*5;
-        	Notifications.query({ type : ['mail','quiz','create','coins'] 
+        	Notifications.query({ type : ['mail','quiz','create','coins','chat'] 
         		, limit: limit
         	 },function(activities){
-	            $scope.activities = activities;
+	            var tmpActArr = [];
+               	for (var i = 0; i < activities.length; i++) {
+                  var tmp = activities[i];
+                  tmp.content = tmp.content.replace('{subject}',tmp.from.name);
+                  tmpActArr.push(tmp);
+               	};
+
+                $scope.activities = tmpActArr;
 	            $scope.pageNumber++;
 	            if ( limit > activities.length) {
 	            	$scope.isFinish = true;
@@ -51,7 +62,7 @@ angular.module('mean').controller('NotificationController', ['$scope', '$rootSco
 	            };
 
 	            $timeout(function(){
-	            	$http.get('/api/notifications/unread?type=mail,quiz,create,coins').success(function(response){
+	            	$http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat').success(function(response){
                       $scope.global.unreadNotify = response.totals;
                     });
 	            },1500);

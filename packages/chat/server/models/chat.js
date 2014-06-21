@@ -4,7 +4,10 @@
  * Module dependencies.
  */
 var mongoose = require('mongoose'),
-    Schema = mongoose.Schema;
+    Schema = mongoose.Schema,
+    _ = require('lodash'),
+    fs = require('fs'),
+    nconf = require('nconf');
 
 
 /**
@@ -50,14 +53,19 @@ ChatSchema.statics.load = function(id, cb) {
 
 
 ChatSchema.post('save',function(doc){
-    var Notifications = mongoose.model('Notification');
-    var notify = new Notifications();
-    notify.source = doc;
-    notify.from = doc.createBy;
-    notify.to = doc.to;
-    notify.type = 'chat';
-    notify.content = '{subject} messaged to you.';
-    notify.save();
+    nconf.use('file', { file: './user-setting.json' });
+    if (nconf.get('chat:' + doc.to.toString()) == undefined || nconf.get('chat:' + doc.to.toString()) ) {
+
+        var Notifications = mongoose.model('Notification');
+        var notify = new Notifications();
+        notify.source = doc;
+        notify.from = doc.createBy;
+        notify.to = doc.to;
+        notify.type = 'chat';
+        notify.content = '{subject} messaged to you.';
+        notify.save();
+
+    }
 });
 
 mongoose.model('Chat', ChatSchema);

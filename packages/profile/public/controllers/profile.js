@@ -1,9 +1,11 @@
 'use strict';
 
-angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$upload', '$stateParams','$http', '$location', 'Global','Users',
-    function($scope,$rootScope, $upload, $stateParams, $http, $location, Global, Users) {
+angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$upload', '$stateParams','$http', '$location', 'Global','Users','toaster',
+    function($scope,$rootScope, $upload, $stateParams, $http, $location, Global, Users,toaster) {
         $scope.global = Global;
         $scope.fileName = "";
+        $scope.chatSwitch = false;
+        $scope.messageSwitch = false;
         $scope.me = function(){
             $scope.saveBasic = true;
             $scope.saveEmail = true;
@@ -14,6 +16,41 @@ angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$
             }, function(user) {
                 $scope.profile = user;
             });
+        }
+
+        $scope.setting = function(){
+
+            $http.get('/settings').success(function(resp){
+                $scope.chatSwitch = resp.chat;
+                $scope.messageSwitch = resp.message;
+                $('#chatSwitch').bootstrapSwitch('setState', $scope.chatSwitch);
+                $('#messageSwitch').bootstrapSwitch('setState', $scope.messageSwitch);
+            });
+
+            $('input[type="checkbox"],[type="radio"]').not('#create-switch').bootstrapSwitch();
+        }
+
+        $scope.change = function(){
+            $http.post('/settings',{chat : $('#chatSwitch').bootstrapSwitch('state'),message: $('#messageSwitch').bootstrapSwitch('state')})
+                 .success(function(resp){
+                    toaster.pop("success","Saving!","Your setting have been updated.");
+                 });
+        }
+
+        $scope.changeLogo = function(){
+            console.log($scope.fileName);
+            if ($scope.fileName == '') {
+                toaster.pop("info","Missing photo!","Please upload your logo image.");
+                return;
+            };
+
+            $http.post('/settings/logo',{logo : $scope.fileName})
+                 .success(function(resp){
+                    toaster.pop("success","Saving!",'Your logo have been changed!');
+                 })
+                 .error(function(resp){
+                    toaster.pop("error","Error",resp);
+                 });
         }
 
         $scope.update = function(actionType){

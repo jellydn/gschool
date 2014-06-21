@@ -32,9 +32,16 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
 
         Socket.on('onNotifyCreated', function(data) {
             // check if current user in array recipients
-            Notifications.query({limit : 10, page : 1 , type : ['mail','quiz','create','coins'] },function(notifications){
-                $scope.global.notifications = notifications;
-                $http.get('/api/notifications/unread?type=mail,quiz,create,coins').success(function(response){
+            Notifications.query({limit : 10, page : 1 , type : ['mail','quiz','create','coins','chat'] },function(notifications){
+                 var tmpActArr = [];
+                   for (var i = 0; i < notifications.length; i++) {
+                      var tmp = notifications[i];
+                      tmp.content = tmp.content.replace('{subject}',tmp.from.name);
+                      tmpActArr.push(tmp);
+                };
+                $scope.global.notifications = tmpActArr;
+                
+                $http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat').success(function(response){
                     $scope.global.unreadNotify = response.totals;
                   });
              });
@@ -50,7 +57,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         		$scope.global.unreadQuiz = response.totals;
         	});
 
-          $http.get('/api/notifications/unread?type=mail,quiz,create,coins').success(function(response){
+          $http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat').success(function(response){
             $scope.global.unreadNotify = response.totals;
           });
 
@@ -74,8 +81,16 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
               $scope.global.quizzes = quizzes;
            });
 
-            Notifications.query({limit : 5, page : 1 , type : ['mail','quiz','create','coins']},function(notifications){
-              $scope.global.notifications = notifications;
+            Notifications.query({limit : 5, page : 1 , type : ['mail','quiz','create','coins','chat']},function(notifications){
+    
+               var tmpActArr = [];
+                 for (var i = 0; i < notifications.length; i++) {
+                    var tmp = notifications[i];
+                    tmp.content = tmp.content.replace('{subject}',tmp.from.name);
+                    tmpActArr.push(tmp);
+              };
+              $scope.global.notifications = tmpActArr;
+
            });
             
         }
@@ -90,7 +105,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
           var quizNotificationModel = new Notifications(notify);
               quizNotificationModel.status = 'read';
               quizNotificationModel.$update(function(resp) {
-                   $http.get('/api/notifications/unread?type=mail,quiz,create,coins').success(function(response){
+                   $http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat').success(function(response){
                       $scope.global.unreadNotify = response.totals;
                     });
                    $http.get('/api/notifications/unread?type=quiz').success(function(response){
