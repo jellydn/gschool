@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http', '$location','Global','Classes','Notes','Quizzes','Statistics','Notifications','Socket', function ($scope,$rootScope, $http, $location, Global,Classes,Notes,Quizzes,Statistics,Notifications, Socket) {
+angular.module('mean.system').controller('DashboardController', ['$scope', '$rootScope', '$http','$stateParams', '$location','toaster','Global','Classes','Notes','Quizzes','Statistics','Notifications','Socket', function ($scope,$rootScope, $http,$stateParams, $location,toaster, Global,Classes,Notes,Quizzes,Statistics,Notifications, Socket) {
     $scope.global = Global;
       // get dashboard information
-
+      $scope.results = [];
       $scope.getClassType = function (type){
           if (type == 'mail' || type =='chat') {
             return 'red';
@@ -31,6 +31,25 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
                 else
                   return 'fa-circle-o';
         };
+
+      $scope.presearch = function(){
+          var keyword = $('#keyword').val();
+          if (!keyword.length) {
+              toaster.pop('info','Searching','Please input your keyword!');
+          }
+          else
+          {
+            $location.path('search/' + keyword);
+          }
+      }
+
+      $scope.search = function(type){
+         $scope.keyword = $stateParams.keyword;
+         $http.post('/search', { type :type, q : $stateParams.keyword})
+              .success(function(resp){
+                $scope.results[type] = resp;
+          });
+      }
 
       $scope.recentActivity = function(){
             Notifications.query({ type : ['mail','quiz','create','coins','chat'] , today : 1,all:1,limit:5 },function(activities){

@@ -1,0 +1,149 @@
+<toaster-container></toaster-container>
+<section id="container" >
+<!--header start-->
+
+
+<header class="header fixed-top clearfix" data-ng-controller="HeaderController" ng-init="$emit('LoadScriptsJs')"> 
+<!--logo start-->
+<my-logo></my-logo>
+<!--logo end-->
+
+<div class="nav notify-row" id="top_menu" >
+    <!--  notification start -->
+    <my-menu global="global"></my-menu>
+    <!--  notification end -->
+</div>
+<div class="top-nav clearfix">
+    <!--search & user info start-->
+    <my-user-menu userinfo="userinfo"></my-user-menu>
+</div>
+</header>
+
+<my-left-menu global="global"></my-left-menu>
+
+<!--sidebar end-->
+    <!--main content start-->
+    <section id="main-content" data-ng-controller="DashboardController">
+        <section class="wrapper">
+        <div class="row">
+            <div class="col-lg-12" ng-init="search('class')">
+                    <section class="panel">
+                        <header class="panel-heading">
+                            Searching "{{keyword}}" in classes
+                        </header>
+                        <div class="panel-body">
+                                <div class="col-md-4" data-ng-repeat="class in results['class']">
+
+                                <!--widget start-->
+                                <aside class="profile-nav alt">
+                                    <section class="panel">
+                                        <div class="user-heading alt gray-bg">
+                                            <a href="/#!/classes/{{class._id}}">
+                                                <my-class-avatar userid="{{class.createBy._id}}" file="{{class.file}}"></my-class-avatar>
+                                            </a>
+                                            <h1>{{class.name}}</h1>
+                                            <p>J.S.S 3</p>
+                                            <p>{{class.members.length}} People</p>
+                                        </div>
+
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <li><a href="/#!/classes/{{class._id}}">This Week:  Integration and Applications </a></li>
+                                            <li><a href="/#!/classes/{{class._id}}"> <i class="fa fa-tasks"></i> Recent Activity <span class="badge label-danger pull-right r-activity">15</span></a></li>
+                                         
+                                        </ul>
+
+                                    </section>
+                                </aside>
+                                                <!--widget end-->
+                                </div>
+                                <div ng-show="!results['class'].length">
+                                    Not found
+                                </div>
+                        </div>
+                    </section>
+            </div>
+
+            <div class="col-lg-12" ng-init="search('note')">
+                    <section class="panel" >
+                        <header class="panel-heading">
+                            Searching "{{keyword}}" in notes
+                        </header>
+                        <div class="panel-body">
+                                <div class="col-md-4" data-ng-repeat="note in results['note']| orderBy:'-dateCreate' ">
+                                <!--widget start-->
+                                <aside class="profile-nav alt">
+                                    <section class="panel">
+                                        <div class="user-heading alt gray-bg">
+                                        
+                                            <h1>{{note.title}}</h1>
+                                            <p>{{note.createBy.name}}</p>
+                                        </div>
+
+                                        <ul class="nav nav-pills nav-stacked">
+                                            <li><a href="/#!/notes/{{note._id}}"> <i class="fa fa-comment"></i> Comments <span class="badge label-success pull-right r-activity">{{note.totalComments}}</span></a></li>
+                                        </ul>
+
+                                    </section>
+                                </aside>
+                                <!--widget end-->
+
+                                 </div>
+                                 <div ng-show="!results['note'].length">
+                                    Not found
+                                </div>
+                        </div>
+                    </section>
+            </div>
+
+            <div class="col-lg-12" ng-init="search('user')">
+                    <section class="panel" >
+                        <header class="panel-heading">
+                            Searching "{{keyword}}" in users
+                        </header>
+                        <div class="panel-body">
+                            <table class="table  table-hover general-table" ng-show="results['user'].length">
+                            <thead>
+                            <tr>
+                                <th> Full Name</th>
+                                <th class="hidden-phone">E-mail</th>
+                                <th>Options</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr id="users" data-ng-repeat="user in results['user']">
+
+                                <td>{{user.name}}</td>
+                                <td>{{user.email}}</td>
+                                <td>
+                                    
+                            <a href="/#!/profile/{{user.username}}" type="button" class="btn btn-primary"><i class="fa fa-cloud"></i> View</a>
+         
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div ng-show="!results['user'].length">
+                                    Not found
+                                </div>
+                        </div>
+                    </section>
+            </div>
+        </div>
+        </section>
+    </section>
+    <!--main content end-->
+<!--right sidebar start-->
+<div class="right-sidebar">
+<div class="search-row">
+    <input type="text" placeholder="Search" class="form-control">
+</div>
+<ul class="right-side-accordion">
+<my-online-list global="global" onlines="onlines" data-ng-controller="DashboardController" data-ng-init="userOnline()"></my-online-list>
+<recent-activity global="global" activities="activities" data-ng-controller="DashboardController" data-ng-init="recentActivity()"></recent-activity>
+</ul>
+</div>
+<!--right sidebar end-->
+
+</section>

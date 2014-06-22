@@ -1,7 +1,9 @@
     <!--search & user info start-->
     <ul class="nav pull-right top-menu">
         <li>
-            <input type="text" class="form-control search" placeholder=" Search">
+            <form ng-controller="DashboardController" ng-submit="presearch()">
+            <input id="keyword" name="keyword" type="text" class="form-control search" placeholder="Search">
+            </form>
         </li>
         <!-- user login dropdown start-->
         <li class="nav navbar-nav">

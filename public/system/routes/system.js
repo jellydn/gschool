@@ -36,6 +36,13 @@ angular.module('mean.system').config(['$stateProvider', '$urlRouterProvider',
                         loggedin: checkLoggedin
                     }
                 })
+                .state('search result', {
+                    url: '/search/:keyword',
+                    templateUrl: 'public/system/views/search.html',
+                    resolve: {
+                        loggedin: checkLoggedin
+                    }
+                })
                 .state('auth', {
                     templateUrl: 'public/auth/views/index.html'
                 });
