@@ -10,4 +10,7 @@ module.exports = function(Directory, app, auth, database) {
     app.route('/users')
         .get(directories.all);
 
+    app.route('/rights')
+    	.post(auth.requiresLogin,directories.rights)
+
 };
