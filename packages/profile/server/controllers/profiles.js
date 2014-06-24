@@ -7,6 +7,16 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     _ = require('lodash');
 
+exports.detail = function(req,res){
+    // find user by username
+    User.findOne({username : req.query.username},'username name email type roles avatar').exec(function(err,user){
+        if (err) {
+            console.error(err);
+        }
+        else
+            res.jsonp({profile : user});
+    })
+}
 
 // process upload file
 exports.upload = function(req,res){

@@ -6,6 +6,20 @@ angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$
         $scope.fileName = "";
         $scope.chatSwitch = false;
         $scope.messageSwitch = false;
+
+
+        $scope.detail = function(){
+            // get user information
+            $http.get('/api/profile?username=' + $stateParams.usernameId)
+                 .success(function(user){
+                    $scope.user = user.profile;
+                 })
+                 .error(function(err){
+                    // to homepage
+                    $location.path('/');
+                 });
+        }
+
         $scope.me = function(){
             $scope.saveBasic = true;
             $scope.saveEmail = true;
