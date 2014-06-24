@@ -328,7 +328,7 @@
                         <div class="col-md-8">
                             <header class="classTitle">
                             <div class="user-heading alt">
-                                    <a href="#">
+                                    <a href="#!/profile/{{class.createBy.username}}">
                                         <my-avatar type="medium" userid="{{class.createBy.id}}" file="{{class.createBy.avatar}}"></my-avatar>
                                     </a>
                                 </div>
@@ -366,7 +366,7 @@
                         <div class="col-md-4" data-ng-repeat="student in class.students">
                         <!--widget start-->
                         <div class="user-heading alt">
-                            <a href="#">
+                            <a href="#!/profile/{{student.username}}">
                                 <my-avatar userid="{{student.id}}" file="{{student.avatar}}" type="medium"></my-avatar>
                             </a>
                             <p>{{student.name}}</p>

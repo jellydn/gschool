@@ -5,6 +5,8 @@
  */
 var mongoose = require('mongoose'),
     User = mongoose.model('User'),
+    Classes = mongoose.model('Class'),
+    Notes = mongoose.model('Note'),
     _ = require('lodash');
 
 exports.detail = function(req,res){
@@ -13,8 +15,33 @@ exports.detail = function(req,res){
         if (err) {
             console.error(err);
         }
-        else
-            res.jsonp({profile : user});
+        else {
+            // get public activity
+
+            // get notes - createBy 
+            var notes = [];
+            Notes.find( { createBy : user._id},function(err,notes){
+                if (err) {
+                    console.error(err);
+                }
+                else
+                {
+                    
+                    Classes.find(
+                        { 
+                            $or : [ {createBy : user._id} , {members : user._id.toString()} ] 
+                        },function(e,classes){
+                            res.jsonp({profile : user, notes : notes,classes : classes});
+                        });
+
+
+                }
+
+
+            })
+            
+        }
+            
     })
 }
 

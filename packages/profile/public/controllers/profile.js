@@ -13,6 +13,8 @@ angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$
             $http.get('/api/profile?username=' + $stateParams.usernameId)
                  .success(function(user){
                     $scope.user = user.profile;
+                    $scope.notes = user.notes;
+                    $scope.classes = user.classes;
                  })
                  .error(function(err){
                     // to homepage

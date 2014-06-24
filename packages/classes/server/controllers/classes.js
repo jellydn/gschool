@@ -245,10 +245,10 @@ exports.join = function(req,res){
         // todo, check usernaem is valid
         var userid = req.query.userid.trim();
         if(req.query.task == 'join'){
-            if (classModel.members.indexOf(userid) === -1) {
+            if (classModel.members.indexOf(userid) == -1) {
                classModel.members.push(userid);
                for (var i in classModel.pendingMembers) {
-                    if (classModel.pendingMembers[i] === userid) {
+                    if (classModel.pendingMembers[i] == userid) {
                         classModel.pendingMembers.splice(i, 1);
                     }
                 }
@@ -257,15 +257,16 @@ exports.join = function(req,res){
         }
         else
         {
+
             if (classModel.members.indexOf(userid) !== -1) {
                for (var i in classModel.members) {
-                    if (classModel.members[i] === userid) {
+                    if (classModel.members[i] == userid) {
                         classModel.members.splice(i, 1);
                     }
                 }
 
                 for (var i in classModel.students) {
-                    if (classModel.students[i].userid === userid) {
+                    if (classModel.students[i]._id == userid) {
                         classModel.students.splice(i, 1);
                     }
                 }
