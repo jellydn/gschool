@@ -82,6 +82,16 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
         $scope.$on('LoadCreateNoteJs', function() {
                 $('#tags_1').tagsInput({width:'auto'});
                 $('.wysihtml5').wysihtml5();
+
+                $http.get('/api/users?q=')
+                     .success(function(users){
+                        $('#commentOnNote').mention({
+                            users : users,
+                            delimiter: '@', // Username Delimiter
+                            sensitive : true,
+                            queryBy: ['name', 'username']
+                        });
+                     });
         });
 
         $scope.$on('LoadEditNoteJs', function() {
@@ -119,6 +129,17 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
             $('#myModalDetail').modal('hide');
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
+
+            $http.get('/api/users?q=')
+             .success(function(users){
+                $('#comment').mention({
+                    users : users,
+                    delimiter: '@', // Username Delimiter
+                    sensitive : true,
+                    queryBy: ['name', 'username']
+                });
+             });
+
             Notes.get({
                 noteId: $stateParams.noteId
             }, function(note) {

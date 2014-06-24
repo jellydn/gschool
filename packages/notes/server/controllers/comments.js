@@ -50,7 +50,6 @@ exports.comment = function(req, res, next, id) {
     var comment = new Comment(req.body);
     comment.createBy = req.user;
     // todo: send to class and member
-
     comment.save(function(err) {
         if (err) {
             return res.send('users/signup', {
@@ -60,6 +59,29 @@ exports.comment = function(req, res, next, id) {
         } else {
             // update comment
             res.jsonp(comment);
+            // find and pregmatch username from list
+            var re = /(@\w+)/gi;
+            var found = comment.content.match(re);
+            var userArr =[];
+            for (var i = 0; i < found.length; i++) {
+                userArr[i] = found[i].replace('@','');
+            };
+            User.find({ username : {'$in': userArr} },'id name username',function(err,users){
+                if (err) {
+                    console.error(err)
+                }
+                else
+                    for (var i = 0; i < users.length; i++) {
+                        userid = users[i]._id;
+                        var notify = new Notifications();
+                        notify.source = comment;
+                        notify.from = req.user;
+                        notify.to = userid;
+                        notify.type = 'comment';
+                        notify.content =  req.user.name + ' has mentioned you on comment.' ;
+                        notify.save();
+                    };
+            })
 
             Note.load(comment.onNote , function(err, note) {
                 if (err) return next(err);
@@ -74,14 +96,13 @@ exports.comment = function(req, res, next, id) {
                             note.totalComments = totals;
 
                             // notify to member and owner of note
-
                             for (var i = 0; i < note.sendToMembers.length; i++) {
-                                var username = note.sendToMembers[i];
+                                var userid = note.sendToMembers[i];
                                 var notify = new Notifications();
                                 notify.source = comment;
                                 notify.from = req.user;
-                                notify.to = req.user.username;
-                                notify.type = 'activity';
+                                notify.to = userid;
+                                notify.type = 'comment';
                                 notify.content =  req.user.name + ' has commented on note "' + note.title + '"' ;
                                 notify.save();
                             };

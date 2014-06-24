@@ -26,6 +26,42 @@
     <section id="main-content" data-ng-controller="DashboardController">
         <section class="wrapper">
         <div class="row">
+             <div class="col-lg-12" ng-init="search('user')">
+                    <section class="panel" >
+                        <header class="panel-heading">
+                            Searching "{{keyword}}" in users
+                        </header>
+                        <div class="panel-body">
+                            <table class="table  table-hover general-table" ng-show="results['user'].length">
+                            <thead>
+                            <tr>
+                                <th> Full Name</th>
+                                <th class="hidden-phone">E-mail</th>
+                                <th>Options</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            <tr id="users" data-ng-repeat="user in results['user']">
+
+                                <td>{{user.name}}</td>
+                                <td>{{user.email}}</td>
+                                <td>
+                                    
+                            <a href="/#!/profile/{{user.username}}" type="button" class="btn btn-primary"><i class="fa fa-cloud"></i> View</a>
+         
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                        <div ng-show="!results['user'].length">
+                                    Not found
+                                </div>
+                        </div>
+                    </section>
+            </div>
+            
             <div class="col-lg-12" ng-init="search('class')">
                     <section class="panel">
                         <header class="panel-heading">
@@ -95,41 +131,6 @@
                     </section>
             </div>
 
-            <div class="col-lg-12" ng-init="search('user')">
-                    <section class="panel" >
-                        <header class="panel-heading">
-                            Searching "{{keyword}}" in users
-                        </header>
-                        <div class="panel-body">
-                            <table class="table  table-hover general-table" ng-show="results['user'].length">
-                            <thead>
-                            <tr>
-                                <th> Full Name</th>
-                                <th class="hidden-phone">E-mail</th>
-                                <th>Options</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-
-                            <tr id="users" data-ng-repeat="user in results['user']">
-
-                                <td>{{user.name}}</td>
-                                <td>{{user.email}}</td>
-                                <td>
-                                    
-                            <a href="/#!/profile/{{user.username}}" type="button" class="btn btn-primary"><i class="fa fa-cloud"></i> View</a>
-         
-                                    </td>
-                                </tr>
-
-                            </tbody>
-                        </table>
-                        <div ng-show="!results['user'].length">
-                                    Not found
-                                </div>
-                        </div>
-                    </section>
-            </div>
         </div>
         </section>
     </section>

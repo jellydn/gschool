@@ -6,7 +6,7 @@ angular.module('mean').controller('NotificationController', ['$scope', '$rootSco
         $scope.pageNumber = 1;
         $scope.isFinish = false;
 	      $scope.getClassType = function (type){
-	          if (type == 'mail' || type =='chat') {
+	          if (type == 'mail' || type =='chat' || type =='comment') {
 	            return 'red';
 	          }
 	          else
@@ -36,7 +36,7 @@ angular.module('mean').controller('NotificationController', ['$scope', '$rootSco
       		if ($scope.busy) return;
     		$scope.busy = true;
     		var limit = $scope.pageNumber*5;
-        	Notifications.query({ type : ['mail','quiz','create','coins','chat'] 
+        	Notifications.query({ type : ['mail','quiz','create','coins','chat','comment'] 
         		, limit: limit
         	 },function(activities){
 	            var tmpActArr = [];
@@ -62,7 +62,7 @@ angular.module('mean').controller('NotificationController', ['$scope', '$rootSco
 	            };
 
 	            $timeout(function(){
-	            	$http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat').success(function(response){
+	            	$http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat,comment').success(function(response){
                       $scope.global.unreadNotify = response.totals;
                     });
 	            },1500);

@@ -488,7 +488,6 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                 $scope.find();
                 Socket.emit('createMessage', {message : message , user : $scope.global.user});
                 $('#uploadfile').val('');
-                $('#exampleInputEmail3').tokenfield('createToken', '');
                 $("#selectRecipient").select2('data', []);
                 $("#selectRecipient").select2('readonly', false);
             });
