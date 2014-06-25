@@ -62,26 +62,32 @@ exports.comment = function(req, res, next, id) {
             // find and pregmatch username from list
             var re = /(@\w+)/gi;
             var found = comment.content.match(re);
+            console.log('find username in ' + comment.content);
+            console.log(found);
             var userArr =[];
-            for (var i = 0; i < found.length; i++) {
-                userArr[i] = found[i].replace('@','');
-            };
-            User.find({ username : {'$in': userArr} },'id name username',function(err,users){
-                if (err) {
-                    console.error(err)
-                }
-                else
-                    for (var i = 0; i < users.length; i++) {
-                        userid = users[i]._id;
-                        var notify = new Notifications();
-                        notify.source = comment;
-                        notify.from = req.user;
-                        notify.to = userid;
-                        notify.type = 'comment';
-                        notify.content =  req.user.name + ' has mentioned you on comment.' ;
-                        notify.save();
-                    };
-            })
+            if(found != undefined && (found instanceof Array))
+            {
+                for (var i = 0; i < found.length; i++) {
+                    userArr[i] = found[i].replace('@','');
+                };
+                User.find({ username : {'$in': userArr} },'id name username',function(err,users){
+                    if (err) {
+                        console.error(err)
+                    }
+                    else
+                        for (var i = 0; i < users.length; i++) {
+                            userid = users[i]._id;
+                            var notify = new Notifications();
+                            notify.source = comment;
+                            notify.from = req.user;
+                            notify.to = userid;
+                            notify.type = 'comment';
+                            notify.content =  req.user.name + ' has mentioned you on comment.' ;
+                            notify.save();
+                        };
+                })
+            }
+            
 
             Note.load(comment.onNote , function(err, note) {
                 if (err) return next(err);
