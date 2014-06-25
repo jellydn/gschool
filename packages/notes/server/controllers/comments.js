@@ -76,7 +76,7 @@ exports.comment = function(req, res, next, id) {
                     }
                     else
                         for (var i = 0; i < users.length; i++) {
-                            userid = users[i]._id;
+                            var userid = users[i]._id;
                             var notify = new Notifications();
                             notify.source = comment;
                             notify.from = req.user;
