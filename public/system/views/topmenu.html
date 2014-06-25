@@ -16,8 +16,8 @@
                         <div class="task-info clearfix">
                             <div class="desc pull-left">
                                 <h5>{{notify.content}}</h5>
-                                
                             </div>
+                            <br/><br/>
                             <span class="time"><span data-livestamp="{{notify.dateCreate}}"></span></span>
                         </div>
                     </a>
@@ -46,7 +46,8 @@
                                 <span class="from">{{msg.from.name}}</span>
                                 <span class="time"><span data-livestamp="{{msg.dateSent}}"></span></span>
                                 </span>
-                                <span class="message" ng-bind-html="msg.message">
+                                <span class="message">
+                                    <div ng-bind-html="msg.message" style="display:block;overflow:hidden;"></div>
                                 </span>
                     </a>
                 </li>

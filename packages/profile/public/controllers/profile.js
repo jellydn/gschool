@@ -7,7 +7,33 @@ angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$
         $scope.chatSwitch = false;
         $scope.messageSwitch = false;
 
+        $scope.getClassType = function (type){
+          if (type == 'mail' || type =='chat' || type =='comment') {
+            return 'red';
+          }
+          else
+            if (type == 'create') {
+              return 'green';
+            }
+            else
+              return 'purple';
+      };
 
+      $scope.getClassIcon = function (type){
+            if (type == 'mail') {
+              return 'fa-envelope';
+            }
+            else
+              if (type == 'chat' || type =='comment') {
+              return 'fa-comment-o';
+              }
+              else
+                if (type == 'create') {
+                 return 'fa-group';
+                }
+                else
+                  return 'fa-circle-o';
+        };
         $scope.detail = function(){
             // get user information
             $http.get('/api/profile?username=' + $stateParams.usernameId)
@@ -15,6 +41,7 @@ angular.module('mean').controller('ProfileController', ['$scope','$rootScope','$
                     $scope.user = user.profile;
                     $scope.notes = user.notes;
                     $scope.classes = user.classes;
+                    $scope.activities = user.activities;
                  })
                  .error(function(err){
                     // to homepage

@@ -30,13 +30,17 @@ angular.module('mean').controller('NotificationController', ['$scope', '$rootSco
 	             	 return 'fa-group';
 	            	}
 	            	else
-	              	return 'fa-circle-o';
+	            		if (type == 'activity') {
+	            			return 'fa-list-ul';
+	            		}
+	            		else
+	            				return 'fa-circle-o';
 	      };
         $scope.findNextPage = function(){
       		if ($scope.busy) return;
     		$scope.busy = true;
     		var limit = $scope.pageNumber*5;
-        	Notifications.query({ type : ['mail','quiz','create','coins','chat','comment'] 
+        	Notifications.query({ type : ['mail','quiz','create','coins','chat','comment','activity'] 
         		, limit: limit
         	 },function(activities){
 	            var tmpActArr = [];
@@ -62,7 +66,7 @@ angular.module('mean').controller('NotificationController', ['$scope', '$rootSco
 	            };
 
 	            $timeout(function(){
-	            	$http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat,comment').success(function(response){
+	            	$http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat,comment,activity').success(function(response){
                       $scope.global.unreadNotify = response.totals;
                     });
 	            },1500);

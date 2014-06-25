@@ -7,6 +7,7 @@ var mongoose = require('mongoose'),
     User = mongoose.model('User'),
     Classes = mongoose.model('Class'),
     Notes = mongoose.model('Note'),
+    Notifications = mongoose.model('Notification'),
     _ = require('lodash');
 
 exports.detail = function(req,res){
@@ -14,6 +15,9 @@ exports.detail = function(req,res){
     User.findOne({username : req.query.username},'username name email type roles avatar').exec(function(err,user){
         if (err) {
             console.error(err);
+            res.render('error', {
+                status: 500
+            });
         }
         else {
             // get public activity
@@ -23,15 +27,41 @@ exports.detail = function(req,res){
             Notes.find( { createBy : user._id},function(err,notes){
                 if (err) {
                     console.error(err);
+                    res.render('error', {
+                        status: 500
+                    });
                 }
                 else
                 {
-                    
+                    // get class
                     Classes.find(
                         { 
                             $or : [ {createBy : user._id} , {members : user._id.toString()} ] 
                         },function(e,classes){
-                            res.jsonp({profile : user, notes : notes,classes : classes});
+                            if (e) {
+                                console.error(e);
+                                res.render('error', {
+                                    status: 500
+                                });
+                            }
+                            else
+                            {
+                                var today = new Date();  
+
+                                var query = Notifications.find({ to : user._id , dateCreate : { "$gte": new Date(today.getFullYear(),today.getMonth(),today.getDate()), "$lt": new Date(today.getFullYear(),today.getMonth(),today.getDate() + 1)} , type : { '$in' : ['create','comment','join','activity'] } }).limit(req.query.limit);
+                                query.populate('from', 'name username').populate('to', 'name username').sort({ dateCreate : 'desc' }).exec(function(err,items){
+                                    if (err) {
+                                            console.error(err);
+                                            res.render('error', {
+                                                status: 500
+                                            });
+                                        } else {
+                                            res.jsonp({profile : user, notes : notes,classes : classes, activities : items});
+                                        }
+                               });
+
+                            }
+
                         });
 
 

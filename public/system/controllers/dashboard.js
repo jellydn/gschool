@@ -21,7 +21,7 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
               return 'fa-envelope';
             }
             else
-              if (type == 'chat' || type =='comment') {
+              if (type == 'chat') {
               return 'fa-comment-o';
               }
               else
@@ -29,7 +29,11 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
                  return 'fa-group';
                 }
                 else
-                  return 'fa-circle-o';
+                  if (type == 'activity') {
+                    return 'fa-list-ul';
+                  }
+                  else
+                      return 'fa-circle-o';
         };
 
       $scope.presearch = function(){
@@ -52,7 +56,7 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
       }
 
       $scope.recentActivity = function(){
-            Notifications.query({ type : ['mail','quiz','create','coins','chat','comment'] , today : 1,all:1,limit:5 },function(activities){
+            Notifications.query({ type : ['mail','quiz','create','coins','chat','comment','activity'] , today : 1,all:1,limit:5 },function(activities){
 
                var tmpActArr = [];
                for (var i = 0; i < activities.length; i++) {
@@ -67,7 +71,7 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
 
             Socket.on('onNotifyCreated', function(data) {
               // check if current user in array recipients
-              Notifications.query({ type : ['mail','quiz','create','coins','chat','comment'] , today : 1,all:1,limit:5 },function(activities){
+              Notifications.query({ type : ['mail','quiz','create','coins','chat','comment','activity'] , today : 1,all:1,limit:5 },function(activities){
                    var tmpActArr = [];
                    for (var i = 0; i < activities.length; i++) {
                       var tmp = activities[i];
@@ -99,7 +103,7 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
               $scope.statistic = statistic;
          });
 
-         Notifications.query({ type : ['mail','quiz','create','coins','chat','comment'] , today : 1 },function(activities){
+         Notifications.query({ type : ['mail','quiz','create','coins','chat','comment','activity'] , today : 1 },function(activities){
             var tmpActArr = [];
                for (var i = 0; i < activities.length; i++) {
                   var tmp = activities[i];
@@ -111,7 +115,7 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
 
          Socket.on('onNotifyCreated', function(data) {
               // check if current user in array recipients
-              Notifications.query({ type : ['mail','quiz','create','coins','chat','comment'] , today : 1 },function(activities){
+              Notifications.query({ type : ['mail','quiz','create','coins','chat','comment','activity'] , today : 1 },function(activities){
                 var tmpActArr = [];
                 for (var i = 0; i < activities.length; i++) {
                       var tmp = activities[i];
