@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','dialogs','Global', 'Menus', 'Messages', 'Notifications', 'Socket',
-    function($scope, $rootScope, $http, $location,dialogs, Global, Menus,Messages,Notifications,Socket) {
+angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','dialogs','$translate','Global', 'Menus', 'Messages', 'Notifications', 'Socket','toaster',
+    function($scope, $rootScope, $http, $location,dialogs, $translate, Global, Menus,Messages,Notifications,Socket,toaster) {
         $scope.global = Global;
 
         $scope.isCollapsed = false;
-
+        $scope.global.previousChatId = false;
         $scope.userinfo = $rootScope.user;
         $scope.unreadInbox = 0;
         $scope.unreadQuiz = 0;
@@ -45,6 +45,18 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
                     $scope.global.unreadNotify = response.totals;
                   });
              });
+        });
+
+
+        Socket.on('onChatCreated', function(data) {
+            // show pop up 
+            if(data.to._id == $scope.global.user._id && $scope.global.previousChatId != data._id)
+            {
+                $scope.global.previousChatId = data._id;
+                toaster.pop('info', data.createBy.name, data.message,7000,'',function(){
+                   $location.path('/chats/' + data.createBy._id );
+                });
+            }
         });
 
         $scope.init = function(){
@@ -115,6 +127,7 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         }
 
         $scope.global.showModal = function (message) {
+            /*
             $('#myModalDetailHeader h4').text('From ' + message.fromName);
             var htmlMessage = message.message;
             
@@ -125,6 +138,16 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
             var dlg = dialogs.notify('From ' + message.from.name,htmlMessage);
 
             $('#myModalDetailHeader').modal('show');
+            */
+            $scope.currentMesssage = message;
+            var dlg = dialogs.create('/dialogs/message.html','MessagePopupController',message,'lg');
+
+            dlg.result.then(function(name){
+              $scope.name = name;
+            },function(){
+              if(angular.equals($scope.name,''))
+                $scope.name = 'You did not enter in your name!';
+            });
 
              var msgModel = new Messages(message);
               msgModel.$update(function() {
@@ -266,4 +289,74 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
             })
         }
     }
-});
+}).directive('ellipsis', ['$timeout',function ($timeout) {
+    return {
+        required: 'ngBindHtml',
+        restrict: 'A',
+        link: function ($scope, element, attrs) {
+            $scope.hasEllipsis = false;
+
+            $timeout(function(){
+               if (!$scope.hasEllipsis) {
+                   // apply ellipsis only one
+                   $scope.hasEllipsis = true;
+                   element = $(element[0]);
+                   element.ellipsis();
+               }
+           }, 20);
+
+        }
+    };
+}])
+.controller('MessagePopupController',function($scope,$modalInstance,data,Messages,$location,$timeout,$interval,cfpLoadingBar){
+
+    $scope.data = data;
+    var stop;
+
+    $scope.quickReply = function(){
+          if ($location.path() == '/messages') {
+            var tmpData = [];
+            
+            tmpData.push({ 'id' : $scope.data.from._id , 'text' : $scope.data.from.name });
+            
+            for (var i = 0; i < $scope.data.to.length; i++) {
+                    tmpData.push({ 'id' : $scope.data.to[i]._id , 'text' : $scope.data.to[i].name }) ;
+            };
+            CKEDITOR.instances.message.setData('<br/><blockquote>' + $scope.data.message + '</blockquote>');
+            $("#selectRecipient").select2('data', tmpData);
+            $modalInstance.close();
+            $('#myModal').modal();
+             
+            if (angular.isDefined(stop)) {
+              $interval.cancel(stop);
+              stop = undefined;
+            }
+          }
+          else
+          {
+            $location.path('/messages');
+            stop = $interval(function(){
+                 console.log(cfpLoadingBar.status() );
+                 if (cfpLoadingBar.status() == 1) {
+                    $scope.quickReply();
+                 }
+             }, 100);
+          }
+  
+         
+      };
+
+    $scope.deleteMessage = function () {
+
+          $scope.showLoading = true;
+          Messages.clean({ids : [$scope.data._id] , inbox : 1, trash : 0 , schedule : 0},function(resp){
+              // reset pagination
+              $modalInstance.close();
+              $location.path('/messages');
+          });
+      };
+    
+})
+.run(['$templateCache',function($templateCache){
+  $templateCache.put('/dialogs/message.html','<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">From {{data.fromName}} - <span data-livestamp="{{data.dateSent}}"></span></h4></div><div class="modal-body" ng-bind-html="data.message"></div><div class="modal-footer"><button type="button" ng-click="quickReply()" class="btn btn-info" data-dismiss="modal">Reply</button><button type="button" ng-click="deleteMessage()" class="btn btn-danger" data-dismiss="modal">Delete</button></div></div></div>');
+}]);

@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('MessageController', ['$scope','$rootScope','$timeout','$upload', '$stateParams','$http', '$location', 'Global','dialogs', 'Messages', 'Socket',
-    function($scope,$rootScope,$timeout,$upload, $stateParams, $http, $location, Global, dialogs, Messages, Socket) {
+angular.module('mean').controller('MessageController', ['$scope','$rootScope','$timeout','$upload', '$stateParams','$http', '$location', 'Global','dialogs','toaster','Messages', 'Socket',
+    function($scope,$rootScope,$timeout,$upload, $stateParams, $http, $location, Global, dialogs,toaster, Messages, Socket) {
         $scope.global = Global;
         $scope.limit = 10;
         $scope.fromOffset = 0;
@@ -28,6 +28,10 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                 $scope.find();
             };
         });
+
+        $scope.editorOptions = {
+            height : '200px'
+        };
 
         // private function
 
@@ -439,21 +443,20 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
 
         $scope.quickReply = function(){
             var tmpData = [];
-            if ($scope.global.user._id != $scope.currentMesssage.from._id )
                 tmpData.push({ 'id' : $scope.currentMesssage.from._id , 'text' : $scope.currentMesssage.from.name });
             
             for (var i = 0; i < $scope.currentMesssage.to.length; i++) {
                     tmpData.push({ 'id' : $scope.currentMesssage.to[i]._id , 'text' : $scope.currentMesssage.to[i].name }) ;
             };
+            CKEDITOR.instances.message.setData('<br/><blockquote>' + $scope.currentMesssage.message + '</blockquote>');
             $("#selectRecipient").select2('data', tmpData);
-            $("#selectRecipient").select2('readonly', true);
             $('#myModal').modal();
         }
 
          $scope.send = function() {
             this.recipient = $('#selectRecipient').select2('val');
             if (!this.recipient.length) {
-                    alert('Please select at least on recipient!');
+                    toaster.pop('info','Message','Please select at least one recipient!');
                     return;
             } 
 
@@ -466,7 +469,7 @@ angular.module('mean').controller('MessageController', ['$scope','$rootScope','$
                     };
                });
                if (!selectWeeklyArr.length) {
-                    alert('Please select at least on day!');
+                    toaster.pop('info','Message','Please select at least one day!');
                     return;
                } else {
                     selectWeeklyArr.push($scope.repeatTime);

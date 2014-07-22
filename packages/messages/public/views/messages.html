@@ -48,9 +48,9 @@
 
                                             <div class="form-group">
                                                 <label for="exampleInputPassword1">Message</label>
-                                                <textarea required data-ng-model="message"  name="message" class="form-control" rows="6"></textarea>
-                                            
-                                              
+                                                
+                                                <textarea ckeditor="editorOptions" required data-ng-model="message"  name="message" rows="6"></textarea>
+                                                
                                             </div>
 
                                             <button type="submit" class="btn btn-default">Submit</button>
@@ -259,7 +259,7 @@
                             </td>
                             <td class="inbox-small-cells"><i class="fa fa-star"></i></td>
                             <td class="view-message  dont-show" ng-click="showModal(message)" > {{message.fromName}} </td>
-                            <td class="view-message " ng-click="showModal(message)"> <div ng-bind-html="message.message"></div> </td>
+                            <td class="view-message " ng-click="showModal(message)"> <div style="height:20px; overflow:hidden;"  ng-bind-html="message.message" ellipsis></div> </td>
                             <td class="view-message  inbox-small-cells" ng-click="showModal(message)"><i ng-if="message.file != ''" class="fa fa-paperclip"></i></td>
                             <td class="view-message  text-right" ng-click="showModal(message)">{{message.dateSent | date:'medium'}}</td>
 

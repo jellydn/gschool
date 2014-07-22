@@ -51,11 +51,11 @@ ChatSchema.statics.load = function(id, cb) {
     }).populate('createBy', 'name username avatar').populate('to', 'name username avatar').exec(cb);
 };
 
-
+/*
 ChatSchema.post('save',function(doc){
     nconf.use('file', { file: './user-setting.json' });
     if (nconf.get('chat:' + doc.to.toString()) == undefined || nconf.get('chat:' + doc.to.toString()) ) {
-
+        
         var Notifications = mongoose.model('Notification');
         var notify = new Notifications();
         notify.source = doc;
@@ -64,8 +64,8 @@ ChatSchema.post('save',function(doc){
         notify.type = 'chat';
         notify.content = '{subject} messaged to you.';
         notify.save();
-
+        
     }
 });
-
+*/
 mongoose.model('Chat', ChatSchema);

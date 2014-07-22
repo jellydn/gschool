@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean').controller('NotesController', ['$scope','$rootScope','$upload', '$stateParams','$http', '$location', 'Global', 'Notes', 'Comments', 'Classes','Socket',
-    function($scope,$rootScope, $upload, $stateParams, $http, $location, Global, Notes, Comments,Classes,Socket) {
+angular.module('mean').controller('NotesController', ['$scope','$rootScope','$sce','$upload', '$stateParams','$http', '$location', 'Global', 'Notes', 'Comments', 'Classes','Socket',
+    function($scope,$rootScope, $sce, $upload, $stateParams, $http, $location, Global, Notes, Comments,Classes,Socket) {
         $scope.global = Global;
         $scope.isEditModel = false;
         $scope.fileNames = [];
@@ -11,6 +11,27 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
                 $scope.findComment();
             };
         });
+
+        $scope.editorOptions = {
+            language: 'en',
+            'extraPlugins': "imagebrowser,mediaembed",
+            imageBrowser_listUrl: '/api/gallery',
+            filebrowserBrowseUrl: '/api/ckeditor/files',
+            filebrowserImageUploadUrl: '/api/ckeditor/images',
+            filebrowserUploadUrl: '/api/ckeditor/files',
+            toolbar: 'full',
+            toolbar_full: [
+                { name: 'basicstyles',
+                    items: [ 'Bold', 'Italic', 'Strike', 'Underline' ] },
+                { name: 'paragraph', items: [ 'BulletedList', 'NumberedList', 'Blockquote' ] },
+                { name: 'editing', items: ['JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock' ] },
+                { name: 'links', items: [ 'Link', 'Unlink', 'Anchor' ] },
+                { name: 'tools', items: [ 'SpellChecker', 'Maximize' ] },
+                { name: 'clipboard', items: [ 'Undo', 'Redo' ] },
+                { name: 'styles', items: [ 'Format', 'FontSize', 'TextColor', 'PasteText', 'PasteFromWord', 'RemoveFormat' ] },
+                { name: 'insert', items: [ 'Image', 'Table', 'SpecialChar', 'MediaEmbed' ] },'/',
+            ]
+        };
 
         $scope.onFileSelect = function($files) {
             $scope.fileNames = [];
@@ -81,7 +102,7 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
 
         $scope.$on('LoadCreateNoteJs', function() {
                 $('#tags_1').tagsInput({width:'auto'});
-                $('.wysihtml5').wysihtml5();
+                // $('.wysihtml5').wysihtml5();
 
                 $http.get('/api/users?q=')
                      .success(function(users){
@@ -146,6 +167,8 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
                 note.tags = note.tags.join(',');
                 note.classes = note.sendToClass.join(',');
                 $scope.note = note;
+                $scope.htmlContent = $sce.trustAsHtml($scope.note.content);
+
                 if ($scope.isEditModel) {
                     $('#tags_1').val(note.tags);
                     $('#tags_1').tagsInput({
@@ -155,7 +178,7 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
                                                 'defaultText':'add a tag'
                                             }
                                             );
-                    $('.wysihtml5').wysihtml5();
+                    // $('.wysihtml5').wysihtml5();
                     var tmpData = [];
                     for (var i = 0; i < note.sendToClass.length; i++) {
                         tmpData[i] = { 'id' : note.sendToClassIds[i] , 'text' : note.sendToClass[i] } ;
@@ -202,7 +225,7 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
                     };
                 };
             };
-            this.content = $('.wysihtml5').val();
+            // this.content = $('.wysihtml5').val();
             this.tags = $('.tags').val();
             var note = new Notes({
                 title : this.title,
@@ -258,7 +281,7 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$up
 
         $scope.update = function() {
             var note = $scope.note;
-            note.content = $('.wysihtml5').val();
+            // note.content = $('.wysihtml5').val();
             note.tags = $('.tags').val();
             if (!note.updated) {
                 note.updated = [];

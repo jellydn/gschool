@@ -1,5 +1,7 @@
 'use strict';
 var notes = require('../controllers/notes');
+var gallery = require('../controllers/gallery');
+var ckeditor = require('../controllers/ckeditor');
 var hasNoteAuthorization = function(req, res, next) {
 
     if (req.note.createBy.id !== req.user.id) {
@@ -9,6 +11,12 @@ var hasNoteAuthorization = function(req, res, next) {
 };
 // The Package is past automatically as first parameter
 module.exports = function(Notes, app, auth, database) {
+
+     app.route('/api/gallery')
+        .get(auth.requiresLogin,gallery.all);
+    
+     app.route('/api/ckeditor/images')
+        .post(auth.requiresLogin,ckeditor.image);
 
      app.route('/notes')
         .get(notes.all).post(auth.requiresLogin, notes.create);

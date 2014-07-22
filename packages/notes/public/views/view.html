@@ -101,7 +101,7 @@
                     </header>
                     <div class="panel-body">
                       <h2> {{note.title}} </h2>
-                      <div ng-bind-html="note.content"></div>
+                      <div ng-bind-html="htmlContent"></div>
                     </div>
                 </section>
                      <section class="panel" ng-show="note.fileNames.length">
@@ -141,8 +141,7 @@
                                 <div class="conversation-text">
                                     <div class="ctext-wrap">
                                         <i>{{comment.createBy.name}}</i>
-                                        <p>
-                                            {{comment.content}}
+                                        <p ng-bind-html="comment.content">
                                         </p>
                                     </div>
                                 </div>

@@ -16,6 +16,5 @@
   },
   "_source": "git://github.com/danialfarid/angular-file-upload-shim-bower.git",
   "_target": "~1.4.0",
-  "_originalSource": "ng-file-upload-shim",
-  "_direct": true
+  "_originalSource": "ng-file-upload-shim"
 }

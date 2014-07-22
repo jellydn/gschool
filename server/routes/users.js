@@ -17,6 +17,12 @@ module.exports = function(app, passport) {
     app.route('/users/me')
         .get(users.me);
 
+    app.route('/forgot-password')
+        .post(users.forgotpassword);
+
+    app.route('/reset/:token')
+        .post(users.resetpassword);
+
     // Setting up the users api
     app.route('/register')
         .post(users.create);

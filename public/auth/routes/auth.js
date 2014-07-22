@@ -38,6 +38,20 @@ angular.module('mean.auth').config(['$stateProvider',
                 resolve: {
                     loggedin: checkLoggedOut
                 }
+            })
+            .state('forgot-password', {
+                url: '/forgot-password',
+                templateUrl: 'public/auth/views/forgot-password.html',
+                resolve: {
+                    loggedin: checkLoggedOut
+                }
+            })
+            .state('reset-password', {
+                url: '/reset/:tokenId',
+                templateUrl: 'public/auth/views/reset-password.html',
+                resolve: {
+                    loggedin: checkLoggedOut
+                }
             });
     }
 ]);

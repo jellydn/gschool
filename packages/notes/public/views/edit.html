@@ -105,7 +105,9 @@
 
                     <div class="panel-body">
                         <div class="col-sm-12">
-                            <textarea data-ng-model="note.content" class="wysihtml5 form-control" rows="9" ><div ng-bind-html="note.content"></div></textarea>
+<!--                             <textarea data-ng-model="note.content" class="wysihtml5 form-control" rows="9" ><div ng-bind-html="note.content"></div></textarea>
+ -->                            <textarea ckeditor="editorOptions" required data-ng-model="note.content"  name="content" rows="6"></textarea>
+
                         </div>
 
                     </div>

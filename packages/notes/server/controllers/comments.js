@@ -49,77 +49,104 @@ exports.comment = function(req, res, next, id) {
  exports.create = function(req, res) {
     var comment = new Comment(req.body);
     comment.createBy = req.user;
-    // todo: send to class and member
-    comment.save(function(err) {
-        if (err) {
-            return res.send('users/signup', {
-                errors: err.errors,
-                comment: comment
-            });
-        } else {
-            // update comment
-            res.jsonp(comment);
-            // find and pregmatch username from list
-            var re = /(@\w+)/gi;
-            var found = comment.content.match(re);
-            console.log('find username in ' + comment.content);
-            console.log(found);
-            var userArr =[];
+
+    var async = require('async');
+
+    // find and pregmatch username from list
+    var re = /(@\w+)/gi;
+    var found = comment.content.match(re);
+    var userArr =[];
+    var IdsArr = [];
+    async.waterfall([
+        function(callback){
             if(found != undefined && (found instanceof Array))
             {
                 for (var i = 0; i < found.length; i++) {
                     userArr[i] = found[i].replace('@','');
                 };
-                User.find({ username : {'$in': userArr} },'id name username',function(err,users){
-                    if (err) {
-                        console.error(err)
-                    }
-                    else
-                        for (var i = 0; i < users.length; i++) {
-                            var userid = users[i]._id;
-                            var notify = new Notifications();
-                            notify.source = comment;
-                            notify.from = req.user;
-                            notify.to = userid;
-                            notify.type = 'comment';
-                            notify.content =  req.user.name + ' has mentioned you on comment.' ;
-                            notify.save();
-                        };
-                })
+                
             }
-            
+            callback(null, 'one');
+        },
+        function(arg1,callback){
+            User.find({ username : {'$in': userArr} },'id name username',function(err,users){
+                if (err) {
+                    console.error(err)
+                }
+                else {
+                    async.each(users, function( user, cb) {
+                      IdsArr.push(user._id);
+                      comment.content = comment.content.replace('@' + user.username, '<a href="/#!/profile/' + user.username + '">@' + user.username + '</a>');
 
-            Note.load(comment.onNote , function(err, note) {
-                if (err) return next(err);
-                if (!note) return next(new Error('Failed to load note ' + id));
-                var query = Comment.find( {onNote : comment.onNote } );
-                    query.count(function(err,totals){
+                      cb();
+                    }, function(err){
                         if (err) {
-                            console.error(err);
-                        }
-                        else
-                        {
-                            note.totalComments = totals;
-
-                            // notify to member and owner of note
-                            for (var i = 0; i < note.sendToMembers.length; i++) {
-                                var userid = note.sendToMembers[i];
-                                var notify = new Notifications();
-                                notify.source = comment;
-                                notify.from = req.user;
-                                notify.to = userid;
-                                notify.type = 'comment';
-                                notify.content =  req.user.name + ' has commented on note "' + note.title + '"' ;
-                                notify.save();
-                            };
-
-                            note.save(); 
-                        }
+                            console.error(err)
+                        };
                     });
+
+                }
+                callback(null, 'two');
             });
-            
         }
+    ],
+    // optional callback
+    function(err, results){
+
+        comment.save(function(err) {
+            if (err) {
+                return res.send('users/signup', {
+                    errors: err.errors,
+                    comment: comment
+                });
+            } else {
+                // update comment
+                res.jsonp(comment);
+                
+                Note.load(comment.onNote , function(err, note) {
+                    if (err) return next(err);
+                    if (!note) return next(new Error('Failed to load note ' + id));
+                    var query = Comment.find( {onNote : comment.onNote } );
+                        query.count(function(err,totals){
+                            if (err) {
+                                console.error(err);
+                            }
+                            else
+                            {
+                                note.totalComments = totals;
+
+                                // notify to member and owner of note
+                                for (var i = 0; i < note.sendToMembers.length; i++) {
+                                    var userid = note.sendToMembers[i];
+                                    var notify = new Notifications();
+                                    notify.source = comment;
+                                    notify.from = req.user;
+                                    notify.to = userid;
+                                    notify.type = 'comment';
+                                    notify.content =  req.user.name + ' has commented on note "' + note.title + '"' ;
+                                    notify.save();
+                                };
+
+                                for (var i = 0; i < userArr.length; i++) {
+                                    var userid = userArr[i];
+                                    var notify = new Notifications();
+                                    notify.source = comment;
+                                    notify.from = req.user;
+                                    notify.to = IdsArr[i];
+                                    notify.type = 'comment';
+                                    notify.content =  req.user.name + ' has mentioned you on a comment of note <a href="#!/notes/' + note._id + '">' + note.title + '</a>' ;
+                                    notify.save();
+                                };
+
+                                note.save(); 
+                            }
+                        });
+                });
+                
+            }
+        });
     });
+    
 };
 
 exports.show = function(req, res) {
