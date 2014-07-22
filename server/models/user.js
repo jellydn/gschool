@@ -8,6 +8,28 @@ var mongoose = require('mongoose'),
     crypto = require('crypto');
 
 /**
+ * Validations
+ */
+var validatePresenceOf = function(value) {
+    // If you are authenticating by any of the oauth strategies, don't validate.
+    return (this.provider && this.provider !== 'local') || (value && value.length);
+};
+
+var validateUniqueEmail = function(value, callback) {
+    var User = mongoose.model('User');
+    User.find({$and: [{email : value}, { _id: { $ne : this._id }}]}, function(err, user) {
+        callback(err || user.length === 0);
+    });
+};
+
+var validateUniqueUsername = function(value, callback) {
+    var User = mongoose.model('User');
+    User.find({$and: [{username : value}, { _id: { $ne : this._id }}]}, function(err, user) {
+        callback(err || user.length === 0);
+    });
+};
+
+/**
  * User Schema
  */
 var UserSchema = new Schema({
@@ -15,34 +37,61 @@ var UserSchema = new Schema({
         type: String,
         required: true
     },
-    email: String,
-    address: String,
-    city: String,
-    gender : String,
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        match: [/.+\@.+\..+/, 'Please enter a valid email'],
+        validate: [validateUniqueEmail, 'E-mail address is already in-use']
+    },
     username: {
         type: String,
-        unique: true
+        unique: true,
+        required: true,
+        validate: [validateUniqueUsername, 'Username is already in-use']
     },
+    roles: {
+        type: Array,
+        default: ['authenticated']
+    },
+    hashed_password: {
+        type: String,
+        validate: [validatePresenceOf, 'Password cannot be blank']
+    },
+    provider: {
+        type: String,
+        default: 'local'
+    },
+    salt: String,
+    resetPasswordToken: String,
+    resetPasswordExpires: Date,
+    facebook: {},
+    twitter: {},
+    github: {},
+    google: {},
+    linkedin: {},
+    gender : String,
+    address: String,
+    city: String,
     avatar : {
         type: String
     },
     type: {
         type: String,
         default: 'student'
-    },
-    roles: {
-        type: Array,
-        default: ['authenticated']
-    },
-    hashed_password: String,
-    provider: String,
-    salt: String,
-    facebook: {},
-    twitter: {},
-    github: {},
-    google: {},
-    linkedin: {}
+    }
 });
+
+/**
+ * Virtuals
+ */
+
+UserSchema.virtual('avatarUrl').set(function(avatarUrl) {
+    this._avatarUrl = avatarUrl;
+}).get(function() {
+    return this._avatarUrl;
+});
+
 
 /**
  * Virtuals
@@ -55,55 +104,13 @@ UserSchema.virtual('password').set(function(password) {
     return this._password;
 });
 
-UserSchema.virtual('avatarUrl').set(function(avatarUrl) {
-    this._avatarUrl = avatarUrl;
-}).get(function() {
-    return this._avatarUrl;
-});
-
-/**
- * Validations
- */
-var validatePresenceOf = function(value) {
-    return value && value.length;
-};
-
-// The 4 validations below only apply if you are signing up traditionally.
-UserSchema.path('name').validate(function(name) {
-    // If you are authenticating by any of the oauth strategies, don't validate.
-    if (!this.provider) return true;
-    return (typeof name === 'string' && name.length > 0);
-}, 'Name cannot be blank');
-
-UserSchema.path('email').validate(function(email) {
-    // If you are authenticating by any of the oauth strategies, don't validate.
-    if (!this.provider) return true;
-    return (typeof email === 'string' && email.length > 0);
-}, 'Email cannot be blank');
-
-UserSchema.path('username').validate(function(username) {
-    // If you are authenticating by any of the oauth strategies, don't validate.
-    if (!this.provider) return true;
-    return (typeof username === 'string' && username.length > 0);
-}, 'Username cannot be blank');
-
-UserSchema.path('hashed_password').validate(function(hashed_password) {
-    // If you are authenticating by any of the oauth strategies, don't validate.
-    if (!this.provider) return true;
-    return (typeof hashed_password === 'string' && hashed_password.length > 0);
-}, 'Password cannot be blank');
-
-
 /**
  * Pre-save hook
  */
 UserSchema.pre('save', function(next) {
-    if (!this.isNew) return next();
-
-    if (!validatePresenceOf(this.password) && !this.provider)
-        next(new Error('Invalid password'));
-    else
-        next();
+    if (this.isNew && this.provider === 'local' && this.password && !this.password.length)
+        return next(new Error('Invalid password'));
+    next();
 });
 
 /**
@@ -120,8 +127,19 @@ UserSchema.methods = {
      */
     hasRole: function(role) {
         var roles = this.roles;
-        return (roles.indexOf('admin') !== -1 || roles.indexOf(role) !== -1);
+        return roles.indexOf('admin') !== -1 || roles.indexOf(role) !== -1;
     },
+
+    /**
+     * IsAdmin - check if the user is an administrator
+     *
+     * @return {Boolean}
+     * @api public
+     */
+    isAdmin: function() {
+        return this.roles.indexOf('admin') !== -1;
+    },
+
     /**
      * Authenticate - check if the passwords are the same
      *
