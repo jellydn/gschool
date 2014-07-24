@@ -68,6 +68,9 @@ module.exports = function(app, passport, db) {
     // Request body parsing middleware should be above methodOverride
     app.use(expressValidator());
     app.use(bodyParser());
+    app.use(bodyParser.urlencoded({ limit: '50mb'}))
+    // parse application/json
+    app.use(bodyParser.json({limit: '50mb'}))
     app.use(methodOverride());
     app.use(cookieParser());
 
