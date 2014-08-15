@@ -16,7 +16,7 @@ exports.search = function(req, res) {
     
     switch(req.body.type){
         case 'class':
-            var q = Classes.find({name: new RegExp('^'+req.body.q, "i")});
+            var q = Classes.find({name: new RegExp(req.body.q, "i")});
 
             q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, classes) {
                 if (err) {
@@ -30,7 +30,7 @@ exports.search = function(req, res) {
             });
             break;
         case 'user':
-            var q = User.find({name: new RegExp('^'+req.body.q, "i")});
+            var q = User.find({name: new RegExp(req.body.q, "i")});
 
             q.sort({ dateCreate : 'desc' }).exec(function(err, classes) {
                 if (err) {
@@ -44,7 +44,7 @@ exports.search = function(req, res) {
             });
             break;
         case 'note':
-            var q = Note.find({title: new RegExp('^'+req.body.q, "i")});
+            var q = Note.find({title: new RegExp(req.body.q, "i")});
 
             q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, classes) {
                 if (err) {

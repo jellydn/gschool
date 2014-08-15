@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('mean.system').controller('HeaderController', ['$scope', '$rootScope', '$http', '$location','dialogs','$translate','Global', 'Menus', 'Messages', 'Notifications', 'Socket','toaster',
-    function($scope, $rootScope, $http, $location,dialogs, $translate, Global, Menus,Messages,Notifications,Socket,toaster) {
+angular.module('mean.system').controller('HeaderController', ['$scope','$modal', '$rootScope', '$http', '$location','dialogs','$translate','Global', 'Menus', 'Messages','Chats', 'Notifications', 'Socket','toaster',
+    function($scope, $modal, $rootScope, $http, $location,dialogs, $translate, Global, Menus,Messages,Chats,Notifications,Socket,toaster) {
         $scope.global = Global;
 
         $scope.isCollapsed = false;
@@ -49,25 +49,128 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
 
 
         Socket.on('onChatCreated', function(data) {
-            // show pop up 
-            if(data.to._id == $scope.global.user._id && $scope.global.previousChatId != data._id)
-            {
-                $scope.global.previousChatId = data._id;
-                toaster.pop('info', data.createBy.name, data.message,7000,'',function(){
-                   $location.path('/chats/' + data.createBy._id );
-                });
+            if(data.to._id == $scope.global.user._id && $scope.global.previousChatId != data._id) {
+              var currentPath = $location.path();
+              $scope.global.previousChatId = data._id;
+              toaster.pop('info', data.createBy.name, data.message,7000,'',function(){
+                 if(currentPath.indexOf('chats') == -1){
+
+                  $scope.toUser = data.createBy._id;
+                    Chats.query({ to : data.createBy._id },function(chats) {
+                        for (var i = 0; i < chats.length; i++) {
+                            if(chats[i].createBy._id != data.createBy._id) {
+                                chats[i].class = 'clearfix';
+                                $scope.toUser = chats[i].to._id;
+                            }
+                            else {
+                                chats[i].class = 'clearfix odd';
+                            }
+                            // chats[i].dateCreate = moment(chats[i].dateCreate).fromNow(); 
+                            if (!chats[i].file.toLowerCase().match(/\.(jpg|jpeg|png|gif)$/)) {
+                                chats[i].isImageFile = false;
+                            }
+                            else
+                            {
+                                chats[i].isImageFile = true;
+                            };
+                            
+                        };
+                        $scope.chats = chats;
+
+                         var modalInstance = $modal.open({
+                          templateUrl: '/dialogs/chat.html',
+                          controller: ChatPopupController,
+                          size: 'large',
+                          resolve: {
+                            chats: function () {
+                              return $scope.chats;
+                            },
+                            toUser : function(){
+                              return $scope.toUser;
+                            }
+                          }
+                        });
+                    });
+
+              }
+              });
+                    
             }
         });
 
+       var ChatPopupController = function ($scope, $modalInstance, chats , toUser ,$interval,$upload,Socket,Global) {
+          $scope.chats = chats;
+          $scope.global = Global;
+          $scope.fileName = "";    
+          $scope.create = function() {
+              var chat = new Chats({
+                  from: $scope.global.user._id,
+                  to : toUser,
+                  message: this.message,
+                  file : $scope.fileName
+              });
+              chat.$save(function(msg) {
+                  // select file again
+                  $('#uploadfile').val('');
+                  $scope.fileName = '';
+                  Socket.emit('sendChat',msg);
+                  msg.class = "clearfix";
+                  $scope.chats.push(msg);
+                  $interval(function(){
+                      $('.conversation-list').scrollTo('max', 'max', {
+                          easing: 'swing'
+                      })
+                  },600,1);
+              });
+
+              this.message = '';
+          };
+
+          $scope.moveToBottom = function(){
+                  $interval(function(){
+                        $('.conversation-list').scrollTo('max', 'max', {
+                            easing: 'swing'
+                        })
+                    },600,1);
+
+                  $('.conversation-list').slimscroll({
+                        height: '390px',
+                        wheelStep: 35,
+                        start : 'bottom'
+                    });
+           }
+
+            $scope.onPhotoSelect = function($files) {
+              for (var i = 0; i < $files.length; i++) {
+                var file = $files[i];
+                $scope.upload = $upload.upload({
+                  url: '/upload/files', 
+                  method: 'POST',
+                  withCredentials: true,
+                  file: file
+                }).success(function(data, status, headers, config) {
+                  // file is uploaded successfully
+                  $scope.fileName = data.files.file.name;
+                })
+                .progress(function(evt) {
+                  console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+                });
+              }
+          
+        };
+
+
+        };
+
         $scope.init = function(){
 
-        	$http.get('/api/unread').success(function(response){
+          $http.get('/api/unread').success(function(response){
             $scope.global.unreadInbox = response.totals;
           });
 
           $http.get('/api/notifications/unread?type=quiz').success(function(response){
-        		$scope.global.unreadQuiz = response.totals;
-        	});
+            $scope.global.unreadQuiz = response.totals;
+          });
 
           $http.get('/api/notifications/unread?type=mail,quiz,create,coins,chat,comment,activity').success(function(response){
             $scope.global.unreadNotify = response.totals;
@@ -127,18 +230,6 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
         }
 
         $scope.global.showModal = function (message) {
-            /*
-            $('#myModalDetailHeader h4').text('From ' + message.fromName);
-            var htmlMessage = message.message;
-            
-            if ( (typeof message.file != 'undefined') &&  message.file != "") {
-                htmlMessage +='<div id="attachment"> Your attachment: <a href="/public/uploads/' + message.file + '">' + message.file + '</a></div></br>';
-            }
-            
-            var dlg = dialogs.notify('From ' + message.from.name,htmlMessage);
-
-            $('#myModalDetailHeader').modal('show');
-            */
             $scope.currentMesssage = message;
             var dlg = dialogs.create('/dialogs/message.html','MessagePopupController',message,'lg');
 
@@ -158,205 +249,4 @@ angular.module('mean.system').controller('HeaderController', ['$scope', '$rootSc
             
         };
     }
-])
-.directive('myLeftMenu', function() {
-    return {
-      restrict: 'E',
-      scope : {
-        'global' :'='
-      },
-      templateUrl: 'public/system/views/leftmenu.html',
-    };
-})
-.directive('myLogo', function() {
-    return {
-      restrict: 'E',
-      replace : true,
-      templateUrl: 'public/system/views/logo.html',
-    };
-})
-.directive('myMenu', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        global: '='      },
-      templateUrl: 'public/system/views/topmenu.html',
-    };
-})
-.directive('myUserMenu', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        userinfo: '='
-      },
-      templateUrl: 'public/system/views/user.html',
-    };
-})
-.directive('myOnlineList', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        global: '=',
-        onlines: '='
-      },
-      templateUrl: 'public/system/views/onlinelist.html',
-    };
-})
-.directive('recentActivity', function() {
-    return {
-      restrict: 'E',
-      scope: {
-        global: '=',
-        activities: '='
-      },
-      templateUrl: 'public/system/views/recentactivity.html',
-    };
-})
-.directive('myAvatar', function() {
-    return {
-        // required to make it work as an element
-        restrict: 'E',
-        template: '<img/>',
-        scope: {
-          userid: '@',
-          file: '@',
-          type: '@'
-        },
-        // replace: true,
-        // observe and manipulate the DOM
-        link: function($scope, element, attrs) {
-
-            // attribute names change to camel case
-            attrs.$observe('file', function(value) {
-         
-                if(!value.length || !$scope.userid.length)
-                {
-                  if ($scope.type =='small') 
-                    element.find('img').attr('src', '/public/lib/images/no_avatar_30x30.gif');
-                  else
-                    element.find('img').attr('src', '/public/lib/images/no_avatar.gif');
-                }
-                else
-                  element.find('img').attr('src', '/public/uploads/users/' + $scope.userid + '/'+ $scope.type +'_' + value);
-            })
-
-            attrs.$observe('userid', function(value) {
-         
-                if(!value.length || !$scope.file.length)
-                {
-                  if ($scope.type =='small') 
-                    element.find('img').attr('src', '/public/lib/images/no_avatar_30x30.gif');
-                  else
-                    element.find('img').attr('src', '/public/lib/images/no_avatar.gif');
-                }
-                else
-                  element.find('img').attr('src', '/public/uploads/users/' + value + '/'+ $scope.type +'_' + $scope.file);
-            })
-        }
-    }
-}).directive('myClassAvatar', function() {
-    return {
-        // required to make it work as an element
-        restrict: 'E',
-        template: '<img/>',
-        scope: {
-          userid: '@',
-          file: '@'
-        },
-        // replace: true,
-        // observe and manipulate the DOM
-        link: function($scope, element, attrs) {
-
-            // attribute names change to camel case
-            attrs.$observe('file', function(value) {
-         
-                if(!value.length || !$scope.userid.length)
-                {
-                    element.find('img').attr('src', '/public/lib/images/no_image_class.png');
-                }
-                else
-                  element.find('img').attr('src', '/public/uploads/classes/' + $scope.userid + '/medium_' + value);
-            })
-
-            attrs.$observe('userid', function(value) {
-         
-                if(!value.length || !$scope.file.length)
-                {
-                  element.find('img').attr('src', '/public/lib/images/no_image_class.png');
-                }
-                else
-                  element.find('img').attr('src', '/public/uploads/classes/' + value + '/medium_' + $scope.file);
-            })
-        }
-    }
-}).directive('ellipsis', ['$timeout',function ($timeout) {
-    return {
-        required: 'ngBindHtml',
-        restrict: 'A',
-        link: function ($scope, element, attrs) {
-            $scope.hasEllipsis = false;
-
-            $timeout(function(){
-               if (!$scope.hasEllipsis) {
-                   // apply ellipsis only one
-                   $scope.hasEllipsis = true;
-                   element = $(element[0]);
-                   element.ellipsis();
-               }
-           }, 20);
-
-        }
-    };
-}])
-.controller('MessagePopupController',function($scope,$modalInstance,data,Messages,$location,$timeout,$interval,cfpLoadingBar){
-
-    $scope.data = data;
-    var stop;
-
-    $scope.quickReply = function(){
-          if ($location.path() == '/messages') {
-            var tmpData = [];
-            
-            tmpData.push({ 'id' : $scope.data.from._id , 'text' : $scope.data.from.name });
-            
-            for (var i = 0; i < $scope.data.to.length; i++) {
-                    tmpData.push({ 'id' : $scope.data.to[i]._id , 'text' : $scope.data.to[i].name }) ;
-            };
-            CKEDITOR.instances.message.setData('<br/><blockquote>' + $scope.data.message + '</blockquote>');
-            $("#selectRecipient").select2('data', tmpData);
-            $modalInstance.close();
-            $('#myModal').modal();
-             
-            if (angular.isDefined(stop)) {
-              $interval.cancel(stop);
-              stop = undefined;
-            }
-          }
-          else
-          {
-            $location.path('/messages');
-            stop = $interval(function(){
-                 console.log(cfpLoadingBar.status() );
-                 if (cfpLoadingBar.status() == 1) {
-                    $scope.quickReply();
-                 }
-             }, 100);
-          }
-  
-         
-      };
-
-    $scope.deleteMessage = function () {
-
-          $scope.showLoading = true;
-          Messages.clean({ids : [$scope.data._id] , inbox : 1, trash : 0 , schedule : 0},function(resp){
-              // reset pagination
-              $modalInstance.close();
-              $location.path('/messages');
-          });
-      };
-    
-})
-.run(['$templateCache',function($templateCache){
-  $templateCache.put('/dialogs/message.html','<div class="modal-dialog"><div class="modal-content"><div class="modal-header"><h4 class="modal-title">From {{data.fromName}} - <span data-livestamp="{{data.dateSent}}"></span></h4></div><div class="modal-body" ng-bind-html="data.message"></div><div class="modal-footer"><button type="button" ng-click="quickReply()" class="btn btn-info" data-dismiss="modal">Reply</button><button type="button" ng-click="deleteMessage()" class="btn btn-danger" data-dismiss="modal">Delete</button></div></div></div>');
-}]);
+]);

@@ -29,5 +29,15 @@ module.exports = {
         clientID: 'API_KEY',
         clientSecret: 'SECRET_KEY',
         callbackURL: 'http://localhost:3000/auth/linkedin/callback'
+    },
+    emailFrom: 'GSchool Support <dunghd.it@gmail.com>', // sender address like ABC <abc@example.com>
+    mailer: {
+        host: "smtp.mailgun.org", // hostname
+        secureConnection: true, // use SSL
+        port: 465, // port for secure SMTP
+        auth: {
+            user: 'postmaster@sandbox866314ee4689483a92b51ee06146033b.mailgun.org',
+            pass: '57m-o6ixd1d1'
+        }
     }
 };

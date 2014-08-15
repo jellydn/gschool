@@ -9,6 +9,7 @@ var mongoose = require('mongoose'),
     crypto = require('crypto'),
     nodemailer = require('nodemailer'),
     templates = require('../template'),
+    config = require('../config/util').loadConfig(),
     _ = require('lodash');
 
 /**
@@ -245,20 +246,13 @@ exports.resetpassword = function(req, res, next) {
 /**
  * Send reset password email
  */
+
 function sendMail(mailOptions) {
-    var transport = nodemailer.createTransport('SMTP', {
-        host: "smtp.mailgun.org", // hostname
-        secureConnection: true, // use SSL
-        port: 465, // port for secure SMTP
-        auth: {
-            user: 'postmaster@sandbox866314ee4689483a92b51ee06146033b.mailgun.org',
-            pass: '57m-o6ixd1d1'
-        }
-    });
-    transport.sendMail(mailOptions, function(err, response) {
-        if (err) return err;
-        return response;
-    });
+  var transport = nodemailer.createTransport('SMTP', config.mailer);
+  transport.sendMail(mailOptions, function(err, response) {
+    if (err) return err;
+    return response;
+  });
 }
 
 /**
@@ -293,8 +287,8 @@ exports.forgotpassword = function(req, res, next) {
             },
             function(token, user, done) {
                 var mailOptions = {
-                    to: user.email,
-                    from: 'Gschool System <dunghd.it@gmail.com>'
+                  to: user.email,
+                  from: config.emailFrom
                 };
                 mailOptions = templates.forgot_password_email(user, req, token, mailOptions);
                 sendMail(mailOptions);
