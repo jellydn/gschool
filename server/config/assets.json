@@ -58,6 +58,7 @@
             "public/system/lib/ngInfiniteScroll/build/ng-infinite-scroll.js",
             "public/system/lib/ng-ckeditor/libs/ckeditor/ckeditor.js",
             "public/system/lib/ng-ckeditor/ng-ckeditor.js",
+            "public/system/lib/angular-equalizer/angular-equalizer.js",
             "public/lib/js/jquery.autoellipsis-1.0.10.min.js",
             "public/init.js",
             "public/*/*.js",

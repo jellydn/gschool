@@ -68,7 +68,7 @@
                             Searching "{{keyword}}" in classes
                         </header>
                         <div class="panel-body">
-                                <div class="col-md-4" data-ng-repeat="class in results['class']">
+                                <div equalizer="group1" class="col-md-4" data-ng-repeat="class in results['class']">
 
                                 <!--widget start-->
                                 <aside class="profile-nav alt">
@@ -105,7 +105,7 @@
                             Searching "{{keyword}}" in notes
                         </header>
                         <div class="panel-body">
-                                <div class="col-md-4" data-ng-repeat="note in results['note']| orderBy:'-dateCreate' ">
+                                <div class="col-md-4" equalizer="group2" data-ng-repeat="note in results['note']| orderBy:'-dateCreate' ">
                                 <!--widget start-->
                                 <aside class="profile-nav alt">
                                     <section class="panel">

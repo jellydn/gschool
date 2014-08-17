@@ -298,5 +298,9 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
                 $location.path('classes/' + classModel._id);
             });
         };
+
+        $scope.alignNote = function(){
+            $(window).trigger('resize');
+        }
     }
 ]);

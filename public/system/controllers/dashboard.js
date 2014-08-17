@@ -161,4 +161,8 @@ angular.module('mean.system').controller('DashboardController', ['$scope', '$roo
     	Socket.emit('whoonline');
     }
 
+    $scope.alignNote = function(){
+      $(window).trigger('resize');
+    }
+
 }]);

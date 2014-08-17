@@ -1,0 +1,14 @@
+{
+  "name": "angular-equalizer",
+  "homepage": "https://github.com/pocesar/angular-equalizer",
+  "version": "1.0.1",
+  "_release": "1.0.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "1.0.1",
+    "commit": "ee0813735148688944291d47dcfb20d69b97a404"
+  },
+  "_source": "git://github.com/pocesar/angular-equalizer.git",
+  "_target": "*",
+  "_originalSource": "angular-equalizer"
+}

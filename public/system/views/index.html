@@ -95,12 +95,12 @@
                                 </a>
                             </li>
                             <li class="">
-                                <a data-toggle="tab" href="#classes">
+                                <a data-toggle="tab" href="#classes" ng-click="alignElement()">
                                     Classes
                                 </a>
                             </li>
                             <li class="">
-                                <a data-toggle="tab" href="#notes">
+                                <a data-toggle="tab" href="#notes" ng-click="alignElement()">
                                     Notes
                                 </a>
                             </li>
@@ -143,7 +143,7 @@
             <div id="classes" class="tab-pane">
                 <div class="row">
 
-                    <div class="col-md-4" data-ng-repeat="class in classes">
+                    <div class="col-md-4" equalizer="group" data-ng-repeat="class in classes">
 
                         <!--widget start-->
                         <aside class="profile-nav alt">
@@ -179,7 +179,7 @@
                 <div class="row">
                      <div class="col-sm-12">
 
-                     <div class="col-md-4" data-ng-repeat="note in notes| orderBy:'-dateCreate' ">
+                     <div class="col-md-4" equalizer="group2" data-ng-repeat="note in notes| orderBy:'-dateCreate' ">
                         <!--widget start-->
                                 <aside class="profile-nav alt">
                                     <section class="panel">
