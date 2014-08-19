@@ -64,7 +64,7 @@ exports.all = function(req, res) {
         var q = Note.find({createBy : req.user._id});
     }
     
-    q.sort({ dateCreate : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, notes) {
+    q.sort({  orderNumber : 'desc' }).populate('createBy', 'name username avatar').exec(function(err, notes) {
         if (err) {
             console.log(err);
             res.render('error', {
@@ -318,3 +318,23 @@ exports.destroy = function(req, res) {
         }
     });
 };
+
+exports.order = function(req,res){
+
+    // check current user 
+    if( req.user._id == req.body.uid ){
+        Note.find({ _id : { '$in' : req.body.notes } }).exec(function(e,notes){
+            if (e) return next(e);
+            if (!notes) return next(new Error('Failed to load classes of note '));
+             
+             notes.forEach(function(note){
+                note.orderNumber = notes.length - req.body.notes.indexOf(note._id.toString());
+                note.save();
+             });
+
+             res.jsonp(notes);
+        });
+    }
+
+
+}

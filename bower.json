@@ -23,6 +23,7 @@
     "angular-loading-bar": "latest",
     "ngInfiniteScroll": "latest",
     "ng-ckeditor": "latest",
+    "angular-equalizer": "latest",
     "datetimepicker": "latest"
   }
 }

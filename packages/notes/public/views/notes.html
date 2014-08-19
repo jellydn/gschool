@@ -79,9 +79,9 @@
                 </li>
             </ul>
         </div>
-         <div class="col-sm-12">
+         <div class="col-sm-12" id="draggable_portlets">
 
-                     <div equalizer="group" class="col-md-4" data-ng-repeat="note in notes| orderBy:'-dateCreate' ">
+                     <div equalizer="group" id="{{note._id}}" class="col-md-4" data-ng-repeat="note in notes| orderBy:'-orderNumber' ">
                         <!--widget start-->
                         <aside class="profile-nav alt">
                             <section class="panel">

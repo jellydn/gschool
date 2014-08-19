@@ -47,6 +47,10 @@ var NoteSchema = new Schema({
     totalComments : {
         type: Number,
         default : 0
+    },
+    orderNumber : {
+        type: Number,
+        default : 0
     }
 });
 

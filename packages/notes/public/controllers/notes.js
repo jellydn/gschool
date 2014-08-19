@@ -126,9 +126,30 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$sc
 
         // list all
         $scope.find = function() {
+
             Notes.query({share : 0},function(notes) {
                 $scope.notes = notes;
             });
+
+            $("#draggable_portlets").sortable({
+                connectWith: ".col-md-4",
+                items: ".col-md-4",
+                opacity: 0.8,
+                coneHelperSize: true,
+                placeholder: 'sortable-box-placeholder round-all',
+                forcePlaceholderSize: true,
+                tolerance: "pointer",
+                stop : function(event,ui) {
+                    var sortedIDs = $( this ).sortable( "toArray" );
+                    console.log(sortedIDs);
+                    $http.post('/notes/order', { uid : $scope.global.user._id , notes : sortedIDs }).success(function(resp){
+                        console.log(resp);
+                    });
+
+                }
+            });
+
+            $( "#draggable_portlets" ).disableSelection();
         };
 
         $scope.findComment = function() {

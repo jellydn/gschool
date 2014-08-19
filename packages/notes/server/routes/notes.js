@@ -21,6 +21,7 @@ module.exports = function(Notes, app, auth, database) {
      app.route('/notes')
         .get(notes.all).post(auth.requiresLogin, notes.create);
 
+     app.route('/notes/order').post(auth.requiresLogin, notes.order);
 
      app.route('/notes/:noteId')
         .get(notes.show)
