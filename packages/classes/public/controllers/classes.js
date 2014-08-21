@@ -194,6 +194,37 @@ angular.module('mean').controller('ClassesController', ['$scope','$rootScope','$
                 classId: $stateParams.classId
             }, function(classModel) {
                 $scope.class = classModel;
+                // class owner, will rearrage note
+                if (classModel.orderNote.length) {
+                    for (var i = 0; i < classModel.notes.length; i++) {
+                        classModel.notes[i].orderNumber = classModel.notes.length - classModel.orderNote.indexOf(classModel.notes[i]._id);
+                    };
+                } else {
+                    for (var i = 0; i < classModel.notes.length; i++) {
+                        classModel.notes[i].orderNumber = classModel.notes.length - i;
+                    };
+                }
+
+                if ( $scope.hasAuthorization(classModel)  ) {
+                    $("#draggable_portlets").sortable({
+                        connectWith: ".col-md-4",
+                        items: ".col-md-4",
+                        opacity: 0.8,
+                        coneHelperSize: true,
+                        placeholder: 'sortable-box-placeholder round-all',
+                        forcePlaceholderSize: true,
+                        tolerance: "pointer",
+                        stop : function(event,ui) {
+                            var sortedIDs = $( this ).sortable( "toArray" );
+                            console.log(sortedIDs);
+                            $https.post('/classes/' + classModel._id + '/order', { notes : sortedIDs }).success(function(resp){
+                                console.log(resp);
+                            });
+
+                        }
+                    });
+                };
+
                 if ($scope.isEditModel) {
                     $('#tags_1').val(classModel.tags);
                     $('#tags_1').tagsInput({

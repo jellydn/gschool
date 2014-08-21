@@ -53,6 +53,7 @@ exports.upload = function(req,res){
 
 }
 
+
 exports.suggest = function(req, res) {
     if (req.user.type == 'teacher') 
         var q = Classes.find({createBy : req.user._id,name: new RegExp('^'+req.query.q, "i")});
@@ -410,6 +411,24 @@ exports.update = function(req, res) {
         });
         
     };
+
+    classModel.save(function(err) {
+        if (err) {
+            return res.send('users/signup', {
+                errors: err.errors,
+                class: classModel
+            });
+        } else {
+            res.jsonp(classModel);
+        }
+    });
+};
+
+
+exports.order = function(req,res){
+    var classModel = req.class;
+
+    classModel.orderNote = req.body.notes;
 
     classModel.save(function(err) {
         if (err) {

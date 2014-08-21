@@ -48,7 +48,6 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$sc
               })
               .progress(function(evt) {
                 var percent =parseInt(100.0 * evt.loaded / evt.total);
-                console.log(percent);
               });
             }
         
@@ -141,9 +140,7 @@ angular.module('mean').controller('NotesController', ['$scope','$rootScope','$sc
                 tolerance: "pointer",
                 stop : function(event,ui) {
                     var sortedIDs = $( this ).sortable( "toArray" );
-                    console.log(sortedIDs);
                     $http.post('/notes/order', { uid : $scope.global.user._id , notes : sortedIDs }).success(function(resp){
-                        console.log(resp);
                     });
 
                 }

@@ -1,8 +1,7 @@
 'use strict';
 var classes = require('../controllers/classes');
 var hasClassAuthorization = function(req, res, next) {
-
-    if (req.class.createBy.id !== req.user.id) {
+    if (req.class.createBy.id !== req.user.id && req.user.roles.indexOf('admin') == -1) {
         return res.send(401, 'User is not authorized');
     }
     next();
@@ -21,6 +20,8 @@ module.exports = function(Class, app, auth, database) {
 
      app.route('/upload/class').post(auth.requiresLogin,classes.upload);
 
+     app.route('/classes/:classId/order')
+        .post(auth.requiresLogin,hasClassAuthorization,classes.order);
 
      app.route('/classes/:classId')
         .get(classes.show)

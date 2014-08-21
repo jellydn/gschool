@@ -383,9 +383,9 @@
                             </div>
                             <div id="notes" class="tab-pane">
                                 <div class="row">
-                                    <div class="col-sm-12">
+                                    <div class="col-sm-12" id="draggable_portlets">
                        
-                                    <div equalizer="group" class="col-md-4" data-ng-repeat="note in class.notes| orderBy:'-dateCreate' ">
+                                    <div equalizer="group" id="{{note._id}}" class="col-md-4" data-ng-repeat="note in class.notes| orderBy:'-orderNumber' ">
                                             <!--widget start-->
                                             <aside class="profile-nav alt">
                                                 <section class="panel">

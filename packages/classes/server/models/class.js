@@ -34,6 +34,9 @@ var ClassSchema = new Schema({
     tags: {
         type: Array
     },
+    orderNote: {
+        type: Array
+    },
     dateCreate: {
         type: Date,
         default: Date.now
