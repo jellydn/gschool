@@ -52,7 +52,7 @@
     "load-grunt-tasks": "^0.4.0",
     "lodash": "^2.4.1",
     "mean-connect-mongo": "0.4.3",
-    "gridfs-stream": "0.4.1",
+    "gridfs-stream": "0.5.3",
     "mean-logger": "0.0.1",
     "meanio": "0.4.x",
     "method-override": "~1.0.0",
