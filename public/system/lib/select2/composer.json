@@ -8,7 +8,7 @@
   "license": "Apache-2.0",
   "require": {
     "robloach/component-installer": "*",
-    "components/jquery": ">=1.7.1"
+    "components/jquery": "3.5.1"
   },
   "extra": {
     "component": {
